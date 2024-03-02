@@ -11,13 +11,9 @@ const Register = () => {
             </h2>
             <p className="mt-2text-sm text-blue-600 font-bold">
               You are new here, don't worry{" "}
-              <a
-                href="/register"
-                title=""
-                className="font-semibold text-black transition-all duration-200 hover:underline"
-              >
-                just create an account with below details 
-              </a>
+              <p className="font-semibold text-black transition-all duration-200 underline">
+                just create an account with below details
+              </p>
             </p>
             <form action="#" method="POST" className="mt-8">
               <div className="">
@@ -31,14 +27,14 @@ const Register = () => {
                   </div>
                 </div>
                 <div>
-                 
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Enter Email"
                     ></input>
-                  </div> <div className="mt-2">
+                  </div>{" "}
+                  <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
@@ -61,15 +57,16 @@ const Register = () => {
                   </div>
                 </div>
               </div>
-            </form>
-            <div className="mt-3 space-y-3">
+              <div className="mt-3 space-y-3">
               <button
-                type="button"
+                type="submit"
                 className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-200 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
               >
                 Create Account
               </button>
             </div>
+            </form>
+           
           </div>
         </div>
       </section>

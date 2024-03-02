@@ -2,32 +2,39 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import product22 from "../../../../asset/images/product22.jpg";
-import groomgif from "../../../../asset/images/groomGIF.gif";
-import product1 from "../../../../asset/images/product1.jpeg"
 
+
+const Card = ({ image, title, buttonText }) => (
+  <div className="card card-side w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2 mt-10 shadow-xl md:mt-0 md:mr-4 sm:flex-row">
+    <figure>
+      <img src={image} alt="product" className="w-full h-auto sm:flex-row" />
+    </figure>
+    <div className="card-body">
+      <h2 className="card-title text-lg sm:text-xl md:text-2xl">{title}</h2>
+      <div className="card-actions mt-4">
+        <button className="btn btn-outline btn-warning">{buttonText}</button>
+      </div>
+    </div>
+  </div>
+);
 
 const Showcase = () => {
-  const products = [
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-
-
-  ];
-
   return (
     <>
-      <div className="bg-gradient-to-t p-8">
-        <div className="flex">
-          <div className="card card-side w-1/2 mt-10  shadow-xl mr-5">
+      <div className="bg-gradient-to-t p-8 ">
+        <div className="flex sm:flex-row">
+          {/* Card 1 */}
+          <div className="card card-side w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 mt-10 sm:mr-2 shadow-xl">
             <figure>
-              <img src={product22} alt="product" />
+              <img
+                src={product22}
+                alt="product"
+                className="w-full h-auto sm:flex-row"
+              />
             </figure>
             <div className="card-body">
               <h2 className="card-title">Best Dresses for Women</h2>
-
-              <div className="card-actions justify-start mt-10">
+              <div className="card-actions mt-4">
                 <button className="btn btn-outline btn-warning">
                   View More
                 </button>
@@ -35,59 +42,14 @@ const Showcase = () => {
             </div>
           </div>
 
-          <div className="card card-side shadow-xl w-1/2 mt-10 mr-4">
-            <figure>
-              <img src={product22} alt="product" />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title">Best Dresses for Women</h2>
-
-              <div className="card-actions justify-start mt-10">
-                <button className="btn btn-outline btn-warning">
-                  View More
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="suggested-product">
-          <div className="flex mt-10 ml-50 justify-between">
-            <div className=" font-sans text-3xl">
-              Suggested For You
-            </div>
-            <div className="btn btn-outline btn-warning">
-              <button type="click">View All</button>
-            </div>
-          </div>
-
-          <Link className="flex flex-wrap justify-around" to="/product/:id">
-            {products.map((product) => (
-              <div
-                className="flex card w-64 h-96 m-4"
-                key={product.id}
-              >
-                <figure>
-                  <img src={product.image} alt="women dress" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title justify-center">
-                    {product.name}
-                    <div className="badge badge-secondary">NEW</div>
-                  </h2>
-
-                  <div className="card-actions justify-center">
-                    <div>{product.price}</div>
-                    <div>{product.rating}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Link>
+          {/* Card 2 */}
+          <Card
+            image={product22}
+            title="Best Dresses for Women"
+            buttonText="View More"
+          />
         </div>
       </div>
-
-
     </>
   );
 };

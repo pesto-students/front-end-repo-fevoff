@@ -23,8 +23,6 @@ const ProductList = () => {
 
   return (
     <div>
-      <Banner />
-
       <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 p-8">
         <div className="flex justify-center mt-5 ml-50 font-sans text-3xl">
           Our Product

@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -12,13 +13,12 @@ const Login = () => {
             </h2>
             <p className="mt-2text-sm text-red-600 font-bold">
               Don&apos;t have an account?{" "}
-              <a
-                href="/register"
-                title=""
+              <Link
+                to="/register"
                 className="font-semibold text-black transition-all duration-200 hover:underline"
               >
                 Create a free account
-              </a>
+              </Link>
             </p>
             <form action="#" method="POST" className="mt-8">
               <div className="space-y-5">

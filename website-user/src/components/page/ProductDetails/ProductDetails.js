@@ -2,14 +2,14 @@ import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
-import Banner from "../Home/Banner/Banner";
+
 import RelatedProduct from "./RelatedProduct";
 import ProductReview from "./ProductReview";
 
 function ProductDetails() {
   return (
     <div className="sp mx-auto max-w-full bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 font-semibold italic">
-      <Banner />
+    
 
       <div className="flex justify-center px-2  lg:px-0 ">
         <div className="overflow-hidden">
