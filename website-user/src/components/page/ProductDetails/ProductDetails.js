@@ -1,38 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
-
 import RelatedProduct from "./RelatedProduct";
 import ProductReview from "./ProductReview";
+import Loader from "../../Layout/Loader";
 
-function ProductDetails() {
+import { clearErrors, getProductDetils } from "../../../Action/productAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+function ProductDetails({product} ) {
+  // const [quantity, setQuentity] = useState(1);
+
+  // const dispatch = useDispatch();
+  // const { id } = useParams();
+  // const alert = useAlert()
+
+  // const { product, loading, error } = useSelector(
+  //   (state) => state.productDetails
+  // );
+ 
+  // const increeQuentity = () => {
+  //   if (product.stock <= quantity) return;
+
+  //   const qty = quantity + 1;
+  //   setQuentity(qty);
+  // };
+
+  // decreseQuantity = () => {
+  //   if (1 >= quantity) return;
+  //   const qty = quantity - 1;
+  //   setQuentity(qty);
+  // };
+
+  // const addToCart = () => {
+
+  // }
+
+  // useEffect(() => {
+  //   if (error) {
+  //     // alert.error(error);
+  //     dispatch(clearErrors());
+  //   }
+    
+  //   dispatch(getProductDetils(id));
+  // }, [dispatch, id, error]);
+
+  // if (!product || Object.keys(product).length === 0) {
+  //   return <Loader />;
+  // }
+
   return (
     <div className="sp mx-auto max-w-full bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 font-semibold italic">
-    
-
-      <div className="flex justify-center px-2  lg:px-0 ">
-        <div className="overflow-hidden">
-          <div className="mb-9 pt-4 md:px-6 md:pt-7 lg:mb-2 lg:p-8 2xl:p-10 2xl:pt-10">
-            <div className="items-start justify-between lg:flex lg:space-x-8">
-              <div className="mb-6 items-center justify-center overflow-hidden md:mb-8 lg:mb-0 xl:flex">
-                <div className="w-full xl:flex xl:flex-row-reverse">
-                  <div className="relative mb-2.5 w-full shrink-0 overflow-hidden rounded-md border md:mb-3 xl:w-[480px] 2xl:w-[650px]">
-                    <div className="relative flex items-center justify-center">
-                      <img
-                        alt="Product gallery 1"
-                        src="https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
-                        width={650}
-                        height={590}
-                        className="rounded-lg object-cover md:h-[300px] md:w-full lg:h-full"
-                      />
+      
+        <div className="flex justify-center px-2  lg:px-0 " >
+          <div className="overflow-hidden">
+            <div className="mb-9 pt-4 md:px-6 md:pt-7 lg:mb-2 lg:p-8 2xl:p-10 2xl:pt-10">
+              <div className="items-start justify-between lg:flex lg:space-x-8">
+                <div className="mb-6 items-center justify-center overflow-hidden md:mb-8 lg:mb-0 xl:flex">
+                  <div className="w-full xl:flex xl:flex-row-reverse">
+                    <div className="relative mb-2.5 w-full shrink-0 overflow-hidden rounded-md border md:mb-3 xl:w-[480px] 2xl:w-[650px]">
+                      <div className="relative flex items-center justify-center">
+                        <img
+                          alt="Product gallery 1"
+                          src={product.image}
+                          width={650}
+                          height={590}
+                          className="rounded-lg object-cover md:h-[300px] md:w-full lg:h-full"
+                        />
+                      </div>
+                      <div className="absolute top-2/4 z-10 flex w-full items-center justify-between">
+                        <ChevronLeft className="text-white" />
+                        <ChevronRight className="text-white" />
+                      </div>
                     </div>
-                    <div className="absolute top-2/4 z-10 flex w-full items-center justify-between">
-                      <ChevronLeft className="text-white" />
-                      <ChevronRight className="text-white" />
-                    </div>
-                  </div>
-                  <div className="flex gap-2 xl:flex-col">
+                    {/* <div className="flex gap-2 xl:flex-col">
                     {[
                       "https://images.unsplash.com/photo-1580902394836-21e0d429b7f4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=924&q=80",
                       "https://images.unsplash.com/photo-1580902394743-1394a7ec93d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -51,85 +94,86 @@ function ProductDetails() {
                         />
                       </div>
                     ))}
+                  </div> */}
                   </div>
                 </div>
-              </div>
-              <div className="flex shrink-0 flex-col lg:w-[430px] xl:w-[470px] 2xl:w-[480px]">
-                <div className="pb-5">
-                  <h2 className="text-lg font-semibold md:text-xl xl:text-2xl">
-                    Nike Airmax Pro V2
-                  </h2>
-                  <p className="mt-4 font-semibold">₹ 250</p>
-                </div>
-                <div className="mb-2 pt-0.5">
-                  <div className="flex justify-between">
-                    <h4 className="text-15px mb-3 font-normal capitalize text-opacity-70">
-                      Size
-                    </h4>
-                    <h4 className="text-15px mb-3 font-normal capitalize text-opacity-70">
-                      Size Chart
-                    </h4>
+                <div className="flex shrink-0 flex-col lg:w-[430px] xl:w-[470px] 2xl:w-[480px]">
+                  <div className="pb-5">
+                    <h2 className="text-lg font-semibold md:text-xl xl:text-2xl">
+                      {product.title}
+                    </h2>
+                    <p className="mt-4 font-semibold">₹ {product.price}</p>
                   </div>
-                  <ul className="flex flex-wrap space-x-2">
-                    <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border  p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
-                      XS
-                    </li>
-                    <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
-                      S
-                    </li>
-                    <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
-                      M
-                    </li>
-                  </ul>
-                </div>
-                <div className="pb-2" />
-                <div className="space-y-2.5 pt-1.5 md:space-y-3.5 lg:pt-3 xl:pt-4">
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <button
-                      type="button"
-                      className="inline-flex w-full items-center justify-center rounded-md bg-transprent border border-red-300 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                    >
-                      <span className="block">Add To Cart</span>
-                    </button>
-                    <div className="relative">
+                  <div className="mb-2 pt-0.5">
+                    <div className="flex justify-between">
+                      <h4 className="text-15px mb-3 font-normal capitalize text-opacity-70">
+                        Size
+                      </h4>
+                      <h4 className="text-15px mb-3 font-normal capitalize text-opacity-70">
+                        Size Chart
+                      </h4>
+                    </div>
+                    <ul className="flex flex-wrap space-x-2">
+                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border  p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
+                        XS
+                      </li>
+                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
+                        S
+                      </li>
+                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-black">
+                        M
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="pb-2" />
+                  <div className="space-y-2.5 pt-1.5 md:space-y-3.5 lg:pt-3 xl:pt-4">
+                    <div className="grid grid-cols-2 gap-2.5">
                       <button
                         type="button"
                         className="inline-flex w-full items-center justify-center rounded-md bg-transprent border border-red-300 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                       >
-                        <span className="block">Add To Wishlist</span>
+                        <span className="block">Add To Cart</span>
                       </button>
-                    </div>
-                    <div className="flex justify-around py-2">
-                      <span>Share:</span>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          className="inline-flex w-full items-center justify-center rounded-md bg-transprent border border-red-300 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                        >
+                          <span className="block">Add To Wishlist</span>
+                        </button>
+                      </div>
+                      <div className="flex justify-around py-2">
+                        <span>Share:</span>
 
-                      <a
-                        href="https://www.facebook.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaFacebook size={20} />
-                      </a>
-                      <a
-                        href="https://twitter.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaTwitter size={20} />
-                      </a>
-                      <a
-                        href="https://www.instagram.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaInstagram size={20} />
-                      </a>
-                      <a
-                        href="https://www.linkedin.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FaLinkedin size={20} />
-                      </a>
+                        <a
+                          href="https://www.facebook.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaFacebook size={20} />
+                        </a>
+                        <a
+                          href="https://twitter.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaTwitter size={20} />
+                        </a>
+                        <a
+                          href="https://www.instagram.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaInstagram size={20} />
+                        </a>
+                        <a
+                          href="https://www.linkedin.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FaLinkedin size={20} />
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -137,17 +181,20 @@ function ProductDetails() {
             </div>
           </div>
         </div>
-      </div>
+      
       <div className="pt-1 xl:pt-1">
         <p className="text-sm px-12">
           A chip (often just chip, or crisp in British and Irish English) may be
           a thin slice of potato that has been either deep fried or baked until
-          crunchy. theyre commonly served as a snack, side dish, or appetizer.A chip (often just chip, or crisp in British and Irish English) may be
-          a thin slice of potato that has been either deep fried or baked until
-          crunchy. theyre commonly served as a snack, side dish, or appetizer.A chip (often just chip, or crisp in British and Irish English) may be
-          a thin slice of potato that has been either deep fried or baked until
-          crunchy. theyre commonly served as a snack, side dish, or appetizer.A chip (often just chip, or crisp in British and Irish English) may be
-          a thin slice of potato that has been either deep fried or baked until
+          crunchy. theyre commonly served as a snack, side dish, or appetizer.A
+          chip (often just chip, or crisp in British and Irish English) may be a
+          thin slice of potato that has been either deep fried or baked until
+          crunchy. theyre commonly served as a snack, side dish, or appetizer.A
+          chip (often just chip, or crisp in British and Irish English) may be a
+          thin slice of potato that has been either deep fried or baked until
+          crunchy. theyre commonly served as a snack, side dish, or appetizer.A
+          chip (often just chip, or crisp in British and Irish English) may be a
+          thin slice of potato that has been either deep fried or baked until
           crunchy. theyre commonly served as a snack, side dish, or appetizer.
         </p>
       </div>

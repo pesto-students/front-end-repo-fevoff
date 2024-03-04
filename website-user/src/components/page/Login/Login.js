@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CLEAR_ERRORS } from "../../../Constants/userConstants";
 
-const Login = () => {
+import { login } from "../../../Action/userAction";
+
+const Login = ({ history }) => {
+  const dispatch = useDispatch();
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(loginEmail, loginPassword));
+  };
+
+  useEffect(() => {
+    if (error) {
+      dispatch(CLEAR_ERRORS);
+    }
+    if (isAuthenticated) {
+      history.pushState("/account");
+    }
+  }, [dispatch, history, isAuthenticated, error]);
+
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-150 italic">
       <section className="rounded-md  p-2">
@@ -20,7 +47,12 @@ const Login = () => {
                 Create a free account
               </Link>
             </p>
-            <form action="#" method="POST" className="mt-8">
+            <form
+              action="#"
+              method="POST"
+              className="mt-8"
+              onSubmit={loginSubmit}
+            >
               <div className="space-y-5">
                 <div>
                   <label
@@ -33,8 +65,10 @@ const Login = () => {
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="email"
+                      type=""
                       placeholder="Enter Email or Mobile Number"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
                     ></input>
                   </div>
                 </div>
@@ -61,12 +95,15 @@ const Login = () => {
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Enter Password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
                     ></input>
                   </div>
                 </div>
                 <div>
                   <button
-                    type="button"
+                    type="submit"
+                    value="login"
                     className="inline-flex w-full items-center justify-center rounded-md  px-3.5 py-2.5 font-semibold leading-7  hover:bg-yellow-500 border-2 border-black"
                   >
                     Login <ArrowRight className="ml-2" size={16} />
