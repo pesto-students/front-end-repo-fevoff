@@ -1,9 +1,13 @@
 import axios from "axios";
 import { baseAPIUrl } from "../baseUrl";
 
-const GetMethod = async (url, id) => {
+const GetMethod = async (url, id = null) => {
 
-    const urlLink = baseAPIUrl + url + id;
+    let urlLink = baseAPIUrl + url;
+
+    if (id !== "" && id != null) {
+        urlLink += "/" + id;
+    }
 
     const config = {
         url: urlLink,

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { baseAPIUrl } from "../baseUrl";
 
 const DeleteMethodWithJwt = async (url, id) => {
 
-    const urlLink = url + id;
+    const urlLink = baseAPIUrl + url + id;
 
     const jwtToken = localStorage.getItem('admin_token');
 

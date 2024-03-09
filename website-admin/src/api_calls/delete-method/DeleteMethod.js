@@ -1,13 +1,13 @@
 import axios from "axios";
+import { baseAPIUrl } from "../baseUrl";
 
-const PutMethod = async (url, id, objData) => {
+const DeleteMethod = async (url, id) => {
 
-    const urlLink = url + id;
+    const urlLink = baseAPIUrl + url + id;
 
     const config = {
         url: urlLink,
-        method: 'PUT',
-        data: objData,
+        method: 'DELETE',
     }
 
     try {
@@ -32,4 +32,4 @@ const PutMethod = async (url, id, objData) => {
 
 };
 
-export default PutMethod;
+export default DeleteMethod;

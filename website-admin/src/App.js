@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { List as UsersList } from "./admin/pages/Users/List/List";
 import BrandsList from "./admin/pages/Brands/List/BrandsList";
-
+import EditUser from "./admin/pages/Users/Edit/Edit";
 import Sidebar from './admin/components/Sidebar/Sidebar'
 import Header from './admin/components/Header/Header';
 import Footer from './admin/components/Footer/Footer';
@@ -51,7 +51,7 @@ function App() {
                   <Routes>
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="users" element={<Users />} />
-                    <Route path="users/:userId" element={<Users />} />
+                    <Route path="users/:userId" element={<EditUser />} />
                     <Route path="users/list" element={<UsersList />} />
                     <Route path="brands" element={<Brands />} />
                     <Route path="brands/list" element={<BrandsList />} />
