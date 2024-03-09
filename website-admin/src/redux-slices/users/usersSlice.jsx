@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+
 
 const initialState = {
-    usersList: null,
+    usersData: null,
+    usersList: [],
 }
 
 export const usersSlices = createSlice({
@@ -9,23 +12,20 @@ export const usersSlices = createSlice({
     initialState,
     reducers: {
         addUsers: (state, action) => {
-
-            state.usersList = action.payload;
-
+            state.usersData = action.payload;
         },
         updateUsers: (state, action) => {
-
-            state.usersList = action.payload;
-
+            state.usersData = action.payload;
         },
         deleteUsers: (state, action) => {
-
-            state.usersList = state.todos.filter((todo) => todo.id !== action.payload);
-
+            state.usersList = state.usersList.filter(user => user.id !== action.payload);
+        },
+        listUsers: (state, action) => {
+            state.usersList = action.payload;
         },
     }
 });
 
-export const { addUsers, updateUsers, deleteUsers } = usersSlices.actions;
+export const { addUsers, updateUsers, deleteUsers, listUsers } = usersSlices.actions;
 
 export default usersSlices.reducer;

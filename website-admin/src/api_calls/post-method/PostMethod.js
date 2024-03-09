@@ -1,8 +1,9 @@
 import axios from "axios";
+import { baseAPIUrl } from "../baseUrl";
 
 const PostMethod = async (url, objData) => {
 
-    const urlLink = url;
+    const urlLink = baseAPIUrl + url;
 
     const config = {
         url: urlLink,

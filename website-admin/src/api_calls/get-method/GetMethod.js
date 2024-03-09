@@ -1,8 +1,9 @@
 import axios from "axios";
+import { baseAPIUrl } from "../baseUrl";
 
 const GetMethod = async (url, id) => {
 
-    const urlLink = url + id;
+    const urlLink = baseAPIUrl + url + id;
 
     const config = {
         url: urlLink,

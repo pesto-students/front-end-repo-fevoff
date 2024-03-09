@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Menu, X } from 'lucide-react'
 import "./header.css";
 
@@ -15,23 +15,6 @@ const Header = ({ clickEvent, sidebarVisible }) => {
 
         window.location.replace('/login');
     }
-
-
-    useEffect(() => {
-        checkAdminStatus();
-    }, []);
-
-    const checkAdminStatus = () => {
-
-        const token = localStorage.getItem("admin_token");
-        const admin_id = localStorage.getItem("admin_id");
-
-        if (token === null && admin_id === null) {
-
-            window.location.replace('/login');
-
-        }
-    };
 
     return (
         <>
