@@ -20,7 +20,7 @@ import ChangePaassword from "./components/User/Change Password/ChangePaassword";
 import ManageOrders from "./components/User/Orders/ManageOrders";
 import Search from "./components/page/Search/Search";
 import Banner from "./components/page/Home/Banner/Banner";
-import MyOrders from "./components/User/Orders/MyOrders";
+// import MyOrders from "./components/User/Orders/MyOrders";
 import AboutUs from "./components/page/AboutUs/aboutUs";
 import Privacy from "./components/page/Privacy/privacy";
 import Terms from "./components/page/Terms&Condition/terms";
@@ -28,7 +28,7 @@ import Terms from "./components/page/Terms&Condition/terms";
 function App() {
   return (
     <BrowserRouter>
-      <Header />
+      {/*<Header />
       <Banner />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -47,9 +47,10 @@ function App() {
         <Route path="/me/changepassword" element={<ChangePaassword />} />
         <Route path="/me/orders" element={<ManageOrders />} />
       </Routes>
-      <Footer />
+      <Footer /> */}
       <div className='homepage'>
         <Header />
+        <Banner />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<ProductList />} />
@@ -64,7 +65,7 @@ function App() {
           <Route path="/account" element={<User />} />
           <Route path="/manageaddress" element={<ManageAddress />} />
           <Route path="/changepassword" element={<ChangePaassword />} />
-          <Route path="/myorders" element={<MyOrders />} />
+
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<Privacy />} />
           <Route path="/terms-conidtions" element={<Terms />} />

@@ -35,7 +35,7 @@ const EditUser = () => {
         const response = await GetMethod(url, userId);
 
         if (response.status === true) {
-            const users = response.data;
+            const users = response.data.data;
 
             setUserDetails((prev) => ({
                 ...prev,

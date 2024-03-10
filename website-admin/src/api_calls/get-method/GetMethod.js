@@ -21,7 +21,7 @@ const GetMethod = async (url, id = null) => {
         return {
             status: true,
             message: response.data.message || "",
-            data: response.data.data,
+            data: response.data,
         };
 
     } catch (error) {
