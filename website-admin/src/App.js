@@ -12,6 +12,7 @@ import EditUser from "./admin/pages/Users/Edit/Edit";
 import Sidebar from './admin/components/Sidebar/Sidebar'
 import Header from './admin/components/Header/Header';
 import Footer from './admin/components/Footer/Footer';
+import EditBrands from "./admin/pages/Brands/Edit/EditBrands";
 
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -54,6 +55,7 @@ function App() {
                     <Route path="users/:userId" element={<EditUser />} />
                     <Route path="users/list" element={<UsersList />} />
                     <Route path="brands" element={<Brands />} />
+                    <Route path="brands/:brandId" element={<EditBrands />} />
                     <Route path="brands/list" element={<BrandsList />} />
                   </Routes>
                   <Footer />

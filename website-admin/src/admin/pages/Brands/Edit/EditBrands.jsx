@@ -1,18 +1,22 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useState } from 'react';
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
-import InputTag from '../../components/InputTag/InputTag';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import PostMethod from '../../../api_calls/post-method/PostMethod';
+import React, { useEffect, useState } from 'react';
+import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
+import InputTag from '../../../components/InputTag/InputTag';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+import PutMothod from './../../../../api_calls/put-method/PutMethod';
+import GetMethod from "./../../../../api_calls/get-method/GetMethod";
 import swal from 'sweetalert';
 import imageCompression from 'browser-image-compression';
-import MyImage from "./../../../asset/images/default.jpg";
+import MyImage from "./../../../../asset/images/default.jpg";
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-const Brands = () => {
+const EditBrands = () => {
 
     const [defaultImage, setDefaultImage] = useState(MyImage);
-    const [btnName, setbtnName] = useState("Add Brands");
+    const [btnName, setbtnName] = useState("Update Brands");
     const [btnDisabld, setBtnDisabld] = useState(false);
+    const { brandId } = useParams();
 
     let brandData = {
         name: "",
@@ -23,6 +27,30 @@ const Brands = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [brandDetails, setBrandDetails] = useState(brandData);
+
+    useEffect(() => {
+        handleBrandData();
+    }, []);
+
+    const handleBrandData = async () => {
+
+        const url = "brands";
+        const response = await GetMethod(url, brandId);
+
+        if (response.status === true) {
+            const brands = response.data.data;
+
+            setBrandDetails((prev) => ({
+                ...prev,
+                name: brands.name,
+                brand_slug: brands.brand_slug,
+                show_hide: brands.show_hide,
+            }));
+            setDefaultImage(brands.brand_image);
+        } else {
+            setErrorMessage(response.message);
+        }
+    }
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
@@ -62,27 +90,24 @@ const Brands = () => {
         };
     }
 
-    const handleUserData = async (event) => {
+    const handleBrandDataRequest = async (event) => {
         event.preventDefault();
         setBtnDisabld(true);
         setbtnName("Loading...");
 
         const url = "brands";
-        const response = await PostMethod(url, brandDetails);
+        const response = await PutMothod(url, brandId, brandDetails);
 
         if (response.status === true) {
 
             setBtnDisabld(false);
-            setbtnName("Add brands");
+            setbtnName("Update brands");
 
-            swal("Good job!", "Brands Created Successfully", "success")
-                .then(() => {
-                    window.location.replace('/brands/list');
-                });
+            swal("Good job!", "Brands Updated Successfully", "success");
 
         } else {
             setBtnDisabld(false);
-            setbtnName("Add brands");
+            setbtnName("Update brands");
             setErrorMessage(response.message);
         }
     }
@@ -90,9 +115,9 @@ const Brands = () => {
     return (
         <>
             <section className="mx-auto w-full">
-                <Breadcrumbs breadcumr1={"Manage Brands"} breadcumr1_link={"/brands/list"} breadcumr2={"Add Brands"} button_name={""} button_link={""} />
+                <Breadcrumbs breadcumr1={"Manage Brands"} breadcumr1_link={"/brands/list"} breadcumr2={"Edit Brands"} button_name={""} button_link={""} />
                 <div className='card bg-white rounded-sm pb-5 mb-5'>
-                    <form method='POST' onSubmit={handleUserData} autoComplete='off' >
+                    <form method='POST' onSubmit={handleBrandDataRequest} autoComplete='off' >
                         <div className='card-body'>
                             {
                                 (errorMessage !== "") ? <>
@@ -110,7 +135,7 @@ const Brands = () => {
                                     <div className="label">
                                         <span className="label-text">Show In Front</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='show_hide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, show_hide: e.target.value, }),)}  >
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='show_hide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, show_hide: e.target.value, }),)} value={brandDetails.show_hide}  >
                                         <option value="" selected disabled>-- --</option>
                                         <option value={1}>Yes</option>
                                         <option value={0}>No</option>
@@ -121,7 +146,7 @@ const Brands = () => {
                                     <div className="label">
                                         <span className="label-text">Brand Image</span>
                                     </div>
-                                    <input className='input input-bordered w-full  rounded-md bg-gray-100' type="file" required={true} name='brand_image' onChange={handleImageChange} accept="image/*" />
+                                    <input className='input input-bordered w-full  rounded-md bg-gray-100' type="file" name='brand_image' onChange={handleImageChange} accept="image/*" />
                                 </div>
                                 <div className="form-control">
                                     <img src={defaultImage} alt="Brand image" width={"50%"} className='rounded-md' />
@@ -132,7 +157,9 @@ const Brands = () => {
                         <div className='card-footer px-8'>
                             <div className='grid grid-cols-2 md:grid-cols-4 sm:grid-cols-2'>
                                 <button type='submit' className="btn text-white btn-success rounded-md w-auto mr-3" disabled={btnDisabld} >{btnName}</button>
-                                <button type='reset' className="btn text-white btn-error rounded-md ml-3 w-auto" disabled={btnDisabld} >Reset Details</button>
+                                <Link to={"/brands/list"} className='btn tbn-secondary bg-gray-400' disabled={btnDisabld} >
+                                    Back To List
+                                </Link>
                             </div>
                         </div>
                     </form>
@@ -142,4 +169,4 @@ const Brands = () => {
     )
 }
 
-export default Brands
+export default EditBrands;

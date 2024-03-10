@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
@@ -85,7 +86,7 @@ const List = () => {
                                 }
                             </tbody>
                         </table>
-                        <Pagination currentPage={page + 1} totalPages={totalPages} clickEventFun={(pageNo) => { setPage(pageNo); }} />
+                        <Pagination currentPage={page + 1} totalPages={totalPages} clickEventFun={(pageNo) => { setPage(pageNo); }} url="/users/list" />
                     </div>
                 </div>
             </section>
