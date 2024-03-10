@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 "use client";
 import React, { useEffect, useState } from 'react'
-import { Home, User, UserRoundPlus, AlignJustify, ChevronDown, Codepen, Plus } from 'lucide-react'
+import { Home, User, AlignJustify, ChevronDown, Codepen, Plus } from 'lucide-react'
 import "./sidebar.css";
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = ({ sidemenu }) => {
 
