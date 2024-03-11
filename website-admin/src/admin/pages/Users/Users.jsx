@@ -6,6 +6,7 @@ import InputTag from '../../components/InputTag/InputTag';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import GetPincodeDetails from "./../../../api_calls/admin/user/GetPincodeDetails";
 import PostMethod from '../../../api_calls/post-method/PostMethod';
+import PostWithJwt from '../../../api_calls/post-method/PostWithJwt';
 import swal from 'sweetalert';
 
 const Users = () => {
@@ -71,7 +72,7 @@ const Users = () => {
                 contact: userDetails.contact,
                 ...userAddressDetails,
             }
-            const addressResponse = await PostMethod(addressUrl, addressObj);
+            const addressResponse = await PostWithJwt(addressUrl, addressObj);
 
             if (addressResponse.status === true) {
                 swal("Good job!", "User Created Successfully", "success")
