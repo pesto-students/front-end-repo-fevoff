@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import moment from 'moment';
 import InputTag from '../../components/InputTag/InputTag';
@@ -36,7 +36,8 @@ const Users = () => {
     const [userAddressDetails, setUserAddressDetails] = useState(userAddress);
 
     const getPincodeDetails = async (pincodeValue) => {
-        if (pincodeValue.length == 6) {
+        setUserAddressDetails((prev) => ({ ...prev, pincode: pincodeValue }));
+        if (pincodeValue.length === 6) {
 
             const pincodeDetails = await GetPincodeDetails(pincodeValue);
             if (pincodeDetails.data != null) {
@@ -142,7 +143,7 @@ const Users = () => {
                                     <div className="label">
                                         <span className="label-text">Pincode</span>
                                     </div>
-                                    <input type="text" className="input input-bordered w-full  rounded-md bg-gray-100" onChange={(e) => getPincodeDetails(e.target.value)} value={userAddressDetails.pincode} />
+                                    <input type="text" className="input input-bordered w-full  rounded-md bg-gray-100" name='pincode' onChange={(e) => getPincodeDetails(e.target.value)} value={userAddressDetails.pincode} />
                                 </div>
 
                                 <InputTag spanText="State" inputType="text" required={true} inputName="state" changeHandle={(e) => setUserAddressDetails((prev) => ({ ...prev, state: e.target.value, }),)} inputValue={userAddressDetails.state} />

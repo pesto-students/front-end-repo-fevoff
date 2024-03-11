@@ -13,6 +13,9 @@ import Sidebar from './admin/components/Sidebar/Sidebar'
 import Header from './admin/components/Header/Header';
 import Footer from './admin/components/Footer/Footer';
 import EditBrands from "./admin/pages/Brands/Edit/EditBrands";
+import Categorys from "./admin/pages/Categorys/Categorys";
+import CategorysList from "./admin/pages/Categorys/List/CategorysList";
+import EditCategorys from "./admin/pages/Categorys/Edit/EditCategorys";
 
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -57,6 +60,9 @@ function App() {
                     <Route path="brands" element={<Brands />} />
                     <Route path="brands/:brandId" element={<EditBrands />} />
                     <Route path="brands/list" element={<BrandsList />} />
+                    <Route path="categorys" element={<Categorys />} />
+                    <Route path="categorys/:categoryId" element={<EditCategorys />} />
+                    <Route path="categorys/list" element={<CategorysList />} />
                   </Routes>
                   <Footer />
                 </div>
