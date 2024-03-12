@@ -1,15 +1,18 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from 'react';
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
-import InputTag from '../../components/InputTag/InputTag';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import PostMethod from '../../../api_calls/post-method/PostMethod';
-import GetMethod from '../../../api_calls/get-method/GetMethod';
+import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
+import InputTag from '../../../components/InputTag/InputTag';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
+import PostMethod from '../../../../api_calls/post-method/PostMethod';
+import GetMethod from '../../../../api_calls/get-method/GetMethod';
 import swal from 'sweetalert';
 import imageCompression from 'browser-image-compression';
-import MyImage from "./../../../asset/images/default.jpg";
+import MyImage from "./../../../../asset/images/default.jpg";
+import { useParams } from 'react-router-dom';
 
-const Products = () => {
+const EditProducts = () => {
+
+    const params = useParams();
 
     const allImages = {
         productMainImage: MyImage,
@@ -21,7 +24,7 @@ const Products = () => {
     }
 
     const [defaultImage, setDefaultImage] = useState(allImages);
-    const [btnName, setbtnName] = useState("Add Products");
+    const [btnName, setbtnName] = useState("Update Products");
     const [btnDisabld, setBtnDisabld] = useState(false);
     const [brandListing, setBrandListing] = useState([]);
     const [categoryListing, setCategoryListing] = useState([]);
@@ -132,7 +135,7 @@ const Products = () => {
         setBtnDisabld(true);
         setbtnName("Loading...");
 
-        const url = "products";
+        const url = "products" + params.productId;
         const response = await PostMethod(url, productDetails);
 
         if (response.status === true) {
@@ -334,4 +337,4 @@ const Products = () => {
     )
 }
 
-export default Products;
+export default EditProducts;

@@ -5,7 +5,6 @@ import Users from "./admin/pages/Users/Users";
 import Brands from "./admin/pages/Brands/Brands";
 // import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements, } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import { List as UsersList } from "./admin/pages/Users/List/List";
 import BrandsList from "./admin/pages/Brands/List/BrandsList";
 import EditUser from "./admin/pages/Users/Edit/Edit";
@@ -17,6 +16,9 @@ import Categorys from "./admin/pages/Categorys/Categorys";
 import CategorysList from "./admin/pages/Categorys/List/CategorysList";
 import EditCategorys from "./admin/pages/Categorys/Edit/EditCategorys";
 import Products from "./admin/pages/Products/Products";
+import ProductsList from "./admin/pages/Products/List/ProductsList";
+import ProductView from "./admin/pages/Products/View/ProductView";
+import EditProducts from "./admin/pages/Products/Edit/EditProducts";
 
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -65,8 +67,9 @@ function App() {
                     <Route path="categorys/:categoryId" element={<EditCategorys />} />
                     <Route path="categorys/list" element={<CategorysList />} />
                     <Route path="products" element={<Products />} />
-                    <Route path="categorys/:categoryId" element={<EditCategorys />} />
-                    <Route path="categorys/list" element={<CategorysList />} />
+                    <Route path="products/:productId" element={<EditProducts />} />
+                    <Route path="products/view/:productId" element={<ProductView />} />
+                    <Route path="products/list" element={<ProductsList />} />
                   </Routes>
                   <Footer />
                 </div>
