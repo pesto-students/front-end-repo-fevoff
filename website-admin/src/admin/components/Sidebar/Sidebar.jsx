@@ -115,6 +115,30 @@ const Sidebar = ({ sidemenu }) => {
                             </ul>
                         </div>
 
+                        <div className="dropdown w-full">
+                            <NavLink className={(currentPage === 'products') ? activeCss : normalCss} role='btn' >
+                                <div className='flex'>
+                                    <Codepen className="h-5 w-5" aria-hidden="true" />
+                                    <span className="mx-2 text-sm font-medium">Manage Products</span>
+                                </div>
+                                <ChevronDown className="h-5 w-5" aria-hidden="true" />
+                            </NavLink>
+                            <ul tabIndex={0} className="dropdown-content z-[1] menu shadow w-full px-0 bg-white">
+                                <li>
+                                    <NavLink to={basePath + "products"} className={({ isActive }) => isActive ? "bg-white flex items-center rounded-lg py-3" : "flex transform items-center rounded-lg  transition-colors duration-300 hover:bg-gray-50 text-gray-700 py-3"} role='btn' >
+                                        <Plus className="h-5 w-5" aria-hidden="true" />
+                                        <span className="mx-2 text-sm font-medium">Add Products</span>
+                                    </NavLink>
+                                </li>
+                                <li className='mt-2'>
+                                    <NavLink to={basePath + "products/list"} className={({ isActive }) => isActive ? "bg-white flex items-center rounded-lg py-3" : "flex transform items-center rounded-lg transition-colors duration-300 hover:bg-gray-50 text-gray-700 py-3"} role='btn' >
+                                        <AlignJustify className="h-5 w-5" aria-hidden="true" />
+                                        <span className="mx-2 text-sm font-medium">Products List</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </div>
+
 
                     </div>
                 </nav>

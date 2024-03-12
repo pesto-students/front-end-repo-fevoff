@@ -102,7 +102,7 @@ const Brands = () => {
 
                             <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 
-                                <InputTag spanText="Brand Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, brand_slug: e.target.value.toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
+                                <InputTag spanText="Brand Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, brand_slug: e.target.value.trim().toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
 
                                 <InputTag spanText="Brand Slug" inputType="text" required={true} inputName="brand_slug" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, brand_slug: e.target.value, }),)} inputValue={brandDetails.brand_slug} />
 

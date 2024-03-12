@@ -16,6 +16,7 @@ import EditBrands from "./admin/pages/Brands/Edit/EditBrands";
 import Categorys from "./admin/pages/Categorys/Categorys";
 import CategorysList from "./admin/pages/Categorys/List/CategorysList";
 import EditCategorys from "./admin/pages/Categorys/Edit/EditCategorys";
+import Products from "./admin/pages/Products/Products";
 
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -61,6 +62,9 @@ function App() {
                     <Route path="brands/:brandId" element={<EditBrands />} />
                     <Route path="brands/list" element={<BrandsList />} />
                     <Route path="categorys" element={<Categorys />} />
+                    <Route path="categorys/:categoryId" element={<EditCategorys />} />
+                    <Route path="categorys/list" element={<CategorysList />} />
+                    <Route path="products" element={<Products />} />
                     <Route path="categorys/:categoryId" element={<EditCategorys />} />
                     <Route path="categorys/list" element={<CategorysList />} />
                   </Routes>
