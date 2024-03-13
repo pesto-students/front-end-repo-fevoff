@@ -127,7 +127,7 @@ const EditCategorys = () => {
 
                             <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 
-                                <InputTag spanText="Brand Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, categorySlug: e.target.value.toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
+                                <InputTag spanText="Brand Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, categorySlug: e.target.value.trim().toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
 
                                 <InputTag spanText="Brand Slug" inputType="text" required={true} inputName="categorySlug" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, categorySlug: e.target.value, }),)} inputValue={brandDetails.categorySlug} />
 
@@ -137,8 +137,8 @@ const EditCategorys = () => {
                                     </div>
                                     <select className='input input-bordered w-full rounded-md bg-gray-100' name='showHide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, showHide: e.target.value, }),)} value={brandDetails.showHide}  >
                                         <option value="" selected disabled>-- --</option>
-                                        <option value={1}>Yes</option>
-                                        <option value={0}>No</option>
+                                        <option value={true}>Yes</option>
+                                        <option value={false}>No</option>
                                     </select>
                                 </div>
 
@@ -157,7 +157,7 @@ const EditCategorys = () => {
                         <div className='card-footer px-8'>
                             <div className='grid grid-cols-2 md:grid-cols-4 sm:grid-cols-2'>
                                 <button type='submit' className="btn text-white btn-success rounded-md w-auto mr-3" disabled={btnDisabld} >{btnName}</button>
-                                <Link to={"/brands/list"} className='btn tbn-secondary bg-gray-400' disabled={btnDisabld} >
+                                <Link to={"/categorys/list"} className='btn tbn-secondary bg-gray-400' disabled={btnDisabld} >
                                     Back To List
                                 </Link>
                             </div>

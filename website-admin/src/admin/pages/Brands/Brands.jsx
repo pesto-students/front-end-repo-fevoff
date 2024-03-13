@@ -112,8 +112,8 @@ const Brands = () => {
                                     </div>
                                     <select className='input input-bordered w-full rounded-md bg-gray-100' name='show_hide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, show_hide: e.target.value, }),)}  >
                                         <option value="" selected disabled>-- --</option>
-                                        <option value={1}>Yes</option>
-                                        <option value={0}>No</option>
+                                        <option value={true}>Yes</option>
+                                        <option value={false}>No</option>
                                     </select>
                                 </div>
 
