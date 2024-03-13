@@ -7,9 +7,10 @@ import PostMethod from '../../../api_calls/post-method/PostMethod';
 import swal from 'sweetalert';
 import imageCompression from 'browser-image-compression';
 import MyImage from "./../../../asset/images/default.jpg";
+import { useNavigate } from 'react-router-dom';
 
 const Categorys = () => {
-
+    const navigate = useNavigate();
     const [defaultImage, setDefaultImage] = useState(MyImage);
     const [btnName, setbtnName] = useState("Add Categorys");
     const [btnDisabld, setBtnDisabld] = useState(false);
@@ -77,7 +78,7 @@ const Categorys = () => {
 
             swal("Good job!", "Categorys Created Successfully", "success")
                 .then(() => {
-                    window.location.replace('/categorys/list');
+                    navigate('/brands/list');
                 });
 
         } else {
