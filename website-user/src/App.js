@@ -1,7 +1,5 @@
 import "./App.css";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Home from "./components/page/Home/Home";
@@ -19,7 +17,6 @@ import ManageAddress from "./components/User/manage address/ManageAddress";
 import ChangePaassword from "./components/User/Change Password/ChangePaassword";
 import ManageOrders from "./components/User/Orders/ManageOrders";
 import Search from "./components/page/Search/Search";
-import Banner from "./components/page/Home/Banner/Banner";
 import AboutUs from "./components/page/AboutUs/aboutUs";
 import Privacy from "./components/page/Privacy/privacy";
 import Terms from "./components/page/Terms&Condition/terms";
@@ -30,29 +27,30 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Banner />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/product/:productId" element={<ProductDetails />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/cart/address" element={<AddressDetails />} />
-        <Route path="/cart/payment" element={<Payment />} />
-        <Route path="/order/confiramation" element={<OrderConfiramation />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/verifyotp" element={<VerifyOtp />} />
-        <Route path="/myaccount" element={<User />} />
-        <Route path="/me/manageaddress" element={<ManageAddress />} />
-        <Route path="/me/updateaddress" element={<UpdateAddress />} />
-        <Route path="/me/changepassword" element={<ChangePaassword />} />
-        <Route path="/me/orders" element={<ManageOrders />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/privacy-policy" element={<Privacy />} />
-        <Route path="/terms-conidtions" element={<Terms />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-      </Routes>
+      <div className="all-bg">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart/address" element={<AddressDetails />} />
+          <Route path="/cart/payment" element={<Payment />} />
+          <Route path="/order/confiramation" element={<OrderConfiramation />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/verifyotp" element={<VerifyOtp />} />
+          <Route path="/myaccount" element={<User />} />
+          <Route path="/me/manageaddress" element={<ManageAddress />} />
+          <Route path="/me/updateaddress" element={<UpdateAddress />} />
+          <Route path="/me/changepassword" element={<ChangePaassword />} />
+          <Route path="/me/orders" element={<ManageOrders />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/privacy-policy" element={<Privacy />} />
+          <Route path="/terms-conidtions" element={<Terms />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+        </Routes>
+      </div>
       <Footer />
     </BrowserRouter>
   );

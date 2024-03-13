@@ -14,7 +14,7 @@
 
 h1, h2, h3, h4, h5, h6{
     font-family: "Josefin Slab", serif !important;
-    font-weight: 900;
+    font-weight: bold;
     letter-spacing: 1.5px;
 }
 
@@ -71,6 +71,11 @@ p, ul li{
     border-radius: 5px;
 }
 
-.homepage{
-    background: linear-gradient(to bottom, #F8F6D7 0%, #F8DBD7 80%, #F8ECD7 100%);
+.all-bg{
+    background: linear-gradient(178.57deg, rgba(248, 246, 215, 0.8) 0.4%, rgba(248, 220, 215, 0.636268) 71.51%, rgba(220, 248, 215, 0) 129.68%);
 }
+
+/* .page-slick-slider{
+    width: 100vw;
+    overflow: hidden;
+} */

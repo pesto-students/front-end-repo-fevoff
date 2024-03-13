@@ -4,16 +4,17 @@ import Product from './Product/Product'
 import Showcase from './showcase/Showcase'
 import BrowserCat from './BrowserCat/BrowserCat'
 import SuggestionProduct from './SuggestionProduct/SuggestionProduct'
+import Banner from "./../../../components/page/Home/Banner/Banner";
 
 
 const Home = () => {
   return (
-    <div className='bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold'>
-   
+    <div>
+      <Banner />
       <BrowserCat />
       <Product />
       <Showcase />
-      <SuggestionProduct/>
+      <SuggestionProduct />
     </div>
   )
 }
