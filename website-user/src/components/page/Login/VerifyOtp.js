@@ -7,6 +7,7 @@ import { clearErrors, sendOtp, verifyOtp } from "../../../Action/userAction";
 const VerifyOtp = () => {
   const [contact, setContact] = useState("");
   const [otp, setOtp] = useState("");
+  const [userid, SetUserId] = useState("");
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -25,7 +26,7 @@ const VerifyOtp = () => {
       alert.error("Please enter OTP")
       return;
     }
-    dispatch(verifyOtp({otp}))
+    dispatch(verifyOtp({userId: userid, userOtp: otp}))
   }
 
   const handleOtpChange = (event) => {
@@ -33,7 +34,7 @@ const VerifyOtp = () => {
   };
 
   const handleResendOtp = () => {
-    dispatch(sendOtp({ contact }));
+    dispatch(sendOtp({ userData: contact }));
   };
 
   useEffect(() => {
@@ -43,7 +44,8 @@ const VerifyOtp = () => {
     }
     const storedName = localStorage.getItem("contact");
     if (storedName) setContact(storedName);
-
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) SetUserId(storedUserId);
 
   }, [alert, dispatch, error]);
 
