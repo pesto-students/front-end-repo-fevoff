@@ -6,7 +6,7 @@ import {thunk} from 'redux-thunk';
 import * as Sentry from "@sentry/react";
 
 import { productDetailsReducer, productReducer } from "./Reducers/productReducers"
-import { userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
+import { otpLoginReducer, userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
 
 const reducer = combineReducers({
   products: productReducer,
@@ -14,6 +14,7 @@ const reducer = combineReducers({
   productDetails: productDetailsReducer,
   userDetails: userDetailsReducer,
   UserProfileData: userProfileDataReducer,
+  otpLogin: otpLoginReducer,
 });
 
 const sentryMiddleware = (store) => (next) => (action) => {

@@ -1,6 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+
+import { clearErrors, sendOtp, verifyOtp } from "../../../Action/userAction";
 
 const VerifyOtp = () => {
+  const [contact, setContact] = useState("");
+  const [otp, setOtp] = useState("");
+  const [userData, setUserData] = useState({});
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const { otpLogin, error } = useSelector((state) => state.otpLogin);
+
+  const handleSendOtp = (e) => {
+    e.preventDefault();
+    dispatch(sendOtp({ userData: contact }));
+  };
+  const handleContactChange = (event) => {
+    setContact(event.target.value);
+  };
+
+  const handleOtpVerification = () =>{
+    if(!otp){
+      alert.error("Please enter OTP")
+      return;
+    }
+    dispatch(verifyOtp({otp}))
+  }
+
+  const handleOtpChange = (event) => {
+    setOtp(event.target.value);
+  };
+
+  const handleResendOtp = () => {
+    dispatch(sendOtp({ contact }));
+  };
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    const storedName = localStorage.getItem("contact");
+    if (storedName) setContact(storedName);
+
+
+  }, [alert, dispatch, error]);
+
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-150 italic">
       <section className="rounded-md p-2">
@@ -17,25 +63,30 @@ const VerifyOtp = () => {
                     className="h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="tel"
                     placeholder="Enter Mobile Number"
+                    onChange={handleContactChange}
                   />
-                  <span
+                  <button
+                    onClick={handleSendOtp}
                     title=""
                     className="text-sm font-semibold hover:underline text-blue-500  lg:ml-80"
                   >
                     Send OTP
-                  </span>
+                  </button>
                 </div>
                 <div>
                   <input
                     className="h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="password"
                     placeholder="Enter OTP"
+                    value={otp}
+                    onChange={handleOtpChange}
                   />
                 </div>
               </div>
 
               <div className="mt-3 space-y-3">
                 <button
+                onClick={handleOtpVerification}
                   type="button"
                   className=" relative inline-flex w-full items-center justify-center rounded-md border border-red-400  px-3.5 py-2.5 font-semibold transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
                 >
@@ -44,6 +95,7 @@ const VerifyOtp = () => {
                 <button
                   type="button"
                   className="relative inline-flex w-full items-center justify-center rounded-md border border-black  px-3.5 py-2.5 font-semibold transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+                  onClick={handleResendOtp}
                 >
                   Re-Send OTP
                 </button>

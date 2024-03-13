@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { clearErrors, register } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Register = ({ location, history }) => {
   const dispatch = useDispatch();
@@ -139,6 +140,12 @@ const Register = ({ location, history }) => {
                 >
                   Create Account
                 </button>
+                <Link to="/verifyotp"
+                type="button"
+                className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+              >
+                Sign in with OTP
+              </Link>
               </div>
             </form>
           </div>
