@@ -15,17 +15,27 @@ import {
   LOAD_USER_ADDRESS_REQUEST,
   LOAD_USER_ADDRESS_SUCCESS,
   LOAD_USER_ADDRESS_FAIL,
+  LOGOUT_SUCCESS,
+  EDIT_USER_ADDRESS_REQUEST,
+  EDIT_USER_ADDRESS_SUCCESS,
+  EDIT_USER_ADDRESS_FAIL,
+  SEND_OTP_REQUEST,
+  SEND_OTP_SUCCESS,
+  SEND_OTP_FAIL,
+  OTP_VERIFICATION_REQUEST,
+  OTP_VERIFICATION_SUCCESS,
+  OTP_VERIFICATION_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (userData, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post(
       "http://localhost:3001/api/login",
-      { email, password },
+      { userData, password },
       config
     );
 
@@ -99,12 +109,60 @@ export const getUserAddress = (userId) => async (dispatch) => {
       `http://localhost:3001/api/users-address/${userId}`
     );
     dispatch({ type: LOAD_USER_ADDRESS_SUCCESS, payload: data });
-    
   } catch (error) {
     dispatch({
       type: LOAD_USER_ADDRESS_FAIL,
       payload: error.response.data.message,
     });
+  }
+};
+
+export const editUserAddress =
+  (addressId, updatedAddressData) => async (dispatch) => {
+    try {
+      dispatch({ type: EDIT_USER_ADDRESS_REQUEST });
+      const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `http://localhost:3001/api/users-address/${addressId}`,
+        updatedAddressData,
+        config
+      );
+      dispatch({ type: EDIT_USER_ADDRESS_SUCCESS, payload: data.success });
+    } catch (error) {
+      dispatch({
+        type: EDIT_USER_ADDRESS_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const sendOtp = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: SEND_OTP_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.post(
+      `http://localhost:3001/api/send-otp`,
+      userData,
+      config
+    );
+    dispatch({ type: SEND_OTP_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: SEND_OTP_FAIL, payload: error.response.data.message });
+  }
+};
+
+export const verifyOtp = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: OTP_VERIFICATION_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.post(
+      `http://localhost:3001/api/otp-verification`,
+      userData,
+      config
+    );
+    dispatch({ type: OTP_VERIFICATION_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: OTP_VERIFICATION_FAIL, payload: error.response.data.message });
   }
 };
 

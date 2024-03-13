@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { clearErrors, getUserAddress } from "../../../Action/userAction";
+import { useAlert } from "react-alert";
 
 const Address = () => {
-  const { userId } = useParams();
+  
   const dispatch = useDispatch();
+  const alert = useAlert()
+
   const { loading, error, address } = useSelector(
     (state) => state.UserProfileData
   );
@@ -20,7 +23,7 @@ const Address = () => {
     if (storedUserId) {
       dispatch(getUserAddress(storedUserId));
     }
-  }, [dispatch, error]);
+  }, [dispatch, error, alert]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -47,12 +50,12 @@ const Address = () => {
                 </p>
               </div>
               <div className="flex justify-between p-4 bg-gray-200">
-                <button
+                <Link to="/me/updateaddress"
                   type="button"
                   className="btn bg-transparent border-red-500 hover:bg-yellow-500"
                 >
                   Edit
-                </button>
+                </Link>
                 <button
                   type="button"
                   className="btn ml-2 bg-transparent border-red-500 hover:bg-yellow-500"

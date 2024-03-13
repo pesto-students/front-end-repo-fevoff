@@ -25,6 +25,7 @@ import AboutUs from "./components/page/AboutUs/aboutUs";
 import Privacy from "./components/page/Privacy/privacy";
 import Terms from "./components/page/Terms&Condition/terms";
 import ContactUs from "./components/page/ContactUs/ContactUs";
+import UpdateAddress from "./components/User/manage address/UpdateAddress";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/verifyotp" element={<VerifyOtp />} />
         <Route path="/myaccount" element={<User />} />
         <Route path="/me/manageaddress" element={<ManageAddress />} />
+        <Route path="/me/updateaddress" element={<UpdateAddress />} />
         <Route path="/me/changepassword" element={<ChangePaassword />} />
         <Route path="/me/orders" element={<ManageOrders />} />
 

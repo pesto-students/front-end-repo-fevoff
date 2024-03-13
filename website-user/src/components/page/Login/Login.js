@@ -121,12 +121,7 @@ const Login = () => {
               </div>
             </form>
             <div className="mt-3 space-y-3">
-              <button
-                type="button"
-                className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-200 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
-              >
-                Sign in with OTP
-              </button>
+            
               <button
                 type="button"
                 className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-200 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
