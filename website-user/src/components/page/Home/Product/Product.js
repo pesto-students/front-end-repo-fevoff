@@ -8,14 +8,7 @@ import { getProduct, clearErrors } from "../../../../Action/productAction";
 import Loader from "../../../Layout/Loader";
 
 const Product = () => {
-  // const products = [
-  //   { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //   { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //   { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //   { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //  { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //  { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  // ]
+ 
   const relatedCategories = [
     { id: 1, name: "Wedding" },
     { id: 1, name: "Wedding" },
@@ -29,11 +22,11 @@ const Product = () => {
   const { loading, error, products } = useSelector((state) => state.products);
   
 
-  const limitProduct = products.slice(0, 7)
+  const limitProduct = products.slice(0, 4)
 
   useEffect(() => {
     if (error) {
-      error(error);
+      alert.error(error);
       dispatch(clearErrors());
     }
     dispatch(getProduct());
@@ -58,9 +51,9 @@ const Product = () => {
 
           <Link className="flex flex-wrap justify-around" to="/product/:id">
             {limitProduct.map((product) => (
-              <div className="flex card w-96 h-76" key={product.id}>
+              <div className="flex card w-96 h-76" key={product._id}>
                 <figure>
-                  <img src={product.images} alt="women dress" />
+                  <img src={product.productMainImage} alt="women dress" />
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title justify-center">
@@ -69,7 +62,7 @@ const Product = () => {
                   </h2>
 
                   <div className="card-actions justify-center">
-                    <div>₹ {product.price}</div>
+                    <div>₹ {product.productMrp}</div>
                     <div>{product.rating}</div>
                   </div>
                 </div>
@@ -91,9 +84,9 @@ const Product = () => {
 
             <Link className="flex flex-wrap justify-around" to="/product/:id">
               {limitProduct.map((product) => (
-                <div className="flex card w-96 h-76" key={product.id}>
+                <div className="flex card w-96 h-76" key={product._id}>
                   <figure>
-                    <img src={product.images} alt="women dress" />
+                    <img src={product.productMainImage} alt="women dress" />
                   </figure>
                   <div className="card-body">
                     <h2 className="card-title justify-center">

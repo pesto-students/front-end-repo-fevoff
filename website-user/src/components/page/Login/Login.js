@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEAR_ERRORS } from "../../../Constants/userConstants";
+import { useAlert } from "react-alert";
 
 import { login } from "../../../Action/userAction";
 
-const Login = ({ history }) => {
+const Login = () => {
   const dispatch = useDispatch();
+  const alert = useAlert();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -21,14 +25,19 @@ const Login = ({ history }) => {
     dispatch(login(loginEmail, loginPassword));
   };
 
+  const redirect = location.search
+    ? location.search.split("=")[1]
+    : "/myaccount";
+
   useEffect(() => {
     if (error) {
+      alert.error(error);
       dispatch(CLEAR_ERRORS);
     }
     if (isAuthenticated) {
-      history.pushState("/account");
+      navigate(redirect);
     }
-  }, [dispatch, history, isAuthenticated, error]);
+  }, [dispatch, navigate, isAuthenticated, error, alert, redirect]);
 
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-150 italic">

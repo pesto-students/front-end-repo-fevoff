@@ -6,6 +6,16 @@ import App from "./App";
 import * as Sentry from "@sentry/react";
 import { Provider } from "react-redux";
 import store from "./Store";
+import AlertTemplate from "react-alert-template-basic";
+import { positions, transitions, Provider as AlertProvider } from "react-alert";
+
+
+const options ={
+  timeout:5000,
+  position:positions.BOTTOM_CENTER,
+  transitions:transitions.SCALE
+}
+
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -28,6 +38,9 @@ Sentry.init({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
+    <AlertProvider template={AlertTemplate} {...options}>
     <App />
+    </AlertProvider>
+   
   </Provider>
 );

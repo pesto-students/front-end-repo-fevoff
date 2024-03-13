@@ -1,31 +1,37 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import product1 from "../../../asset/images/product1.jpeg";
+import { Link } from "react-router-dom";
+import { clearErrors, getProduct } from "../../../Action/productAction";
+
+
 
 const RelatedProduct = () => {
-  const products = [
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-    { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
+  
 
-  ];
+  const dispatch = useDispatch();
+
+  const { loading, error, products } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    if (error) {
+      error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct());
+  }, [dispatch, error]);
   return (
     <div className="related-product py-2">
       <div className="product-heading">
         <div className="flex justify-center mt-5 ml-50 font-sans text-3xl">
           Related Product
         </div>
-
       </div>
       <Link className="flex flex-wrap justify-around py-8" to="/product/:id">
         {products.map((product) => (
-          <div className="flex card w-64 h-76" key={product.id}>
+          <Link className="flex card w-64 h-76" key={product._id} to={`/product/${product._id}`}>
             <figure>
-              <img src={product.image} alt="women dress" />
+              <img src={product.productMainImage} alt="women dress" />
             </figure>
             <div className="card-body">
               <h2 className="card-title justify-center">
@@ -34,15 +40,15 @@ const RelatedProduct = () => {
               </h2>
 
               <div className="card-actions justify-center">
-                <div>{product.price}</div>
-                <div>{product.rating}</div>
+                <div>₹ {product.productPrice}</div>
+                <div>⭐ {product.rating}</div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default RelatedProduct
+export default RelatedProduct;
