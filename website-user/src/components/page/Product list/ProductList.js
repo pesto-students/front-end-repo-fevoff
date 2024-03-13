@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import product1 from "../../../asset/images/product1.jpeg";
+// import product1 from "../../../asset/images/product1.jpeg";
 
 import { getProduct, clearErrors } from "../../../Action/productAction";
 import Loader from "../../Layout/Loader";
-import ProductDetails from "../ProductDetails/ProductDetails";
+// import ProductDetails from "../ProductDetails/ProductDetails";
 
 const ProductList = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
 
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.products);
@@ -83,22 +83,22 @@ const ProductList = () => {
               {products.map((product) => (
                 <Link
                   className="flex card w-64 h-96 m-4"
-                  key={product.id}
-                  to={`/product/${product.id}`}
+                  key={product._id}
+                  to={`/product/${product._id}`}
                   
                 >
                   <figure>
-                    <img src={product.images} alt="product image"/>
+                    <img src={product.productMainImage} alt="productimage"/>
                   </figure>
                   <div className="card-body">
                     <p className="card-title text-xs  justify-center">
-                      {product.title}
+                      {product.name}
                       <div className="badge badge-secondary">NEW</div>
                     </p>
 
                     <div className="card-actions justify-center">
-                      <div>₹ {product.price}</div>
-                      <div>{product.rating}</div>
+                      <div>₹ {product.productPrice}</div>
+                      <div>⭐ {product.rating}</div>
                     </div>
                   </div>
                 </Link>
@@ -106,7 +106,7 @@ const ProductList = () => {
             </div>
           </div>
 
-          {selectedProduct && <ProductDetails product={selectedProduct}/>}
+          {/* {selectedProduct && <ProductDetails product={selectedProduct}/>} */}
 {/* 
           {selectedProduct && (
             <div className="selected-product-details">

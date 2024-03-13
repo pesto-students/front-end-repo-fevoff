@@ -20,10 +20,11 @@ import ChangePaassword from "./components/User/Change Password/ChangePaassword";
 import ManageOrders from "./components/User/Orders/ManageOrders";
 import Search from "./components/page/Search/Search";
 import Banner from "./components/page/Home/Banner/Banner";
-import MyOrders from "./components/User/Orders/MyOrders";
+
 import AboutUs from "./components/page/AboutUs/aboutUs";
 import Privacy from "./components/page/Privacy/privacy";
 import Terms from "./components/page/Terms&Condition/terms";
+import ContactUs from "./components/page/ContactUs/ContactUs";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/product/:Id" element={<ProductDetails />} />
+        <Route path="/product/:productId" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/cart/address" element={<AddressDetails />} />
         <Route path="/cart/payment" element={<Payment />} />
@@ -46,31 +47,13 @@ function App() {
         <Route path="/me/manageaddress" element={<ManageAddress />} />
         <Route path="/me/changepassword" element={<ChangePaassword />} />
         <Route path="/me/orders" element={<ManageOrders />} />
+
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/privacy-policy" element={<Privacy />} />
+        <Route path="/terms-conidtions" element={<Terms />} />
+        <Route path="/contact-us" element={<ContactUs />} />
       </Routes>
       <Footer />
-      <div className='homepage'>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:Id" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/cart/address" element={<AddressDetails />} />
-          <Route path="/cart/payment" element={<Payment />} />
-          <Route path="/order/confiramation" element={<OrderConfiramation />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/verifyotp" element={<VerifyOtp />} />
-          <Route path="/account" element={<User />} />
-          <Route path="/manageaddress" element={<ManageAddress />} />
-          <Route path="/changepassword" element={<ChangePaassword />} />
-          <Route path="/myorders" element={<MyOrders />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/privacy-policy" element={<Privacy />} />
-          <Route path="/terms-conidtions" element={<Terms />} />
-        </Routes>
-        <Footer />
-      </div>
     </BrowserRouter>
   );
 }

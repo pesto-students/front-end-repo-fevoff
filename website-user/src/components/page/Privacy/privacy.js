@@ -1,15 +1,12 @@
 import React from 'react'
-import Banner from '../Home/Banner/Banner'
+
 import './privacy.css'
 
 
 const Privacy = () => {
     return (
         <div>
-            <div>
-
-                <Banner />
-            </div>
+          
 
             <h1>Home &gt; Privacy Policy</h1>
             <div className='heading'>

@@ -1,15 +1,12 @@
 import React from 'react'
-import Banner from '../Home/Banner/Banner'
+
 import './terms.css'
 
 
 const Terms = () => {
     return (
         <div>
-            <div>
-
-                <Banner />
-            </div>
+            
 
             <h1>Home &gt; Terms & Condition</h1>
             <div className='heading'>

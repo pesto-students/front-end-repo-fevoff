@@ -1,6 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+// import { Link, redirect } from "react-router-dom";
+import { clearErrors, register } from "../../../Action/userAction";
+import { useAlert } from "react-alert";
+import { useDispatch, useSelector } from "react-redux";
 
-const Register = () => {
+const Register = ({ location, history }) => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  // const history = useHistory();
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    password: "",
+    confiramPassword: "",
+  });
+
+  const { name, email, contact, password, confiramPassword } = user;
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
+
+  const registerSubmit = (e) => {
+    e.preventDefault();
+
+    const userData = {
+      name,
+      email,
+      contact,
+      password,
+    };
+
+    dispatch(register(userData));
+  };
+
+  // const redirect = location.search ? location.search.split("=")[1] : "/account";
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      history.push("/account");
+    }
+  }, [dispatch, isAuthenticated, alert, error, history]);
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-150 italic">
       <section className="rounded-md  p-2">
@@ -15,14 +69,22 @@ const Register = () => {
                 just create an account with below details
               </p>
             </p>
-            <form action="#" method="POST" className="mt-8">
+            <form
+              action="#"
+              method="POST"
+              className="mt-8"
+              onSubmit={registerSubmit}
+            >
               <div className="">
                 <div>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="email"
+                      type="name"
                       placeholder="Enter Name"
+                      value={name}
+                      name="name"
+                      onChange={handleInputChange}
                     ></input>
                   </div>
                 </div>
@@ -30,15 +92,21 @@ const Register = () => {
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="password"
+                      type="email"
                       placeholder="Enter Email"
+                      value={email}
+                      name="email"
+                      onChange={handleInputChange}
                     ></input>
                   </div>{" "}
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="password"
+                      type="mobileNumber"
                       placeholder="Enter Mobile Number"
+                      value={contact}
+                      name="contact"
+                      onChange={handleInputChange}
                     ></input>
                   </div>
                   <div className="mt-2">
@@ -46,27 +114,33 @@ const Register = () => {
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Enter Password"
+                      value={password}
+                      name="password"
+                      onChange={handleInputChange}
                     ></input>
                   </div>
-                  <div className="mt-2">
+                  {/* <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="password"
+                      type="confiramPassword"
                       placeholder="Confiram Password"
+                      value={confiramPassword}
+                      name="confiramPassword"
+                      onChange={handleInputChange}
                     ></input>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="mt-3 space-y-3">
-              <button
-                type="submit"
-                className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-200 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
-              >
-                Create Account
-              </button>
-            </div>
+                <button
+                  type="submit"
+                  value="Register"
+                  className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+                >
+                  Create Account
+                </button>
+              </div>
             </form>
-           
           </div>
         </div>
       </section>

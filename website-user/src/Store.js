@@ -1,16 +1,19 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { thunk } from 'redux-thunk';
+import {thunk} from 'redux-thunk';
+
 
 import * as Sentry from "@sentry/react";
 
 import { productDetailsReducer, productReducer } from "./Reducers/productReducers"
-import { userReducer } from "./Reducers/userReducers";
+import { userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
 
 const reducer = combineReducers({
   products: productReducer,
   user: userReducer,
-  productDetails: productDetailsReducer
+  productDetails: productDetailsReducer,
+  userDetails: userDetailsReducer,
+  UserProfileData: userProfileDataReducer,
 });
 
 const sentryMiddleware = (store) => (next) => (action) => {
