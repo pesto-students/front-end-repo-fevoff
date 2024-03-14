@@ -1,8 +1,13 @@
 import axios from "axios";
+import { baseAPIUrl } from "../baseUrl";
 
-const GetMethodWithJwt = async (url, id) => {
+const GetMethodWithJwt = async (url, id = null) => {
 
-    const urlLink = url + id;
+    let urlLink = baseAPIUrl + url;
+
+    if (id !== "" && id != null) {
+        urlLink += "/" + id;
+    }
 
     const jwtToken = localStorage.getItem('admin_token');
 

@@ -8,7 +8,7 @@ import { getProduct, clearErrors } from "../../../../Action/productAction";
 import Loader from "../../../Layout/Loader";
 
 const Product = () => {
- 
+
   const relatedCategories = [
     { id: 1, name: "Wedding" },
     { id: 1, name: "Wedding" },
@@ -20,7 +20,7 @@ const Product = () => {
 
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.products);
-  
+
 
   const limitProduct = products.slice(0, 4)
 
@@ -37,15 +37,13 @@ const Product = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="bg-gradient-to-t p-8">
-          <div className="product-heading">
-            <div className="flex justify-center mt-5 ml-50 font-sans text-3xl">
-              Popular Product
-            </div>
-            <div className="ml-20 p-3">
-              In publishing and graphic design, Lorem ipsum is a placeholder
-              text commonly used to demonstrate the visual form of a document or
-              a typeface without relying.
+        <div className="w-full md:py-16 py-8">
+          <div className="container mx-auto">
+            <div className="box-heading text-center">
+              <h2 className="italic text-3xl">Popular Product</h2>
+              <p className="md:px-40 px-4">In publishing and graphic design, Lorem ipsum is a placeholder
+                text commonly <br /> used to demonstrate the visual form of a document or
+                a typeface without relying.</p>
             </div>
           </div>
 

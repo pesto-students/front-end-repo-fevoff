@@ -1,29 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import GetMethod from '../../../../api_calls/get-method/GetMethod';
 import { useDispatch, useSelector } from 'react-redux';
 import { listUsers } from '../../../../redux-slices/users/usersSlice';
 import { Link } from 'react-router-dom';
+import Pagination from "./../../../components/Pagination/Pagination";
 
 const List = () => {
     const dispatch = useDispatch();
     const useListSelector = useSelector(store => store.user.usersList);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         handleUserData();
-    }, []);
+    }, [page]);
 
     const handleUserData = async () => {
 
-        if (useListSelector.length === 0) {
+        let url = "users";
 
-            const url = "users";
-
-            const response = await GetMethod(url, "");
-
-            dispatch(listUsers(response.data));
+        if (page > 0) {
+            url += "?pageNo=" + parseInt(page);
         }
+
+        const response = await GetMethod(url, "");
+
+        const totalPageCount = Math.ceil(response.data.totalUsers / 10);
+
+        setTotalPages(totalPageCount);
+
+        dispatch(listUsers(response.data.data));
     }
 
     return (
@@ -77,6 +86,7 @@ const List = () => {
                                 }
                             </tbody>
                         </table>
+                        <Pagination currentPage={page + 1} totalPages={totalPages} clickEventFun={(pageNo) => { setPage(pageNo); }} url="/users/list" />
                     </div>
                 </div>
             </section>

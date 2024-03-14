@@ -9,21 +9,21 @@ import imageCompression from 'browser-image-compression';
 import MyImage from "./../../../asset/images/default.jpg";
 import { useNavigate } from 'react-router-dom';
 
-const Brands = () => {
+const Categorys = () => {
     const navigate = useNavigate();
     const [defaultImage, setDefaultImage] = useState(MyImage);
-    const [btnName, setbtnName] = useState("Add Brands");
+    const [btnName, setbtnName] = useState("Add Categorys");
     const [btnDisabld, setBtnDisabld] = useState(false);
 
-    let brandData = {
+    let categoryData = {
         name: "",
-        brand_slug: "",
-        show_hide: "",
-        brand_image: "",
+        categorySlug: "",
+        showHide: "",
+        categoryImage: "",
     }
 
     const [errorMessage, setErrorMessage] = useState("");
-    const [brandDetails, setBrandDetails] = useState(brandData);
+    const [brandDetails, setBrandDetails] = useState(categoryData);
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
@@ -50,7 +50,7 @@ const Brands = () => {
                     setBrandDetails((prev) =>
                     ({
                         ...prev,
-                        brand_image: imageCode,
+                        categoryImage: imageCode,
                     }));
                 };
 
@@ -68,22 +68,22 @@ const Brands = () => {
         setBtnDisabld(true);
         setbtnName("Loading...");
 
-        const url = "brands";
+        const url = "categorys";
         const response = await PostMethod(url, brandDetails);
 
         if (response.status === true) {
 
             setBtnDisabld(false);
-            setbtnName("Add brands");
+            setbtnName("Add Categorys");
 
-            swal("Good job!", "Brands Created Successfully", "success")
+            swal("Good job!", "Categorys Created Successfully", "success")
                 .then(() => {
                     navigate('/brands/list');
                 });
 
         } else {
             setBtnDisabld(false);
-            setbtnName("Add brands");
+            setbtnName("Add Categorys");
             setErrorMessage(response.message);
         }
     }
@@ -91,7 +91,7 @@ const Brands = () => {
     return (
         <>
             <section className="mx-auto w-full">
-                <Breadcrumbs breadcumr1={"Manage Brands"} breadcumr1_link={"/brands/list"} breadcumr2={"Add Brands"} button_name={""} button_link={""} />
+                <Breadcrumbs breadcumr1={"Manage Categorys"} breadcumr1_link={"/categorys/list"} breadcumr2={"Add Categorys"} button_name={""} button_link={""} />
                 <div className='card bg-white rounded-sm pb-5 mb-5'>
                     <form method='POST' onSubmit={handleUserData} autoComplete='off' >
                         <div className='card-body'>
@@ -103,15 +103,15 @@ const Brands = () => {
 
                             <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 
-                                <InputTag spanText="Brand Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, brand_slug: e.target.value.trim().toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
+                                <InputTag spanText="Category Name" inputType="text" required={true} inputName="name" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, name: e.target.value, categorySlug: e.target.value.trim().toLowerCase().replace(/\s+/g, '-') }),)} inputValue={brandDetails.name} />
 
-                                <InputTag spanText="Brand Slug" inputType="text" required={true} inputName="brand_slug" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, brand_slug: e.target.value, }),)} inputValue={brandDetails.brand_slug} />
+                                <InputTag spanText="Category Slug" inputType="text" required={true} inputName="categorySlug" changeHandle={(e) => setBrandDetails((prev) => ({ ...prev, categorySlug: e.target.value, }),)} inputValue={brandDetails.categorySlug} />
 
                                 <div className="form-control">
                                     <div className="label">
                                         <span className="label-text">Show In Front</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='show_hide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, show_hide: e.target.value, }),)}  >
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='showHide' onChange={(e) => setBrandDetails((prev) => ({ ...prev, showHide: e.target.value, }),)}  >
                                         <option value="" selected disabled>-- --</option>
                                         <option value={true}>Yes</option>
                                         <option value={false}>No</option>
@@ -120,12 +120,12 @@ const Brands = () => {
 
                                 <div className="form-control">
                                     <div className="label">
-                                        <span className="label-text">Brand Image</span>
+                                        <span className="label-text">Category Image</span>
                                     </div>
-                                    <input className='input input-bordered w-full  rounded-md bg-gray-100' type="file" required={true} name='brand_image' onChange={handleImageChange} accept="image/*" />
+                                    <input className='input input-bordered w-full  rounded-md bg-gray-100' type="file" required={true} name='categoryImage' onChange={handleImageChange} accept="image/*" />
                                 </div>
                                 <div className="form-control">
-                                    <img src={defaultImage} alt="Brand image" width={"50%"} className='rounded-md' />
+                                    <img src={defaultImage} alt="Category image" width={"50%"} className='rounded-md' />
                                 </div>
 
                             </div>
@@ -143,4 +143,4 @@ const Brands = () => {
     )
 }
 
-export default Brands
+export default Categorys

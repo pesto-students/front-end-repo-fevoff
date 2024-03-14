@@ -1,9 +1,13 @@
 import axios from "axios";
 import { baseAPIUrl } from "../baseUrl";
 
-const GetMethod = async (url, id) => {
+const GetMethod = async (url, id = null) => {
 
-    const urlLink = baseAPIUrl + url + id;
+    let urlLink = baseAPIUrl + url;
+
+    if (id !== "" && id != null) {
+        urlLink += "/" + id;
+    }
 
     const config = {
         url: urlLink,
@@ -17,7 +21,7 @@ const GetMethod = async (url, id) => {
         return {
             status: true,
             message: response.data.message || "",
-            data: response.data.data,
+            data: response.data,
         };
 
     } catch (error) {
