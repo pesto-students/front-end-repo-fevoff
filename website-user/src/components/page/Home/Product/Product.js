@@ -38,8 +38,8 @@ const Product = () => {
             <div className="box-heading text-center mb-4">
               <h2 className="italic text-3xl">Popular Products</h2>
               <p className="md:px-40 px-4 py-4">In publishing and graphic design, Lorem ipsum is a placeholder
-                text commonly <br /> used to demonstrate the visual form of a document or
-                a typeface without relying.</p>
+                text commonly. <label className="hidden md:block">Used to demonstrate the visual form of a document or
+                  a typeface without relying.</label></p>
             </div>
 
             <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
@@ -52,7 +52,7 @@ const Product = () => {
           <div className="grid md:pb-6 md:pt-12 py-8">
             <div className="box-heading text-center mb-4">
               <h2 className="italic text-3xl">Related Products</h2>
-              <div className="flex justify-center my-4">
+              <div className="md:flex justify-center my-4 hidden">
                 {
                   relatedCategories.map((relatedCategory, index) => {
                     return (

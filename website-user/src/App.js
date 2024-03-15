@@ -26,8 +26,8 @@ import UpdateAddress from "./components/User/manage address/UpdateAddress";
 function App() {
   return (
     <BrowserRouter>
-      <Header />
       <div className="all-bg">
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<ProductList />} />
@@ -50,8 +50,8 @@ function App() {
           <Route path="/terms-conidtions" element={<Terms />} />
           <Route path="/contact-us" element={<ContactUs />} />
         </Routes>
+        <Footer />
       </div>
-      <Footer />
     </BrowserRouter>
   );
 }

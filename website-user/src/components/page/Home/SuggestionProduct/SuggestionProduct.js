@@ -26,7 +26,7 @@ const SuggestionProduct = () => {
         <Loader />
       ) : (
         <div className="suggested-product md:py-12 py-6">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div className="font-sans">
               <h2 className="text-xl">Suggested For You</h2>
             </div>
@@ -35,7 +35,7 @@ const SuggestionProduct = () => {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+          <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing mt-4">
             {limitProduct.map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}

@@ -1,5 +1,5 @@
 .product-card .product-image{
-    height: 240px;
+    height: 220px;
     object-fit: cover;
     width: 100%;
     object-position: calc(100%);
@@ -60,14 +60,14 @@
 
 .btn-wishlist{
     min-height: 35px;
-    height: 35px !important;
+    height: 35px;
     background: transparent;
     border: 1px solid #BF3900;
     border-radius: 5px;
 }
 .btn-wishlist:hover{
     min-height: 35px;
-    height: 35px !important;
+    height: 35px;
     background: #000000;
     color: white;
     border: none;
@@ -76,5 +76,11 @@
 @media(max-width: 567px){
     .card-compact .card-body{
         padding: 0.7rem;
+    }
+    .product-card .product-image{
+        height: 180px;
+        object-fit: cover;
+        width: 100%;
+        object-position: calc(100%);
     }
 }

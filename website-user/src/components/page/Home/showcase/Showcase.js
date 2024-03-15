@@ -9,7 +9,7 @@ const Showcase = () => {
   return (
     <>
       <section className="showcase-section">
-        <div className="grid grid-cols-2 py-8">
+        <div className="grid grid-cols-2 md:py-8 py-4">
           <div className="box-content">
             <h2 className="showcase-heading">Best Kurta <br /> Dresses For Men</h2>
             <Link className="btn-showcase" to={""}>
@@ -21,7 +21,7 @@ const Showcase = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 py-8">
+        <div className="grid grid-cols-2 md:py-8 py-4">
           <div className="box-image image-left">
             <img src={Women} className="img" alt="Image For Women" />
           </div>
