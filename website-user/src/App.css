@@ -79,3 +79,12 @@ p, ul li{
     width: 100vw;
     overflow: hidden;
 } */
+
+.btn-view-all{
+    width: 100px;
+    border: 1px solid #BF3900;
+    background-color: transparent;
+    min-height: 40px;
+    height: 40px !important;
+    border-radius: 5px;
+}

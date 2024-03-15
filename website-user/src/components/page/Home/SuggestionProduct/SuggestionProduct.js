@@ -26,12 +26,12 @@ const SuggestionProduct = () => {
         <Loader />
       ) : (
         <div className="suggested-product md:py-12 py-6">
-          <div className="flex  justify-between">
+          <div className="flex justify-between">
             <div className="font-sans">
               <h2 className="text-xl">Suggested For You</h2>
             </div>
-            <Link className="btn btn-outline btn-warning" to="/products">
-              <button type="click" >View All</button>
+            <Link className="btn btn-view-all" to="/products">
+              View All
             </Link>
           </div>
 
