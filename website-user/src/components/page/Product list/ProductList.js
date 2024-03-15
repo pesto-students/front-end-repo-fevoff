@@ -18,16 +18,7 @@ const ProductList = () => {
   //   setSelectedProduct(product);
   // };
 
-  // const products = [
-  //   { id: 1, name: "Product1", image: product1, price: 1199, rating: 5 },
-  //   { id: 2, name: "Product2", image: product1, price: 1299, rating: 4 },
-  //   { id: 3, name: "Product3", image: product1, price: 1099, rating: 4.5 },
-  //   { id: 4, name: "Product4", image: product1, price: 999, rating: 3.5 },
-  //   { id: 5, name: "Product5", image: product1, price: 1499, rating: 5 },
-  //   { id: 6, name: "Product6", image: product1, price: 1599, rating: 4 },
-  //   { id: 7, name: "Product7", image: product1, price: 1399, rating: 4 },
-  //   { id: 8, name: "Product8", image: product1, price: 1299, rating: 4.5 },
-  // ];
+ 
 
   
 

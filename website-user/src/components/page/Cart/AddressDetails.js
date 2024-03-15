@@ -1,23 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Banner from "../Home/Banner/Banner";
 import { Trash } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearErrors,
+  getUserAddress,
+  
+} from "../../../Action/userAction";
+import { useAlert } from "react-alert";
+import { getCartItems } from "../../../Action/cartAction";
 
 const AddressDetails = () => {
-  const address = [
-    {
-      id: 1,
-      name: "Mahipal Singh",
-      emailId: "mahipalsingh@gmail.com",
-      address: "Bhilwara Raj 311001",
-    },
-    {
-      id: 1,
-      name: "Mahipal Singh",
-      emailId: "mahipalsingh@gmail.com",
-      address: "Bhilwara Raj 311001",
-    },
-  ];
+  const dispatch = useDispatch();
+  const [userId, setUserId] = useState();
+  const alert = useAlert();
+
+  
+
+  const { loading, error, address } = useSelector(
+    (state) => state.UserProfileData
+  );
+  const { cartItems } = useSelector((state) => state.cart);
+
+  
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    const storedUserId = localStorage.getItem("id");
+
+    if (storedUserId) setUserId(storedUserId);
+    dispatch(getUserAddress(storedUserId));
+    dispatch(getCartItems(storedUserId));
+    
+  }, [dispatch, error, alert]);
+
+  let totalPrice = 0;
+  let totalDiscount = 0;
+  if (cartItems && cartItems.items) {
+    cartItems.items.forEach((product) => {
+      totalPrice += product.productPrice;
+      totalDiscount += product.productMrp - product.productPrice;
+    });
+  }
+  
+  const price = totalPrice + totalDiscount;
+  const discount =  totalDiscount;
+  const totalAmount = price - discount
+
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,9 +63,9 @@ const AddressDetails = () => {
               className="rounded-l border border-black lg:col-span-8 lg:pr-4"
             >
               <ul role="list" className="divide-y divide-gray-200">
-                {address.map((address, addressIdx) => (
+                {address.data && address.data.map((address, addressIdx) => (
                   <div
-                    key={address.id}
+                    key={address._id}
                     className="flex flex-col lg:flex-row justify-between py-6 sm:py-6"
                   >
                     <div className="flex items-center">
@@ -47,18 +79,20 @@ const AddressDetails = () => {
                           Name: {address.name}
                         </p>
                         <p className="font-semibold text-black">
-                          Email ID: {address.emailId}
+                          Email ID: {address.email}
+                        </p><p className="font-semibold text-black">
+                          Contect Number: : {address.contact}
                         </p>
                         <p className="font-semibold text-black">
-                          Address: {address.address}
+                          Address: {address.houseNo} {address.streetArea} {address.landmark} {address.city} {address.state} {address.pincode}     
                         </p>
                       </h3>
                     </div>
                     <div className="flex mt-4 lg:mt-0">
-                      <button type="button" className="m-2">
+                      <button type="button" className="m-2 ">
                         <Trash
                           size={10}
-                          className="text-red-500 border border-red-500 w-6 h-6"
+                          className=" btn text-red-500 border border-red-500 w-12 bg-red-100 hover:bg-yellow-500"
                         />
                       </button>
                     </div>
@@ -78,9 +112,9 @@ const AddressDetails = () => {
                 <dl className=" space-y-1">
                   {/* ... (your order details code) ... */}
                   <div className="flex items-center justify-between">
-                    <dt className="text-sm text-gray-800">Price (3 item)</dt>
+                    <dt className="text-sm text-gray-800">Price: </dt>
                     <dd className="text-sm font-medium text-gray-900">
-                      ₹ 52,398
+                      ₹ {price}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between pt-4">
@@ -88,7 +122,7 @@ const AddressDetails = () => {
                       <span>Discount</span>
                     </dt>
                     <dd className="text-sm font-medium text-green-700">
-                      - ₹ 3,431
+                      - ₹ {discount}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between py-4">
@@ -102,13 +136,13 @@ const AddressDetails = () => {
                       Total Amount
                     </dt>
                     <dd className="text-base font-medium text-gray-900">
-                      ₹ 48,967
+                      ₹ {totalAmount}
                     </dd>
                   </div>
                 </dl>
 
                 <div className="px-2 pb-4 font-medium text-green-700">
-                  You will save ₹ 3,431 on this order
+                  You will save ₹ {discount} on this order
                 </div>
               </div>
             </section>
@@ -127,6 +161,7 @@ const AddressDetails = () => {
               </button>
             </div>
           </form>
+          )
         </div>
       </div>
     </div>

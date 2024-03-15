@@ -6,7 +6,6 @@ import Loader from "../../../Layout/Loader";
 import ProductCard from "../../../ProductCard/ProductCard";
 
 const Product = () => {
-
   const relatedCategories = [
     { id: 1, name: "Wedding" },
     { id: 2, name: "For Mens" },

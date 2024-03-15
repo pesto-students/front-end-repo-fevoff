@@ -79,8 +79,8 @@ export const loadUser = (userId) => async (dispatch) => {
       `http://localhost:3001/api/users/${userId}`,
       config
     );
-    dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
-    console.log(data);
+    dispatch({ type: LOAD_USER_SUCCESS, payload: data });
+    // console.log(data);
   } catch (error) {
     dispatch({
       type: LOAD_USER_FAIL,
@@ -146,21 +146,24 @@ export const sendOtp = (userData) => async (dispatch) => {
       config
     );
     dispatch({ type: SEND_OTP_SUCCESS, payload: data });
+    localStorage.setItem("id", data.data.userId);
   } catch (error) {
     dispatch({ type: SEND_OTP_FAIL, payload: error.response.data.message });
   }
 };
 
-export const verifyOtp = (userData) => async (dispatch) => {
+export const verifyOtp = (userId, userOtp) => async (dispatch) => {
   try {
     dispatch({ type: OTP_VERIFICATION_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post(
       `http://localhost:3001/api/otp-verification`,
-      userData,
+      userId,
+      userOtp,
       config
     );
     dispatch({ type: OTP_VERIFICATION_SUCCESS, payload: data });
+    
   } catch (error) {
     dispatch({ type: OTP_VERIFICATION_FAIL, payload: error.response.data.message });
   }
