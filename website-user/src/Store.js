@@ -7,6 +7,7 @@ import * as Sentry from "@sentry/react";
 
 import { productDetailsReducer, productReducer } from "./Reducers/productReducers"
 import { otpLoginReducer, userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
+import { cartReducer } from "./Reducers/cartReducers";
 
 const reducer = combineReducers({
   products: productReducer,
@@ -15,7 +16,19 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   UserProfileData: userProfileDataReducer,
   otpLogin: otpLoginReducer,
+  cart: cartReducer,
 });
+
+// let initialState = {
+//   cart: {
+//     cartItems: localStorage.getItem("cartItems")
+//       ? JSON.parse(localStorage.getItem("cartItems"))
+//       : [],
+//     shippingInfo: localStorage.getItem("shippingInfo")
+//       ? JSON.parse(localStorage.getItem("shippingInfo"))
+//       : {},
+//   },
+// };
 
 const sentryMiddleware = (store) => (next) => (action) => {
   try {
@@ -28,6 +41,7 @@ const sentryMiddleware = (store) => (next) => (action) => {
 
 const store = createStore(
   reducer,
+  // initialState,
   composeWithDevTools(applyMiddleware(thunk, sentryMiddleware))
 )
 

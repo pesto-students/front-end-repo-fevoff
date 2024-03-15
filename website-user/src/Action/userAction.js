@@ -79,8 +79,8 @@ export const loadUser = (userId) => async (dispatch) => {
       `http://localhost:3001/api/users/${userId}`,
       config
     );
-    dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
-    console.log(data);
+    dispatch({ type: LOAD_USER_SUCCESS, payload: data });
+    // console.log(data);
   } catch (error) {
     dispatch({
       type: LOAD_USER_FAIL,

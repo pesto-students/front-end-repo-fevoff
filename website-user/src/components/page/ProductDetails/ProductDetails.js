@@ -8,17 +8,20 @@ import Loader from "../../Layout/Loader";
 
 import { clearErrors, getProductDetils } from "../../../Action/productAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { addItemsToCart } from "../../../Action/cartAction";
 import { useAlert } from "react-alert";
 
 function ProductDetails({ match }) {
   const [quantity, setQuentity] = useState(1);
   const [size, setSize] = useState();
+  const [price, setPrice] = useState();
+  const [userId, setUserId] = useState();
+  // const [productid, setProductId] = useState();
 
   const dispatch = useDispatch();
   const { productId } = useParams();
-  const alert = useAlert()
+  const alert = useAlert();
 
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
@@ -38,8 +41,14 @@ function ProductDetails({ match }) {
   };
 
   const addToCartHandlar = () => {
-    dispatch(addItemsToCart(productId, quantity, size))
-    alert.success("Item Added To Cart")
+    dispatch(
+      addItemsToCart({
+        userId: userId,
+        productId: productId,
+        quantity,
+        price: product.productPrice,
+      })
+    );
   };
 
   useEffect(() => {
@@ -47,13 +56,12 @@ function ProductDetails({ match }) {
       alert.error(error);
       dispatch(clearErrors());
     }
-    // console.log("Product ID:", productId)
-    dispatch(getProductDetils(productId));
-  }, [dispatch, productId, error, alert]);
 
-  // if (!product || Object.keys(product).length === 0) {
-  //   return <Loader />;
-  // }
+    dispatch(getProductDetils(productId));
+
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) setUserId(storedUserId);
+  }, [dispatch, productId, error, alert]);
 
   return (
     <div className="sp mx-auto max-w-full bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 font-semibold italic">
@@ -112,7 +120,7 @@ function ProductDetails({ match }) {
                       {product.name}
                     </h2>
                     <p className="mt-4 font-semibold">₹ {product.productMrp}</p>
-                    <p className="mt-4 font-semibold">
+                    <p className="mt-4 font-semibold" value={setPrice}>
                       ₹ {product.productPrice}
                     </p>
                   </div>
@@ -126,29 +134,49 @@ function ProductDetails({ match }) {
                       </h4>
                     </div>
                     <ul className="flex flex-wrap space-x-2">
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border  p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400" onClick={() => setSize('XS')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border  p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400"
+                        onClick={() => setSize("XS")}
+                      >
                         XS
                       </li>
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400" onClick={() => setSize('S')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400"
+                        onClick={() => setSize("S")}
+                      >
                         S
                       </li>
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400" onClick={() => setSize('M')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400"
+                        onClick={() => setSize("M")}
+                      >
                         M
                       </li>
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400" onClick={() => setSize('L')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400"
+                        onClick={() => setSize("L")}
+                      >
                         L
                       </li>
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400" onClick={() => setSize('XL')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-400"
+                        onClick={() => setSize("XL")}
+                      >
                         XL
                       </li>
-                      <li className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-500 " onClick={() => setSize('XXL')}>
+                      <li
+                        className="md:text-15px mb-2 flex h-9 cursor-pointer items-center justify-center rounded border p-1 px-3 text-sm font-medium transition duration-200 ease-in-out md:mb-3 md:h-10 border-red-300 hover:bg-yellow-500 "
+                        onClick={() => setSize("XXL")}
+                      >
                         XXL
                       </li>
                     </ul>
                   </div>
                   <div className="min-w-24 flex">
-                    <button type="button" className="h-10 w-10 border border-red-400 hover:bg-yellow-500 rounded-md" 
-                    onClick={decreseQuantity}
+                    <button
+                      type="button"
+                      className="h-10 w-10 border border-red-400 hover:bg-yellow-500 rounded-md"
+                      onClick={decreseQuantity}
                     >
                       -
                     </button>
@@ -159,7 +187,8 @@ function ProductDetails({ match }) {
                     />
                     <button
                       type="button"
-                      className="flex h-10 w-10 items-center justify-center border border-red-400 hover:bg-yellow-500 rounded-md" onClick={increeQuentity}
+                      className="flex h-10 w-10 items-center justify-center border border-red-400 hover:bg-yellow-500 rounded-md"
+                      onClick={increeQuentity}
                     >
                       +
                     </button>

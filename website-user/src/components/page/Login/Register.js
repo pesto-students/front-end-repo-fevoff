@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Register = ({ location, history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  // const history = useHistory();
+  
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -45,7 +45,7 @@ const Register = ({ location, history }) => {
     dispatch(register(userData));
   };
 
-  // const redirect = location.search ? location.search.split("=")[1] : "/account";
+
 
   useEffect(() => {
     if (error) {

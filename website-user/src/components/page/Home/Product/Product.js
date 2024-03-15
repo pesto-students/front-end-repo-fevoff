@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import product1 from "../../../../asset/images/product1.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getProduct, clearErrors } from "../../../../Action/productAction";
 import Loader from "../../../Layout/Loader";
 
 const Product = () => {
-
   const relatedCategories = [
     { id: 1, name: "Wedding" },
     { id: 1, name: "Wedding" },
@@ -21,8 +19,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.products);
 
-
-  const limitProduct = products.slice(0, 4)
+  const limitProduct = products.slice(0, 4);
 
   useEffect(() => {
     if (error) {
@@ -41,15 +38,21 @@ const Product = () => {
           <div className="container mx-auto">
             <div className="box-heading text-center">
               <h2 className="italic text-3xl">Popular Product</h2>
-              <p className="md:px-40 px-4">In publishing and graphic design, Lorem ipsum is a placeholder
-                text commonly <br /> used to demonstrate the visual form of a document or
-                a typeface without relying.</p>
+              <p className="md:px-40 px-4">
+                In publishing and graphic design, Lorem ipsum is a placeholder
+                text commonly <br /> used to demonstrate the visual form of a
+                document or a typeface without relying.
+              </p>
             </div>
           </div>
 
           <Link className="flex flex-wrap justify-around" to="/product/:id">
             {limitProduct.map((product) => (
-              <div className="flex card w-96 h-76" key={product._id}>
+              <div
+                className="flex card w-96 h-76"
+                key={product._id}
+                to={`/product/${product._id}`}
+              >
                 <figure>
                   <img src={product.productMainImage} alt="women dress" />
                 </figure>
@@ -82,7 +85,11 @@ const Product = () => {
 
             <Link className="flex flex-wrap justify-around" to="/product/:id">
               {limitProduct.map((product) => (
-                <div className="flex card w-96 h-76" key={product._id}>
+                <div
+                  className="flex card w-96 h-76"
+                  key={product._id}
+                  to={`/product/${product._id}`}
+                >
                   <figure>
                     <img src={product.productMainImage} alt="women dress" />
                   </figure>
