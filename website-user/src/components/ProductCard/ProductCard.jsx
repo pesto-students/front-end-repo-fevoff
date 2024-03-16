@@ -1,6 +1,7 @@
 import React from 'react'
 import { ShoppingCart, Heart, Star, StarHalf } from 'lucide-react';
 import "./productcard.css";
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
     return (
@@ -22,13 +23,16 @@ const ProductCard = ({ product }) => {
                     </div>
                 </div>
                 <div className="card-actions justify-end">
-                    <div className="grid grid-cols-2 mx-auto gap-x-3">
-                        <button type="button" className="btn btn-wishlist">
+                    <div className="grid grid-cols-1 mx-auto gap-x-3">
+                        {/* <button type="button" className="btn btn-wishlist">
                             <Heart />
                         </button>
                         <button type="button" className="btn btn-cart">
                             <ShoppingCart />
-                        </button>
+                        </button> */}
+                        <Link to={`/product/${product._id}`} className="btn btn-cart">
+                            View Details
+                        </Link>
                     </div>
                 </div>
             </div>

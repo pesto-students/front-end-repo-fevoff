@@ -5,7 +5,7 @@ const CommonBanner = ({ pageTitle }) => {
     return (
         <>
             <div className='common-banner'>
-                <h1 className='page-heading'>{pageTitle}</h1>
+                <h1 className='page-heading italic'>{pageTitle}</h1>
             </div>
         </>
     )
