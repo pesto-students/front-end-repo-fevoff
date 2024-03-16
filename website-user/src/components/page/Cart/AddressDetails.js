@@ -7,6 +7,7 @@ import { clearErrors, getUserAddress } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
 import { getCartItems } from "../../../Action/cartAction";
 import { deleteAddress } from "../../../Action/userAction";
+import { Link } from "react-router-dom";
 
 const AddressDetails = () => {
   const dispatch = useDispatch();
@@ -183,18 +184,18 @@ const AddressDetails = () => {
               </div>
             </section>
             <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mt-6 ">
-              <button
+              <Link to="/cart/payment"
                 type="button"
                 className="btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
               >
                 Process To Checkout
-              </button>
-              <button
+              </Link>
+              {/* <button
                 type="button"
                 className="btn  bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
               >
                 Process To Pay
-              </button>
+              </button> */}
             </div>
           </form>
         </div>
