@@ -25,6 +25,8 @@ import {
   OTP_VERIFICATION_REQUEST,
   OTP_VERIFICATION_SUCCESS,
   OTP_VERIFICATION_FAIL,
+  ADDRESS_DELETE_SUCCESS,
+  ADDRESS_DELETE_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
@@ -117,6 +119,17 @@ export const getUserAddress = (userId) => async (dispatch) => {
   }
 };
 
+export const deleteAddress = (addressId) => async (dispatch) => {
+  try {
+    const data = await axios.delete(
+      `http://localhost:3001/api/users-address/${addressId}`
+    );
+    dispatch({ type: ADDRESS_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: ADDRESS_DELETE_FAIL, payload: error.message });
+  }
+};
+
 export const editUserAddress =
   (addressId, updatedAddressData) => async (dispatch) => {
     try {
@@ -163,9 +176,11 @@ export const verifyOtp = (userId, userOtp) => async (dispatch) => {
       config
     );
     dispatch({ type: OTP_VERIFICATION_SUCCESS, payload: data });
-    
   } catch (error) {
-    dispatch({ type: OTP_VERIFICATION_FAIL, payload: error.response.data.message });
+    dispatch({
+      type: OTP_VERIFICATION_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 
