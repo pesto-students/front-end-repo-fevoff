@@ -1,3 +1,4 @@
+import { DELETE_REVIEW_FAIL, DELETE_REVIEW_SUCCESS } from "../Constants/productConstant";
 import {
   CLEAR_ERRORS,
   EDIT_USER_ADDRESS_FAIL,
@@ -25,6 +26,9 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
+  ADDRESS_DELETE_SUCCESS,
+  ADDRESS_DELETE_FAIL
+
 } from "../Constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -114,6 +118,8 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
       };
     case LOAD_USER_ADDRESS_SUCCESS:
       case EDIT_USER_ADDRESS_SUCCESS:
+        case DELETE_REVIEW_SUCCESS:
+          case ADDRESS_DELETE_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -123,6 +129,8 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
       };
     case LOAD_USER_ADDRESS_FAIL:
       case EDIT_USER_ADDRESS_FAIL:
+        case DELETE_REVIEW_FAIL:
+          case ADDRESS_DELETE_FAIL:
       return {
         ...state,
         loading: false,
