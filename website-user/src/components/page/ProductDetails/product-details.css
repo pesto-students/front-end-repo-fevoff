@@ -181,4 +181,10 @@
         margin-right: 0;
         text-align: center;
     }
+
+    .product-main-image{
+        max-height: 400px;
+        height: auto;
+    }
+    
 }

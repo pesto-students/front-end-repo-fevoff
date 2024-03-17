@@ -20,7 +20,7 @@ function ProductDetails({ match }) {
   const [size, setSize] = useState();
   const [price, setPrice] = useState();
   const [userId, setUserId] = useState();
-  const [productImageView, setProductImageView] = useState("");
+  const [productImageView, setProductImageView] = useState(null);
 
   const dispatch = useDispatch();
   const { productId } = useParams();
