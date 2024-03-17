@@ -1,25 +1,24 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { getProduct, clearErrors } from "../../../../Action/productAction";
 import Loader from "../../../Layout/Loader";
+import ProductCard from "../../../ProductCard/ProductCard";
 
 const Product = () => {
   const relatedCategories = [
     { id: 1, name: "Wedding" },
-    { id: 1, name: "Wedding" },
-    { id: 1, name: "Wedding" },
-    { id: 1, name: "Wedding" },
-    { id: 1, name: "Wedding" },
-    { id: 1, name: "Wedding" },
+    { id: 2, name: "For Mens" },
+    { id: 3, name: "For Womens" },
+    { id: 4, name: "Party Wear" },
+    { id: 5, name: "Night Wear" },
   ];
 
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.products);
 
-  const limitProduct = products.slice(0, 4);
+
+  const limitProduct = products.slice(0, 5)
 
   useEffect(() => {
     if (error) {
@@ -34,81 +33,50 @@ const Product = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-full md:py-16 py-8">
-          <div className="container mx-auto">
-            <div className="box-heading text-center">
-              <h2 className="italic text-3xl">Popular Product</h2>
-              <p className="md:px-40 px-4">
-                In publishing and graphic design, Lorem ipsum is a placeholder
-                text commonly <br /> used to demonstrate the visual form of a
-                document or a typeface without relying.
-              </p>
-            </div>
-          </div>
-
-          <Link className="flex flex-wrap justify-around" to="/product/:id">
-            {limitProduct.map((product) => (
-              <div
-                className="flex card w-96 h-76"
-                key={product._id}
-                to={`/product/${product._id}`}
-              >
-                <figure>
-                  <img src={product.productMainImage} alt="women dress" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title justify-center">
-                    {product.title}
-                    <div className="badge badge-secondary">NEW</div>
-                  </h2>
-
-                  <div className="card-actions justify-center">
-                    <div>₹ {product.productMrp}</div>
-                    <div>{product.rating}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Link>
-
-          <div className="related-product">
-            <div className="product-heading text-center mt-5">
-              <h3 className="font-sans text-3xl">Related Product</h3>
-              <div className="flex flex-wrap justify-center my-5">
-                {relatedCategories.map((category) => (
-                  <h3 key={category.id} className="m-3 text-lg font-semibold">
-                    {category.name}
-                  </h3>
-                ))}
-              </div>
+        <>
+          <div className="grid md:pb-6 md:pt-12 py-8">
+            <div className="box-heading text-center mb-4">
+              <h2 className="italic text-3xl">Popular Products</h2>
+              <p className="md:px-40 px-4 py-4">In publishing and graphic design, Lorem ipsum is a placeholder
+                text commonly. <label className="hidden md:block">Used to demonstrate the visual form of a document or
+                  a typeface without relying.</label></p>
             </div>
 
-            <Link className="flex flex-wrap justify-around" to="/product/:id">
-              {limitProduct.map((product) => (
-                <div
-                  className="flex card w-96 h-76"
-                  key={product._id}
-                  to={`/product/${product._id}`}
-                >
-                  <figure>
-                    <img src={product.productMainImage} alt="women dress" />
-                  </figure>
-                  <div className="card-body">
-                    <h2 className="card-title justify-center">
-                      {product.title}
-                      <div className="badge badge-secondary">NEW</div>
-                    </h2>
-
-                    <div className="card-actions justify-center">
-                      <div>₹ {product.price}</div>
-                      <div>{product.rating}</div>
-                    </div>
-                  </div>
-                </div>
+            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+              {limitProduct.map((product, index) => (
+                <ProductCard product={product} key={index} />
               ))}
-            </Link>
+            </div>
           </div>
-        </div>
+
+          <div className="grid md:pb-6 md:pt-12 py-8">
+            <div className="box-heading text-center mb-4">
+              <h2 className="italic text-3xl">Related Products</h2>
+              <div className="md:flex justify-center my-4 hidden">
+                {
+                  relatedCategories.map((relatedCategory, index) => {
+                    return (
+                      <h4 className="px-8 italic">{relatedCategory.name}</h4>
+                    )
+                  })
+                }
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+              {
+                limitProduct.map((product, index) => (
+                  <ProductCard product={product} key={index} />
+                ))
+              }
+              {
+                limitProduct.map((product, index) => (
+                  <ProductCard product={product} key={index} />
+                ))
+              }
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

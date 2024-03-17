@@ -12,9 +12,11 @@ const Home = () => {
     <div>
       <Banner />
       <BrowserCat />
-      <Product />
-      <Showcase />
-      <SuggestionProduct />
+      <div className='container mx-auto px-2 md:px-0'>
+        <Product />
+        <Showcase />
+        <SuggestionProduct />
+      </div>
     </div>
   )
 }

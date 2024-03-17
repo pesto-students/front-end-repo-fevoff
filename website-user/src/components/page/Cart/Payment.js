@@ -5,8 +5,11 @@ import RazorpayLogo from "../../../asset/images/ROZARPAYLOGO.png";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems } from "../../../Action/cartAction";
+import { getUserAddress } from "../../../Action/userAction";
+import { orderCheckout } from "../../../Action/orderAction";
 import logo from "../../../asset/images/logo.png";
 import { useNavigate } from "react-router-dom";
+
 const Payment = () => {
   const paymentOptions = [
     {
@@ -23,22 +26,19 @@ const Payment = () => {
   const alert = useAlert();
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
+  const [userName, setUserName] = useState();
+  const [userEmail, setUserEmail] = useState();
+  const [userContactNumber, setUserContactNumber] = useState();
   const [Razorpay, isLoaded] = useRazorpay();
-  
+console.log(userId);
   const [selectedOption, setselectedOption] = useState(null);
-
+  console.log(selectedOption);
   const { cartItems, error } = useSelector((state) => state.cart);
+  const { order: orderData } = useSelector((state) => state.order);
+  const { address } = useSelector((state) => state.UserProfileData);
+  console.log(cartItems, orderData, address);
 
-  const handleConfiramOrder = () => {
-    navigate("/order/confiramation");
-  };
-
-  const handlePayment = useCallback(() => {
-    if (selectedOption === "RazorPay") {
-      handleRazorpayment();
-    }
-  });
-
+  console.log(orderData);
   let totalPrice = 0;
   let totalDiscount = 0;
   if (cartItems && cartItems.items) {
@@ -53,7 +53,7 @@ const Payment = () => {
 
   const handleRazorpayment = () => {
     const options = {
-      key: "rzp_test_naqbPaCVZeqJjM",
+      key: process.env.REACT_APP_RAZORPAY_KEY || "rzp_test_naqbPaCVZeqJjM",
       amount: totalAmount * 100,
       currency: "INR",
       name: "Fevoff India Pvt. Ltd.",
@@ -62,12 +62,13 @@ const Payment = () => {
       // order_id: "order_id",
       handler: (res) => {
         console.log(res);
-        alert("Payment Successful:" + res.razorpay_payment_id);
+        alert.success("Payment Successful:" + res.razorpay_payment_id);
+        navigate("/order/confiramation");
       },
       prefill: {
-        name: "Fevoff India Pvt. Ltd.",
-        email: "service@fevoffind.com",
-        contact: "0000000000",
+        name: userName,
+        email: userEmail,
+        contact: userContactNumber,
       },
       notes: {
         address: "Razorpay Corporate Office",
@@ -84,16 +85,101 @@ const Payment = () => {
     if (error) {
       alert.error(error);
     }
-
-    dispatch(getCartItems(userId));
+   
+    console.log(selectedOption);
     const storedUserId = localStorage.getItem("id");
+    const storedUserName = localStorage.getItem("name");
+    const storedUserContactNumber = localStorage.getItem("contact");
+    const storedUserContactEmail = localStorage.getItem("email");
 
     if (storedUserId) setUserId(storedUserId);
-  }, [userId, dispatch, error, alert]);
+    if (storedUserName) setUserName(storedUserName);
+    if (storedUserContactNumber) setUserContactNumber(storedUserContactNumber);
+    if (storedUserContactEmail) setUserEmail(storedUserContactEmail);
+console.log(storedUserId);
+    dispatch(getUserAddress(storedUserId))
+    dispatch(getCartItems(storedUserId));
+
+    if (cartItems && cartItems.items) {
+      // Prepare items for order
+      const orderItems = cartItems.items.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.productPrice
+      }));
+   
+
+    dispatch(orderCheckout())
+    dispatch(
+      orderCheckout(
+        storedUserId,
+        [{items: orderItems}],
+        totalAmount,
+        selectedOption,
+        address._id,
+        "pending"
+      )
+    );
+      }
+
+    if (selectedOption === "Cash On Delivery") {
+      checkoutOrderHandler();
+    }
+  }, [userId, dispatch, error, alert, selectedOption]);
 
   const handleOptionChange = (option) => {
     setselectedOption(option);
   };
+
+  const checkoutOrderHandler = (paymentMethod) => {
+    dispatch(
+      orderData(userId,
+        cartItems && cartItems.items.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        paymentMethod,
+        "pending",
+         totalAmount,
+        address && address.data.map(address=>({
+          shippingAddress:address._id
+        })),
+      )
+    );
+    console.log(userId);
+  };
+
+  const handleConfiramOrder = (storedUserId) => {
+    if (!selectedOption) {
+      alert.error("Please select a payment method");
+      return;
+      // checkoutOrderHandler(selectedOption);
+    }
+
+    if (selectedOption === "Cash On Delivery") {
+      dispatch(
+        orderCheckout(
+          storedUserId,
+          [cartItems.productId, cartItems.quantity, cartItems.productPrice],
+          totalAmount,
+          selectedOption,
+          address._id,
+          "pending"
+        )
+      );
+      navigate("/order/confiramation");
+    }
+  };
+
+  const handlePayment = useCallback(() => {
+    if (selectedOption === "RazorPay") {
+      handleRazorpayment();
+    } else if (selectedOption === "Cash On Delivery") {
+      handleConfiramOrder();
+    }
+    // checkoutOrderHandler(selectedOption);
+  }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
 
   return (
     <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold">
@@ -184,10 +270,10 @@ const Payment = () => {
             </section>
             <div className="flex flex-col  lg:flex-row items-center justify-center  lg:justify-between  lg:w-96">
               <button
-                onClick={
+                onClick={() =>
                   selectedOption === "Cash On Delivery"
-                    ? handleConfiramOrder
-                    : handlePayment
+                    ? handleConfiramOrder()
+                    : handlePayment()
                 }
                 disabled={!selectedOption}
                 type="button"

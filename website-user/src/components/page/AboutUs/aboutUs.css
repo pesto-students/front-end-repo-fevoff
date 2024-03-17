@@ -1,31 +1,10 @@
-.test {
-    margin: 5px;
-    padding: 5px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-
+.about-us-content{
+    line-height: 35px;
+    text-align: justify;
 }
 
-.test1 {
-    display: flex;
-    flex-direction: column;
-    flex-flow: column;
-    width: 50%;
-    justify-content: flex-end;
-}
-
-.image {
-    height: 500px;
-    width: 500px;
-}
-
-.heading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+@media(max-width:567px){
+    .about-us-content{
+        line-height: 25px;
+    }
 }

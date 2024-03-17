@@ -79,3 +79,25 @@ p, ul li{
     width: 100vw;
     overflow: hidden;
 } */
+
+.btn-view-all{
+    width: 100px;
+    border: 1px solid #BF3900;
+    background-color: transparent;
+    min-height: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.btn-view-all:hover{
+    border: none;
+    background-color: black;
+    color: white;
+}
+
+@media(max-width:567px){
+    .btn-view-all{
+        min-height: 35px;
+        height: 35px;
+    }
+}
