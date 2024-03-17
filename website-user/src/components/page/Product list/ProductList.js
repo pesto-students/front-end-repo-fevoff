@@ -30,7 +30,7 @@ const ProductList = () => {
             <h1 className="text-5xl italic">Our Products</h1>
           </div>
           <div className="product-filter mb-6">
-            <div className="grid grid-cols-4 mx-auto gap-3">
+            <div className="grid md:grid-cols-4 grid-cols-2 mx-auto gap-3  px-1">
               <input className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                 type="text"
                 placeholder="Search Product"
@@ -52,7 +52,7 @@ const ProductList = () => {
             </div>
           </div>
           <div className="product-list">
-            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 px-1 product-listing">
               {products.map((product, index) => (
                 <>
                   <ProductCard product={product} key={index} />
