@@ -19,7 +19,7 @@ const AddressDetails = () => {
     (state) => state.UserProfileData
   );
   const { cartItems } = useSelector((state) => state.cart);
-
+console.log(address);
   const handleCheckBoxChange = (addressId) => {
     setselectedAddressId((prevSelectedAddressId) => {
       if (prevSelectedAddressId.includes(addressId)) {

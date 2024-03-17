@@ -39,7 +39,7 @@ const Footer = () => {
                 <Link to={"/terms-conidtions"} >Terms & Conditions</Link>
               </li>
               <li>
-                <Link to={"/account"}>My Account</Link>
+                <Link to={"/myaccount"}>My Account</Link>
               </li>
               <li>
                 <Link to={"/wishlist"}>Wish list</Link>

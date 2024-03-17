@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/react";
 import { productDetailsReducer, productReducer } from "./Reducers/productReducers"
 import { otpLoginReducer, userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
 import { cartReducer } from "./Reducers/cartReducers";
+import { orderCheckReducer } from "./Reducers/orderReducers";
 
 const reducer = combineReducers({
   products: productReducer,
@@ -17,6 +18,7 @@ const reducer = combineReducers({
   UserProfileData: userProfileDataReducer,
   otpLogin: otpLoginReducer,
   cart: cartReducer,
+  order: orderCheckReducer
 });
 
 // let initialState = {
