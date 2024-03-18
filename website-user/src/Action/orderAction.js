@@ -6,6 +6,9 @@ import {
   CREATE_ORDER_PAYMENT_SUCCESS,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
+  GET_ORDER_DETAILS_FAIL,
+  GET_ORDER_DETAILS_REQUEST,
+  GET_ORDER_DETAILS_SUCCESS,
 } from "../Constants/orderConstants";
 
 export const orderCheckout =
@@ -73,5 +76,15 @@ export const orderPaymentCallback =
         type: CREATE_ORDER_PAYMENT_FAIL,
         payload: error.message,
       });
+    }
+  };
+
+  export const getOrderDetils = (userId) => async (dispatch) => {
+    try {
+      dispatch({ type: 'GET_ORDER_DETAILS_REQUEST' });
+      const data  = await axios.get(`http://localhost:3001/api/order/${userId}`);
+      dispatch({ type: 'GET_ORDER_DETAILS_SUCCESS', payload: data });
+    } catch (error) {
+      dispatch({ type: 'GET_ORDER_DETAILS_FAIL', payload: error.message });
     }
   };
