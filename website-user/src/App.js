@@ -22,6 +22,7 @@ import Privacy from "./components/page/Privacy/privacy";
 import Terms from "./components/page/Terms&Condition/terms";
 import ContactUs from "./components/page/ContactUs/ContactUs";
 import UpdateAddress from "./components/User/manage address/UpdateAddress";
+import Wishlist from "./components/page/Wishlist/Wishlist";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart/address" element={<AddressDetails />} />
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/order/confiramation" element={<OrderConfiramation />} />
