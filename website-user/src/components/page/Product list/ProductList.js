@@ -1,113 +1,161 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-// import product1 from "../../../asset/images/product1.jpeg";
-
-import { getProduct, clearErrors } from "../../../Action/productAction";
+import {
+  getProduct,
+  clearErrors,
+  getCategory,
+  getCategoryDetails,
+  getBrand,
+} from "../../../Action/productAction";
 import Loader from "../../Layout/Loader";
-// import ProductDetails from "../ProductDetails/ProductDetails";
+import Banner from "./../Home/Banner/Banner";
+import ProductCard from "../../ProductCard/ProductCard";
+import { useAlert } from "react-alert";
+import { useParams } from "react-router-dom";
 
 const ProductList = () => {
-  // const [selectedProduct, setSelectedProduct] = useState(null);
-
   const dispatch = useDispatch();
+  const alert = useAlert();
+  // const { _id, brandId } = useParams();
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [productListToShow, setProductListToShow] = useState([]);
+
   const { loading, error, products } = useSelector((state) => state.products);
+  const { category: categoryData, } = useSelector(
+    (state) => state.category
+  );
+  const { brand: brandData } = useSelector((state) => state.brand);
 
-  // const handleProductClick = (product) => {
-  //   setSelectedProduct(product);
-  // };
-
- 
-
-  
+  console.log(categoryData, brandData);
 
   useEffect(() => {
     if (error) {
-      error(error);
+      alert.error(error);
       dispatch(clearErrors());
     }
+
+    if (category) {
+      const filteredProducts = products.filter(
+        (product) => product.category === category
+      );
+      setProductListToShow(filteredProducts);
+    } else {
+      setProductListToShow(products);
+    }
+
     dispatch(getProduct());
-  }, [dispatch, error]);
+
+    dispatch(getCategory());
+    dispatch(getBrand());
+
+    dispatch(getCategory());
+  }, [dispatch, error, alert]);
+
+  const filteredProducts = products.filter((product) => {
+    if (categoryData && brandData) {
+      return product.category === category && product.brand === brand;
+    } else if (category) {
+      return product.category === category;
+    } else if (brand) {
+      return product.brand === brand;
+    } else {
+      return true; // Return all products if no category or brand selected
+    }
+  });
+  useEffect(() => {
+    setProductListToShow(filteredProducts);
+  }, [category, brand, category, products]);
 
   return (
     <>
+      <Banner />
       {loading ? (
         <Loader />
       ) : (
-        <div>
-          <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 p-8">
-            <div className="flex justify-center mt-5 ml-50 font-sans text-3xl">
-              Our Product
+        <div className="container mx-auto pt-6 pb-10">
+          <div className="text-center">
+            <h1 className="text-5xl italic">Our Products</h1>
+          </div>
+          <div className="product-filter mb-6">
+            <div className="grid grid-cols-4 mx-auto gap-3">
+              <input
+                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                type="text"
+                placeholder="Search Product"
+                onChange={() => {}}
+              ></input>
+              <select
+                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                // type="text"
+                // placeholder="Select Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option>Select Category</option>
+                {
+                  categoryData &&
+                  categoryData.data.data &&
+                  categoryData.data.data.map((ct) => (
+                    <option key={ct._id} value={ct._id}>
+                      {ct.name}
+                    </option>
+                  ))}
+              </select>
+              <select
+                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                type="text"
+                placeholder="Select Brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              >
+                <option>Select Brand</option>
+                {brandData &&
+                  brandData.data.data &&
+                  brandData.data.data.map((brd) => (
+                    <option key={brd._id} value={brd._id}>
+                      {brd.name}
+                    </option>
+                  ))}
+              </select>
+              <button type="submit" className="web-btn-3">
+                Search
+              </button>
             </div>
-
-            <div className="filter-cat">
-              <div className="flex justify-center p-5">
-                <form className="">
-                  <input
-                    className="mr-5 shadow appearance-none border rounded w-15 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Search Product"
-                    id="searchProduct"
-                    type="text"
-                  />
-                  <input
-                    className="mr-5 shadow appearance-none border rounded w-15 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Select Category"
-                    id="searchProduct"
-                    type="text"
-                  />
-                  <input
-                    className="mr-5 shadow appearance-none border rounded w-15 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Select Brand"
-                    id="searchProduct"
-                    type="text"
-                  />
-
-                  <button className="btn btn-outline btn-warning px-20">
-                    Search
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap justify-around">
-              {products.map((product) => (
-                <Link
-                  className="flex card w-64 h-96 m-4"
-                  key={product._id}
-                  to={`/product/${product._id}`}
-                  
-                >
-                  <figure>
-                    <img src={product.productMainImage} alt="productimage"/>
-                  </figure>
-                  <div className="card-body">
-                    <p className="card-title text-xs  justify-center">
-                      {product.name}
-                      <div className="badge badge-secondary">NEW</div>
-                    </p>
-
-                    <div className="card-actions justify-center">
-                      <div>₹ {product.productPrice}</div>
-                      <div>⭐ {product.rating}</div>
-                    </div>
-                  </div>
-                </Link>
+          </div>
+          <div className="product-list">
+            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {productListToShow.map((product, index) => (
+                <ProductCard product={product} key={index} />
               ))}
             </div>
           </div>
-
-          {/* {selectedProduct && <ProductDetails product={selectedProduct}/>} */}
-{/* 
-          {selectedProduct && (
-            <div className="selected-product-details">
-              <h2>Selected Product Details</h2>
-              <img src={selectedProduct.image} alt={selectedProduct.name} />
-              <p>Name: {selectedProduct.name}</p>
-              <p>Price: {selectedProduct.price}</p>
-              <p>Rating: {selectedProduct.rating}</p>
-            </div>
-          )} */}
         </div>
       )}
     </>

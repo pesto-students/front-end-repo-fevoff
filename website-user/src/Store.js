@@ -1,25 +1,47 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import {thunk} from 'redux-thunk';
-
+import { thunk } from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
 
 import * as Sentry from "@sentry/react";
 
-import { productDetailsReducer, productReducer } from "./Reducers/productReducers"
-import { otpLoginReducer, userDetailsReducer, userProfileDataReducer, userReducer } from "./Reducers/userReducers";
+import {
+  brandReducer,
+  categoryReducer,
+  productDetailsReducer,
+  productReducer,
+} from "./Reducers/productReducers";
+import {
+  otpLoginReducer,
+  userDetailsReducer,
+  userProfileDataReducer,
+  userReducer,
+} from "./Reducers/userReducers";
 import { cartReducer } from "./Reducers/cartReducers";
 import { orderCheckReducer } from "./Reducers/orderReducers";
+import storage from "redux-persist/lib/storage";
 
-const reducer = combineReducers({
-  products: productReducer,
-  user: userReducer,
-  productDetails: productDetailsReducer,
-  userDetails: userDetailsReducer,
-  UserProfileData: userProfileDataReducer,
-  otpLogin: otpLoginReducer,
-  cart: cartReducer,
-  order: orderCheckReducer
-});
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["category", "brand"], // Reducers you want to persist
+};
+
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    products: productReducer,
+    user: userReducer,
+    productDetails: productDetailsReducer,
+    userDetails: userDetailsReducer,
+    UserProfileData: userProfileDataReducer,
+    otpLogin: otpLoginReducer,
+    cart: cartReducer,
+    order: orderCheckReducer,
+    category: categoryReducer,
+    brand: brandReducer,
+  })
+);
 
 // let initialState = {
 //   cart: {
@@ -42,9 +64,12 @@ const sentryMiddleware = (store) => (next) => (action) => {
 };
 
 const store = createStore(
-  reducer,
+  // reducer,
   // initialState,
+  persistedReducer,
   composeWithDevTools(applyMiddleware(thunk, sentryMiddleware))
-)
+);
 
-export default store;
+const persistor = persistStore(store);
+
+export  {store, persistor};

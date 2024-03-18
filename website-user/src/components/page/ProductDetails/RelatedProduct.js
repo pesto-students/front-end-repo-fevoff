@@ -1,13 +1,43 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { Link } from "react-router-dom";
 import { clearErrors, getProduct } from "../../../Action/productAction";
-
+import ProductCard from "../../ProductCard/ProductCard";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 const RelatedProduct = () => {
-  
+
+  var settings = {
+    infinite: true,
+    speed: 300,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          arrows: false,
+        }
+      }
+    ],
+  }
 
   const dispatch = useDispatch();
 
@@ -21,32 +51,19 @@ const RelatedProduct = () => {
     dispatch(getProduct());
   }, [dispatch, error]);
   return (
-    <div className="related-product py-2">
-      <div className="product-heading">
-        <div className="flex justify-center mt-5 ml-50 font-sans text-3xl">
-          Related Product
-        </div>
+    <div className="my-6">
+      <div className="text-center mb-5">
+        <h4 className="text-4xl italic">Related Products</h4>
       </div>
-      <Link className="flex flex-wrap justify-around py-8" to="/product/:id">
-        {products.map((product) => (
-          <Link className="flex card w-64 h-76" key={product._id} to={`/product/${product._id}`}>
-            <figure>
-              <img src={product.productMainImage} alt="women dress" />
-            </figure>
-            <div className="card-body">
-              <h2 className="card-title justify-center">
-                {product.name}
-                <div className="badge badge-secondary">NEW</div>
-              </h2>
-
-              <div className="card-actions justify-center">
-                <div>₹ {product.productPrice}</div>
-                <div>⭐ {product.rating}</div>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </Link>
+      <div className="page-slick-slider">
+        <Slider {...settings} className="custom-slider">
+          {products.map((product, index) => (
+            <>
+              <ProductCard product={product} key={index} />
+            </>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 };

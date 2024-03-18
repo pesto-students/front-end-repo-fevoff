@@ -6,6 +6,18 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  GET_CATEGORY_REQUEST,
+  GET_CATEGORY_SUCCESS,
+  GET_CATEGORY_FAIL,
+  GET_BRAND_REQUEST,
+  GET_BRAND_SUCCESS,
+  GET_BRAND_FAIL,
+  GET_BRAND_DETAILS_REQUEST,
+  GET_CATEGORY_DETAILS_REQUEST,
+  GET_CATEGORY_DETAILS_SUCCESS,
+  GET_BRAND_DETAILS_SUCCESS,
+  GET_BRAND_DETAILS_FAIL,
+  GET_CATEGORY_DETAILS_FAIL,
 } from "../Constants/productConstant";
 
 export const productReducer = (state = { products: [] }, action) => {
@@ -56,3 +68,80 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
       return state;
   }
 };
+
+export const categoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_CATEGORY_REQUEST:
+    case GET_CATEGORY_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        category: action.payload,
+        
+      };
+    case GET_CATEGORY_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        category:action.payload,
+       
+      };
+    case GET_CATEGORY_FAIL:
+    case GET_CATEGORY_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const brandReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_BRAND_REQUEST:
+    case GET_BRAND_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_BRAND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        brand: action.payload,
+      };
+    case GET_BRAND_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        brandDetails: action.payload,
+      };
+    case GET_BRAND_FAIL:
+    case GET_BRAND_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+

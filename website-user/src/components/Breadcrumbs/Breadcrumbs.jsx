@@ -6,7 +6,7 @@ const Breadcrumbs = ({ breadcumr1, breadcumr1_link, breadcumr2 }) => {
     return (
         <>
             <div className='container mx-auto'>
-                <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:flex p-4 items-center">
+                <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:flex p-4">
                     <div>
                         <nav className="flex" aria-label="Breadcrumb">
                             <ol className="inline-flex items-center space-x-1 md:space-x-3">

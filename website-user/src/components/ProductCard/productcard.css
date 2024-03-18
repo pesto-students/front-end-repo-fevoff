@@ -42,17 +42,18 @@
 }
 
 .btn-cart{
-    min-height: 35px;
-    height: 35px !important;
+    min-height: 40px;
+    height: 40px;
     border: 1px solid #BF3900;
     background: transparent;
     color: #000000;
     border-radius: 5px;
+    transition: background 0.5s, color 0.5s;
 }
 
 .btn-cart:hover{
-    min-height: 35px;
-    height: 35px !important;
+    min-height: 40px;
+    height: 40px;
     background: #000000;
     color: white;
     border: none;
@@ -64,6 +65,7 @@
     background: transparent;
     border: 1px solid #BF3900;
     border-radius: 5px;
+    transition: background 0.5s, color 0.5s;
 }
 .btn-wishlist:hover{
     min-height: 35px;

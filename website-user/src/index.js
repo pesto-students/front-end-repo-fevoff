@@ -5,9 +5,10 @@ import App from "./App";
 
 import * as Sentry from "@sentry/react";
 import { Provider } from "react-redux";
-import store from "./Store";
+import {store, persistor } from "./Store";
 import AlertTemplate from "react-alert-template-basic";
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
+import { PersistGate } from "redux-persist/integration/react";
 
 
 const options ={
@@ -38,9 +39,11 @@ Sentry.init({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <AlertProvider template={AlertTemplate} {...options}>
     <App />
     </AlertProvider>
+    </PersistGate>
    
   </Provider>
 );
