@@ -22,18 +22,20 @@ const SideMenu = () => {
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
 
-  const [showSidebar, setShowSidebar] = useState(false);
-
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  const toggleSidebar = () => {
-    setShowSidebar((prev) => !prev);
-  };
-
   useEffect(() => {
+
     if (isAuthenticated === false) {
       navigate("/login");
     }
+
+    checkUser();
+
+  }, [isAuthenticated, navigate]);
+
+
+  const checkUser = () => {
     const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
     const storedUserID = localStorage.getItem("id");
@@ -41,8 +43,13 @@ const SideMenu = () => {
     if (storedEmail) setEmail(storedEmail);
     if (storedUserID) setUserId(storedUserID);
 
-  }, [isAuthenticated, navigate]);
+    if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
 
+    } else {
+      navigate("/login");
+    }
+
+  }
 
   const btnClick = async (pageName) => {
 
