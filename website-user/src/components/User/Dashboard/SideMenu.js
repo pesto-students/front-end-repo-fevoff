@@ -48,7 +48,6 @@ const SideMenu = () => {
     } else {
       navigate("/login");
     }
-
   }
 
   const btnClick = async (pageName) => {

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
-import React, { useState } from 'react'
-import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks, LogIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import "./header.css";
 import { useNavigate } from 'react-router-dom';
@@ -65,6 +65,21 @@ const myAccountMenu = [
 const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = () => {
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+    const storedUserID = localStorage.getItem("id");
+
+    if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
+      setShowMenu(true);
+    }
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -87,6 +102,7 @@ const Header = () => {
     localStorage.removeItem("name");
     localStorage.removeItem("JWTToken");
 
+    setIsMenuOpen(false);
     navigate('/');
   }
 
@@ -154,7 +170,7 @@ const Header = () => {
                       );
                     })
                   }
-                  {
+                  {showMenu && showMenu == true ?
                     myAccountMenu.map((data, index) => {
                       return (
                         <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => {
@@ -164,7 +180,11 @@ const Header = () => {
                           <span class="mx-2 text-sm font-medium">{data.name}</span>
                         </label>
                       );
-                    })
+                    }) :
+                    <label class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => btnClick("/login")} >
+                      <LogIn />
+                      <span class="mx-2 text-sm font-medium">Manage Account</span>
+                    </label>
                   }
                 </nav>
               </div>
