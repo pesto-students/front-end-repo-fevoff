@@ -50,7 +50,7 @@ const BrowserCat = () => {
     error,
     category: categoryData,
   } = useSelector((state) => state.category);
-  
+
 
   useEffect(() => {
     if (error) {
