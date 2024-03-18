@@ -9,7 +9,7 @@ import {
   getCartItems,
 } from "../../../Action/cartAction";
 import { clearErrors } from "../../../Action/productAction";
-import { ADD_TO_CART } from "../../../Constants/cartConstants";
+// import { ADD_TO_CART } from "../../../Constants/cartConstants";
 import { useAlert } from "react-alert";
 
 const Cart = () => {
@@ -27,7 +27,7 @@ const Cart = () => {
     if (availableQty <= quantity) {
       return;
     }
-    console.log(productId, newQty, quantity, availableQty);
+    // console.log(productId, newQty, quantity, availableQty);
     dispatch(updateCart(userId, productId, newQty));
   };
 
@@ -36,7 +36,7 @@ const Cart = () => {
     if (1 >= quantity) {
       return;
     }
-    console.log(productId, quantity);
+    // console.log(productId, quantity);
     dispatch(updateCart(userId, productId, newQty));
   };
 
