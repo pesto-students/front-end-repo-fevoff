@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import "./header.css";
+import "./Header.css";
 import { useNavigate } from 'react-router-dom';
 
 const menuItems = [

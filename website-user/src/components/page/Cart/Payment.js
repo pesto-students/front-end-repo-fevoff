@@ -149,20 +149,6 @@ const Payment = () => {
       orderCheckout(
         userId,
         cartItems &&
-<<<<<<< HEAD
-          cartItems.data.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.productPrice,
-          })),
-        selectedOption,
-        // status,
-        // totalAmount,
-        // address._id,
-        // gst,
-        // shippingCharges,
-        // totalCost,
-=======
         cartItems.data.items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -176,7 +162,6 @@ const Payment = () => {
         gst,
         shippingCharges,
         totalCost
->>>>>>> 190606ac82e15f650b557672d4350a2defd6081f
       )
     );
     // console.log(userId);
@@ -202,16 +187,6 @@ const Payment = () => {
           gst
         )
       );
-<<<<<<< HEAD
-
-
-      // dispatch(orderPaymentCallback(
-      //   {orderId,
-      //     transactionTime: new Date(),
-      //     paymentStatus: "pending"}
-      // ))
-
-=======
       dispatch(orderPaymentCallback(
         {
           orderId,
@@ -219,7 +194,6 @@ const Payment = () => {
           paymentStatus: "pending"
         }
       ))
->>>>>>> 190606ac82e15f650b557672d4350a2defd6081f
       navigate("/order/confiramation");
     }
   };

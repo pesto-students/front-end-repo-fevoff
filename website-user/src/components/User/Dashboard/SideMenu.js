@@ -1,13 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import navbar from "../../../asset/images/Navbar.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import UserImage from "./../../../asset/images/for-women.jpg"
 import "./sidebar.css";
 import { Home, Lock, LogOut, ShoppingBag, User } from "lucide-react";
 
+import { loadUser } from "../../../Action/userAction";
+
 const SideMenu = () => {
+
+  const dispatch = useDispatch()
+
+
+  const navigate = useNavigate();
+
+  const alert = useAlert();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  const toggleSidebar = () => {
+    setShowSidebar((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      navigate("/login");
+    }
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+    const storedUserID = localStorage.getItem("id");
+    if (storedName) setName(storedName);
+    if (storedEmail) setEmail(storedEmail);
+    if (storedUserID) setUserId(storedUserID);
+
+    // dispatch(loadUser(userId))
+  }, [isAuthenticated, navigate]);
 
   const handleLogout = async () => {
     localStorage.removeItem("name")
@@ -26,30 +61,7 @@ const SideMenu = () => {
     { name: "Change Password", image: <Lock />, href: "/me/changepassword" },
     { name: "Logout", image: <LogOut />, href: "/login", onClick: handleLogout },
   ];
-  const navigate = useNavigate();
 
-  const alert = useAlert();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const { isAuthenticated } = useSelector((state) => state.user);
-
-  const toggleSidebar = () => {
-    setShowSidebar((prev) => !prev);
-  };
-
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      navigate("/login");
-    }
-    const storedName = localStorage.getItem("name");
-    const storedEmail = localStorage.getItem("email");
-    if (storedName) setName(storedName);
-    if (storedEmail) setEmail(storedEmail);
-  }, [isAuthenticated, navigate]);
 
   return (
     <>

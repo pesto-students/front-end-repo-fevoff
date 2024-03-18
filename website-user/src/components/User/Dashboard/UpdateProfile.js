@@ -10,6 +10,7 @@ const UpdateProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [userId, setUserId] = useState();
+  
   const [userData, setUserData] = useState({
     name: "",
     dateOfBirth: "",
@@ -19,6 +20,7 @@ const UpdateProfile = () => {
     alternateNumber: "",
     profileImage: null,
   });
+  const [imagePreview, setImagePreview] = useState(null);
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -32,30 +34,27 @@ const UpdateProfile = () => {
     }));
   };
 
-  const handleFileChange =(e) =>{
-    const file = e.target.file[0];
-    setUserData((prevData)=>({
-      ...prevData,
-      profileImage: file,
-    }))
-  }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImagePreview(file);
+  };
 
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    dispatch(updateUser(userData))
-  }
+  const handleSubmit = (e, ) => {
+    e.preventDefault();
+    dispatch(updateUser(userId, userData));
+  };
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(CLEAR_ERRORS);
     }
-    const storedName = localStorage.getItem("id");
+    const storeUserID = localStorage.getItem("id");
 
-    if (storedName) setUserId(storedName);
+    if (storeUserID) setUserId(storeUserID);
 
     if (isAuthenticated) {
-      dispatch(updateUser(userId));
+      dispatch(updateUser(storeUserID));
     }
   }, [dispatch, isAuthenticated, error, alert, userId]);
 
@@ -78,19 +77,15 @@ const UpdateProfile = () => {
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"
+              name="dateOfBirth"
               placeholder="Date Of Birth"
-<<<<<<< HEAD
-              name="dda"
-              // onChange={handleChange}
-              // value={userData.dateOfBirth}
-=======
               onChange={handleChange}
               value={userData.dateOfBirth}
->>>>>>> 190606ac82e15f650b557672d4350a2defd6081f
             />
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"
+              name="contact"
               placeholder="Enter Your Contact"
               onChange={handleChange}
               value={userData.contact}
@@ -98,6 +93,7 @@ const UpdateProfile = () => {
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"
+              name="email"
               placeholder="Enter Your Email"
               onChange={handleChange}
               value={userData.email}
@@ -119,6 +115,7 @@ const UpdateProfile = () => {
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"
+              name="alternateNumber"
               placeholder="Enter Alternate Number"
               onChange={handleChange}
               value={userData.contact}
@@ -130,7 +127,13 @@ const UpdateProfile = () => {
               value={userData.profileImage}
             />
             <div className="user-profile-img">
-              <img src={UserImage} alt="Userimage" className="profile-image" />
+              {imagePreview && (
+                <img
+                  src={URL.createObjectURL(imagePreview)}
+                  alt="Userimage"
+                  className="profile-image"
+                />
+              )}
             </div>
           </div>
           <div className="btn-section text-center mt-3">

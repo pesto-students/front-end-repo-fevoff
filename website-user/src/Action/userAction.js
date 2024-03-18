@@ -97,10 +97,10 @@ export const loadUser = (userId) => async (dispatch) => {
 export const updateUser = (userId) => async (dispatch) => {
   try {
     dispatch({ type: USER_UPDATE_REQUEST });
-    const config = { headers: { "Content-type": "application/json" } };
+    // const config = { headers: { "Content-type": "application/json" } };
     const { data } = await axios.put(
       `http://localhost:3001/api/users/${userId}`,
-      config
+      // config
     );
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
     // console.log(data);
