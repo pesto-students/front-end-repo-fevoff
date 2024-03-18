@@ -1,6 +1,8 @@
 import {
   ADD_TO_CART,
+  ADD_TO_CART_FAIL,
   CART_ITEM_FAIL,
+  CART_ITEM_REQUEST,
   CART_ITEM_SUCCESS,
   REMOVE_ITEM_FROM_CART_FAIL,
   REMOVE_ITEM_FROM_CART_SUCCESS,
@@ -9,15 +11,38 @@ import {
   UPDATE_CART_SUCCESS,
 } from "../Constants/cartConstants";
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
+export const cartReducer = (state = { cartItems: []}, action) => {
   switch (action.type) {
     case ADD_TO_CART:
     case UPDATE_CART_SUCCESS:
-        case CART_ITEM_SUCCESS:
       return {
         ...state,
-        cartItems: action.payload.data,
-        error: null,
+        cartItems: action.payload || [],
+      };
+
+    case CART_ITEM_REQUEST:
+      
+      return {
+        ...state,
+        loading: true,
+        cartItems: action.payload,
+        error:null
+      };
+
+    case CART_ITEM_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        cartItems: action.payload || [],
+        error:null
+      };
+    }
+
+    case ADD_TO_CART_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
 
     case REMOVE_ITEM_FROM_CART_SUCCESS:
@@ -37,7 +62,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 
     case UPDATE_CART_FAIL:
     case REMOVE_ITEM_FROM_CART_FAIL:
-        case CART_ITEM_FAIL:
+    case CART_ITEM_FAIL:
       return {
         ...state,
         error: action.payload,

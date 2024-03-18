@@ -10,27 +10,30 @@ import {
   CART_ITEM_REQUEST,
   CART_ITEM_SUCCESS,
   CART_ITEM_FAIL,
+  ADD_TO_CART_FAIL,
 } from "../Constants/cartConstants";
+import { CLEAR_ERRORS } from "../Constants/productConstant";
 
 export const addItemsToCart =
-  (userId, productId, quantity) => async (dispatch, getState) => {
+  (userId, productId, quantity, size) => async (dispatch, getState) => {
     try {
+      dispatch({ type: ADD_TO_CART });
+      // const requestData = { userId, productId, quantity, size };
       const config = { headers: { "Content-Type": "application/json" } };
-      const { data } = await axios.post(
+      const data  = await axios.post(
         `http://localhost:3001/api/cart`,
-        userId,
-        productId,
-        quantity,
-
-        config
+        userId, productId, quantity, size , config,
       );
-      console.log(data);
+
       dispatch({
         type: ADD_TO_CART,
-        payload: data.cartItems,
+        payload: data,
       });
     } catch (error) {
-      console.error("Error adding items to cart:", error);
+      dispatch({
+        type: ADD_TO_CART_FAIL,
+        payload: error.message,
+      });
     }
   };
 
@@ -58,6 +61,7 @@ export const getCartItems = (userId) => async (dispatch) => {
       `http://localhost:3001/api/cart/${userId}`,
       config
     );
+    // console.log(data);
     dispatch({ type: CART_ITEM_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: CART_ITEM_FAIL, payload: error.message });
@@ -87,4 +91,8 @@ export const saveShippingInfo = (data) => async (dispatch, getState) => {
   });
 
   localStorage.setItem("shippingInfo", JSON.stringify(data));
+};
+
+export const clearErrors = () => async (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
 };

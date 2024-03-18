@@ -20,29 +20,19 @@ const ProductList = () => {
   // const { _id, brandId } = useParams();
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [productListToShow, setProductListToShow] = useState([]);
-
+  // const [productListToShow, setProductListToShow] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const { loading, error, products } = useSelector((state) => state.products);
-  const { category: categoryData, } = useSelector(
-    (state) => state.category
-  );
+  const { category: categoryData } = useSelector((state) => state.category);
   const { brand: brandData } = useSelector((state) => state.brand);
 
-  console.log(categoryData, brandData);
+  // console.log(categoryData, brandData);
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
-    }
-
-    if (category) {
-      const filteredProducts = products.filter(
-        (product) => product.category === category
-      );
-      setProductListToShow(filteredProducts);
-    } else {
-      setProductListToShow(products);
     }
 
     dispatch(getProduct());
@@ -53,20 +43,40 @@ const ProductList = () => {
     dispatch(getCategory());
   }, [dispatch, error, alert]);
 
-  const filteredProducts = products.filter((product) => {
-    if (categoryData && brandData) {
-      return product.category === category && product.brand === brand;
-    } else if (category) {
-      return product.category === category;
-    } else if (brand) {
-      return product.brand === brand;
-    } else {
-      return true; // Return all products if no category or brand selected
-    }
-  });
   useEffect(() => {
-    setProductListToShow(filteredProducts);
-  }, [category, brand, category, products]);
+    // Filter products based on category and brand
+    let filteredProducts = products.filter((product) => {
+      if (category && brand) {
+        return product.category === category && product.brand === brand;
+      } else if (category) {
+        return product.category === category;
+      } else if (brand) {
+        return product.brand === brand;
+      } else {
+        return true; // Return all products if no category or brand selected
+      }
+    });
+    setFilteredProducts(filteredProducts);
+  }, [category, brand, products]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // const filteredProducts = products.filter((product) => {
+  //   if (categoryData && brandData) {
+  //     return product.category === category && product.brand === brand;
+  //   } else if (category) {
+  //     return product.category === category;
+  //   } else if (brand) {
+  //     return product.brand === brand;
+  //   } else {
+  //     return true; // Return all products if no category or brand selected
+  //   }
+  // });
+  // useEffect(() => {
+  //   setProductListToShow(filteredProducts);
+  // }, [category, brand, category, products]);
 
   return (
     <>
@@ -79,11 +89,21 @@ const ProductList = () => {
             <h1 className="text-5xl italic">Our Products</h1>
           </div>
           <div className="product-filter mb-6">
+            <div className="grid grid-cols-4 mx-auto gap-3">
+              <input
+                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                type="text"
+                placeholder="Search Product"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                />
+
             <div className="grid md:grid-cols-4 grid-cols-2 mx-auto gap-3  px-1">
               <input className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                 type="text"
                 placeholder="Search Product"
                 onChange={() => { }}
+
               ></input>
               <select
                 className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
@@ -93,8 +113,7 @@ const ProductList = () => {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option>Select Category</option>
-                {
-                  categoryData &&
+                {categoryData &&
                   categoryData.data.data &&
                   categoryData.data.data.map((ct) => (
                     <option key={ct._id} value={ct._id}>
@@ -104,8 +123,8 @@ const ProductList = () => {
               </select>
               <select
                 className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                type="text"
-                placeholder="Select Brand"
+                // type="text"
+                // placeholder="Select Brand"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               >
@@ -124,37 +143,39 @@ const ProductList = () => {
             </div>
           </div>
           <div className="product-list">
-            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 px-1 product-listing">
-              {products.map((product, index) => (
-                <>
-                  <ProductCard product={product} key={index} />
-                </>
-              ))}
-              {products.map((product, index) => (
-                <>
-                  <ProductCard product={product} key={index} />
-                </>
-              ))}
-              {products.map((product, index) => (
-                <>
-                  <ProductCard product={product} key={index} />
-                </>
-              ))}
-              {products.map((product, index) => (
-                <>
-                  <ProductCard product={product} key={index} />
-                </>
-              ))}
-              {products.map((product, index) => (
-                <>
-                  <ProductCard product={product} key={index} />
-                </>
-              ))}
-              {productListToShow.map((product, index) => (
+            <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
+            {filteredProducts.map((product, index) => (
                 <ProductCard product={product} key={index} />
               ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+              {products.map((product, index) => (
+                <>
+                  <ProductCard product={product} key={index} />
+                </>
+              ))}
+             
             </div>
           </div>
+        </div>
         </div>
       )}
     </>

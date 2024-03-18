@@ -27,6 +27,9 @@ import {
   OTP_VERIFICATION_FAIL,
   ADDRESS_DELETE_SUCCESS,
   ADDRESS_DELETE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
@@ -90,6 +93,24 @@ export const loadUser = (userId) => async (dispatch) => {
     });
   }
 };
+
+export const updateUser = (userId) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_UPDATE_REQUEST });
+    const config = { headers: { "Content-type": "application/json" } };
+    const { data } = await axios.put(
+      `http://localhost:3001/api/users/${userId}`,
+      config
+    );
+    dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+    // console.log(data);
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+}
 
 export const getUserDetails = (userId) => async (dispatch) => {
   try {
