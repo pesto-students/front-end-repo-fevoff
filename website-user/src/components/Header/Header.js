@@ -66,6 +66,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
+  const [userName, setUserName] = useState(null)
 
   useEffect(() => {
     checkUser();
@@ -77,6 +78,7 @@ const Header = () => {
     const storedUserID = localStorage.getItem("id");
 
     if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
+      setUserName(storedName);
       setShowMenu(true);
     }
   }
@@ -138,9 +140,18 @@ const Header = () => {
           </Link>
         </div>
         <div className="hidden lg:block">
-          <Link to={"/login"} className="btn web-btn-2">
-            Login
-          </Link>
+          {
+            showMenu && showMenu == true ?
+              <>
+                <Link to={"/myaccount"} className="btn web-btn-2">
+                  Hi, {userName}
+                </Link>
+              </>
+              : <><Link to={"/login"} className="btn web-btn-2">
+                Login
+              </Link></>
+          }
+
         </div>
         <div className="lg:hidden">
           <div className="drawer-content">
