@@ -84,8 +84,6 @@ const ProductList = () => {
               />
               <select
                 className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                // type="text"
-                // placeholder="Select Category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -100,8 +98,6 @@ const ProductList = () => {
               </select>
               <select
                 className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                // type="text"
-                // placeholder="Select Brand"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               >

@@ -42,11 +42,24 @@
     color: white;
 }
 
+.product-size{
+    min-width: 50px;
+    height: 40px;
+    border:  1px solid #707070;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 8px;
+}
+
+
 .selected {
-    /* Add styles for selected size */
-    background-color: #4299e1; /* Example background color for selected size */
-    color: #ffffff; /* Example text color for selected size */
-    border-radius: 4px;
+    background-color: #707070;
+    color: #ffffff;
   }
 
 .btn-minus, .btn-add{
