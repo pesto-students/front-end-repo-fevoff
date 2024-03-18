@@ -19,7 +19,9 @@ const UpdateProfile = () => {
             <input className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"
               placeholder="Date Of Birth"
-              onChange={""}
+              name="dda"
+              // onChange={handleChange}
+              // value={userData.dateOfBirth}
             />
             <input className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="text"

@@ -133,18 +133,21 @@ console.log(storedUserId);
 
   const checkoutOrderHandler = (paymentMethod) => {
     dispatch(
-      orderData(userId,
-        cartItems && cartItems.items.map(item => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.price
-        })),
-        paymentMethod,
-        "pending",
-         totalAmount,
-        address && address.data.map(address=>({
-          shippingAddress:address._id
-        })),
+      orderCheckout(
+        userId,
+        cartItems &&
+          cartItems.data.items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.productPrice,
+          })),
+        selectedOption,
+        // status,
+        // totalAmount,
+        // address._id,
+        // gst,
+        // shippingCharges,
+        // totalCost,
       )
     );
     console.log(userId);
@@ -168,6 +171,14 @@ console.log(storedUserId);
           "pending"
         )
       );
+
+
+      // dispatch(orderPaymentCallback(
+      //   {orderId,
+      //     transactionTime: new Date(),
+      //     paymentStatus: "pending"}
+      // ))
+
       navigate("/order/confiramation");
     }
   };
