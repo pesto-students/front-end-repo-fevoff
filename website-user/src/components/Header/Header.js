@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import "./Header.css";
+import "./header.css";
 import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
@@ -62,12 +62,12 @@ const Header = () => {
             <ul className="inline-flex space-x-8">
               {menuItems.map((item, index) => (
                 <li key={index}>
-                  <Link
-                    to={item.href}
-                    className="text-lg italic font-bold text-gray-800 hover:text-gray-900"
-                  >
+                  <label onClick={(e) => {
+                    (item.href == '/search') ? document.getElementById('search-bar').showModal() : btnClick(item.href)
+                  }}
+                    className="text-lg italic font-bold text-gray-800 hover:text-gray-900 cursor-pointer">
                     {item.name}
-                  </Link>
+                  </label>
                 </li>
               ))}
             </ul>
@@ -102,7 +102,9 @@ const Header = () => {
                   {
                     menuItems.map((data, index) => {
                       return (
-                        <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => btnClick(data.href)} >
+                        <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => {
+                          (data.href == '/search') ? document.getElementById('search-bar').showModal() : btnClick(data.href)
+                        }} >
                           {data.icon}
                           <span class="mx-2 text-sm font-medium">{data.name}</span>
                         </label>
@@ -115,6 +117,18 @@ const Header = () => {
           </div>
         </>
       )}
+
+      <dialog id="search-bar" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-xl italic mb-3">Search Here!</h3>
+          <input type='text' className='form-control input-tag border w-full h-14 bg-gray-200 px-3' name='search' autoComplete='off' placeholder='Enter Product Name For Search' />
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   )
 }

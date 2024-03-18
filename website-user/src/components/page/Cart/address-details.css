@@ -22,3 +22,22 @@
     border: none;
     background: #BF3900;
 }
+
+
+
+.btn-payment{
+    width: 200px;
+    border: 1px solid #BF3900;
+    height: 50px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.btn-payment:hover{
+    background:  #BF3900;
+    color: white;
+}

@@ -208,7 +208,7 @@ const Payment = () => {
   }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
 
   return (
-    <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold">
+    <div className=" italic font-semibold">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto py-8 lg:max-w-7xl">
           <h6 className="text-2xl font-bold tracking-tight text-black sm:text-2xl ">

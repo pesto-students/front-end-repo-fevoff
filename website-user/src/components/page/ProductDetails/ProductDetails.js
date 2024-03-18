@@ -225,54 +225,48 @@ function ProductDetails({ match }) {
                     <ul className="flex flex-wrap space-x-2 mt-2">
                       <li
                         value={size}
-                        className={`product-size${
-                          size === "XS" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "XS" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("XS")}
                       >
                         XS
                       </li>
 
                       <li
-                        className={`product-size${
-                          size === "S" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "S" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("S")}
                       >
                         S
                       </li>
 
                       <li
-                        className={`product-size${
-                          size === "M" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "M" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("M")}
                       >
                         M
                       </li>
 
                       <li
-                        className={`product-size${
-                          size === "L" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "L" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("L")}
                       >
                         L
                       </li>
 
                       <li
-                        className={`product-size${
-                          size === "XL" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "XL" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("XL")}
                       >
                         XL
                       </li>
 
                       <li
-                        className={`product-size${
-                          size === "XS" ? "selected" : ""
-                        }`}
+                        className={`product-size${size === "XXL" ? " selected" : ""
+                          }`}
                         onClick={() => sizeHandler("XXL")}
                       >
                         XXL
