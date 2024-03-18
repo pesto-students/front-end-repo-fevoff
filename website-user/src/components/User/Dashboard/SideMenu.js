@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import UserImage from "./../../../asset/images/for-women.jpg"
 import "./sidebar.css";
-import { Home, Lock, LogOut, ShoppingBag, User } from "lucide-react";
+import { Blocks, Lock, LogOut, ShoppingBag, User } from "lucide-react";
 
 import { loadUser } from "../../../Action/userAction";
 
@@ -57,7 +57,7 @@ const SideMenu = () => {
   const UserBar = [
     { name: "My Account", image: <User />, href: "/myaccount" },
     { name: "My Orders", image: <ShoppingBag />, href: "/me/orders" },
-    { name: "Manage Address", image: <Home />, href: "/me/manageaddress" },
+    { name: "Manage Address", image: <Blocks />, href: "/me/manageaddress" },
     { name: "Change Password", image: <Lock />, href: "/me/changepassword" },
     { name: "Logout", image: <LogOut />, href: "/login", onClick: handleLogout },
   ];

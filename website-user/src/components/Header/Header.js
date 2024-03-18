@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
 import React, { useState } from 'react'
-import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse } from 'lucide-react'
+import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import "./header.css";
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,34 @@ const menuItems = [
     name: 'About Us',
     icon: <ListCollapse />,
     href: '/about-us',
+  },
+];
+
+const myAccountMenu = [
+  {
+    name: 'My Account',
+    icon: <User />,
+    href: '/myaccount',
+  },
+  {
+    name: 'Manage Orders',
+    icon: <List />,
+    href: '/me/orders',
+  },
+
+  {
+    name: 'Manage Address',
+    icon: <Blocks />,
+    href: '/me/manageaddress',
+  },
+  {
+    name: 'Manage Password',
+    icon: <Lock />,
+    href: '/me/changepassword',
+  }, {
+    name: 'Logout',
+    icon: <LogOut />,
+    href: '/logout',
   },
 ]
 
@@ -101,6 +129,18 @@ const Header = () => {
                 <nav class="mt-2">
                   {
                     menuItems.map((data, index) => {
+                      return (
+                        <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => {
+                          (data.href == '/search') ? document.getElementById('search-bar').showModal() : btnClick(data.href)
+                        }} >
+                          {data.icon}
+                          <span class="mx-2 text-sm font-medium">{data.name}</span>
+                        </label>
+                      );
+                    })
+                  }
+                  {
+                    myAccountMenu.map((data, index) => {
                       return (
                         <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => {
                           (data.href == '/search') ? document.getElementById('search-bar').showModal() : btnClick(data.href)
