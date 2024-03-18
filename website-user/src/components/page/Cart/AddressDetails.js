@@ -71,8 +71,8 @@ const AddressDetails = () => {
 
   let totalPrice = 0;
   let totalDiscount = 0;
-  if (cartItems && cartItems.items) {
-    cartItems.items.forEach((product) => {
+  if (cartItems && cartItems.data && cartItems.data.items) {
+    cartItems.data.items.forEach((product) => {
       totalPrice += product.productPrice;
       totalDiscount += product.productMrp - product.productPrice;
     });
@@ -131,65 +131,69 @@ const AddressDetails = () => {
                     ))}
                 </div>
               </section>
-              <section
-                aria-labelledby="summary-heading"
-                className="mt-6 lg:mt-0 lg:col-span-4 lg:pl-4 border border-black"
-              >
-                {/* Order summary */}
-                <h2 className="border-b border-gray-200 px-4 py-3 text-lg font-medium text-gray-900 sm:p-4">
-                  Order Details
-                </h2>
-                <div className="px-4 py-4">
-                  <dl className=" space-y-1">
-                    {/* ... (your order details code) ... */}
-                    <div className="flex items-center justify-between">
-                      <dt className="text-sm text-gray-800">Price: </dt>
-                      <dd className="text-sm font-medium text-gray-900">
-                        ₹ {price}
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between pt-4">
-                      <dt className="flex items-center text-sm text-gray-800">
-                        <span>Discount</span>
-                      </dt>
-                      <dd className="text-sm font-medium text-green-700">
-                        - ₹ {discount}
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between py-4">
-                      <dt className="flex text-sm text-gray-800">
-                        <span>Delivery Charges</span>
-                      </dt>
-                      <dd className="text-sm font-medium text-green-700">Free</dd>
-                    </div>
-                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                      <dt className="text-base font-medium text-gray-900">
-                        Total Amount
-                      </dt>
-                      <dd className="text-base font-medium text-gray-900">
-                        ₹ {totalAmount}
-                      </dd>
-                    </div>
-                  </dl>
-
-                  <div className="px-2 pb-4 font-medium text-green-700">
-                    You will save ₹ {discount} on this order
-                  </div>
-                </div>
-              </section>
               <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mt-6 ">
                 <Link to="/cart/payment"
+                  disabled={!selectedAddressId.length === 0}
                   type="button"
-                  className="btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
+                  className={`btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 ${selectedAddressId.length === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"
+                    } lg:w-96`}
                 >
-                  Process To Checkout
-                </Link>
-                {/* <button
+                  {/* Order summary */}
+                  <h2 className="border-b border-gray-200 px-4 py-3 text-lg font-medium text-gray-900 sm:p-4">
+                    Order Details
+                  </h2>
+                  <div className="px-4 py-4">
+                    <dl className=" space-y-1">
+                      {/* ... (your order details code) ... */}
+                      <div className="flex items-center justify-between">
+                        <dt className="text-sm text-gray-800">Price: </dt>
+                        <dd className="text-sm font-medium text-gray-900">
+                          ₹ {price}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between pt-4">
+                        <dt className="flex items-center text-sm text-gray-800">
+                          <span>Discount</span>
+                        </dt>
+                        <dd className="text-sm font-medium text-green-700">
+                          - ₹ {discount}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between py-4">
+                        <dt className="flex text-sm text-gray-800">
+                          <span>Delivery Charges</span>
+                        </dt>
+                        <dd className="text-sm font-medium text-green-700">Free</dd>
+                      </div>
+                      <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                        <dt className="text-base font-medium text-gray-900">
+                          Total Amount
+                        </dt>
+                        <dd className="text-base font-medium text-gray-900">
+                          ₹ {totalAmount}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <div className="px-2 pb-4 font-medium text-green-700">
+                      You will save ₹ {discount} on this order
+                    </div>
+                  </div>
+                  <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mt-6 ">
+                    <Link to="/cart/payment"
+                      type="button"
+                      className="btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
+                    >
+                      Process To Checkout
+                    </Link>
+                    {/* <button
                 type="button"
                 className="btn  bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
               >
                 Process To Pay
               </button> */}
+                  </div>
+                </Link>
               </div>
             </form>
           </div>

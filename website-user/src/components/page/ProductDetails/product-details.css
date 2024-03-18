@@ -33,12 +33,21 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding: 8px;
+  margin-right: 8px;
 }
 
 .product-size:hover{
     background:  #707070;
     color: white;
 }
+
+.selected {
+    /* Add styles for selected size */
+    background-color: #4299e1; /* Example background color for selected size */
+    color: #ffffff; /* Example text color for selected size */
+    border-radius: 4px;
+  }
 
 .btn-minus, .btn-add{
     width: 100%;
