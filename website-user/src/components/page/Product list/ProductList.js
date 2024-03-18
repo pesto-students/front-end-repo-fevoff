@@ -96,6 +96,14 @@ const ProductList = () => {
                 placeholder="Search Product"
                 value={searchTerm}
                 onChange={handleSearchChange}
+                />
+
+            <div className="grid md:grid-cols-4 grid-cols-2 mx-auto gap-3  px-1">
+              <input className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                type="text"
+                placeholder="Search Product"
+                onChange={() => { }}
+
               ></input>
               <select
                 className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
@@ -167,6 +175,7 @@ const ProductList = () => {
              
             </div>
           </div>
+        </div>
         </div>
       )}
     </>

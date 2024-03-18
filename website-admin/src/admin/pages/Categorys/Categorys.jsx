@@ -78,7 +78,7 @@ const Categorys = () => {
 
             swal("Good job!", "Categorys Created Successfully", "success")
                 .then(() => {
-                    navigate('/brands/list');
+                    navigate('/categorys/list');
                 });
 
         } else {
