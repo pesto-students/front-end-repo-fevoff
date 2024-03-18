@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems } from "../../../Action/cartAction";
 import { getUserAddress } from "../../../Action/userAction";
-import { orderCheckout } from "../../../Action/orderAction";
+import { orderCheckout, orderPaymentCallback } from "../../../Action/orderAction";
 import logo from "../../../asset/images/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -30,28 +30,30 @@ const Payment = () => {
   const [userEmail, setUserEmail] = useState();
   const [userContactNumber, setUserContactNumber] = useState();
   const [Razorpay, isLoaded] = useRazorpay();
-console.log(userId);
+  console.log(userId);
   const [selectedOption, setselectedOption] = useState(null);
   console.log(selectedOption);
   const { cartItems, error } = useSelector((state) => state.cart);
   const { order: orderData } = useSelector((state) => state.order);
   const { address } = useSelector((state) => state.UserProfileData);
+
   console.log(cartItems, orderData, address);
 
-  console.log(orderData);
   let totalPrice = 0;
   let totalDiscount = 0;
-  if (cartItems && cartItems.items) {
-    cartItems.items.forEach((product) => {
+  if (cartItems && cartItems.data && cartItems.data.items) {
+    cartItems.data.items.forEach((product) => {
       totalPrice += product.productPrice;
       totalDiscount += product.productMrp - product.productPrice;
     });
   }
   const price = totalPrice + totalDiscount;
   const discount = totalDiscount;
-  const totalAmount = price - discount;
+  const shippingCharges = Math.round((price / 100) * 5);
+  const gst = 0;
+  const totalAmount = price - discount + shippingCharges + gst;
 
-  const handleRazorpayment = () => {
+  const handleRazorpayment = (paymentStatus, transactionTime) => {
     const options = {
       key: process.env.REACT_APP_RAZORPAY_KEY || "rzp_test_naqbPaCVZeqJjM",
       amount: totalAmount * 100,
@@ -59,10 +61,13 @@ console.log(userId);
       name: "Fevoff India Pvt. Ltd.",
       description: cartItems.name,
       image: logo,
-      // order_id: "order_id",
+      // order_id: order_id,
       handler: (res) => {
         console.log(res);
+        const transactionTime = new Date(res.created_at * 1000);
+        const paymentStatus = res.status;
         alert.success("Payment Successful:" + res.razorpay_payment_id);
+        dispatch(orderPaymentCallback(res,  transactionTime, paymentStatus))
         navigate("/order/confiramation");
       },
       prefill: {
@@ -85,7 +90,7 @@ console.log(userId);
     if (error) {
       alert.error(error);
     }
-   
+
     console.log(selectedOption);
     const storedUserId = localStorage.getItem("id");
     const storedUserName = localStorage.getItem("name");
@@ -96,31 +101,33 @@ console.log(userId);
     if (storedUserName) setUserName(storedUserName);
     if (storedUserContactNumber) setUserContactNumber(storedUserContactNumber);
     if (storedUserContactEmail) setUserEmail(storedUserContactEmail);
-console.log(storedUserId);
-    dispatch(getUserAddress(storedUserId))
+    console.log(storedUserId);
+
+    dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
 
-    if (cartItems && cartItems.items) {
-      // Prepare items for order
-      const orderItems = cartItems.items.map(item => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.productPrice
-      }));
-   
+    // if (cartItems && cartItems.items) {
+    //   // Prepare items for order
+    //   const orderItems = cartItems.data.items.map((item) => ({
+    //     productId: item.productId,
+    //     quantity: item.quantity,
+    //     price: item.productPrice,
+    //   }));
 
-    dispatch(orderCheckout())
-    dispatch(
-      orderCheckout(
-        storedUserId,
-        [{items: orderItems}],
-        totalAmount,
-        selectedOption,
-        address._id,
-        "pending"
-      )
-    );
-      }
+    //   // dispatch(orderCheckout());
+    //   dispatch(
+    //     orderCheckout(
+    //       storedUserId,
+    //       [{ items: orderItems }],
+    //       selectedOption,
+    //       totalAmount,
+    //       shippingCharges,
+    //       address._id,
+    //       gst,
+    //       "pending"
+    //     )
+    //   );
+    // }
 
     if (selectedOption === "Cash On Delivery") {
       checkoutOrderHandler();
@@ -131,26 +138,36 @@ console.log(storedUserId);
     setselectedOption(option);
   };
 
-  const checkoutOrderHandler = (paymentMethod) => {
+  const status = "pemding";
+  const checkoutOrderHandler = (
+    paymentMethod,
+    shippingCharges,
+    gst,
+    totalCost
+  ) => {
     dispatch(
-      orderData(userId,
-        cartItems && cartItems.items.map(item => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.price
-        })),
-        paymentMethod,
-        "pending",
-         totalAmount,
-        address && address.data.map(address=>({
-          shippingAddress:address._id
-        })),
+      orderCheckout(
+        userId,
+        cartItems &&
+          cartItems.data.items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.productPrice,
+          })),
+        selectedOption,
+        status,
+        totalAmount,
+        address._id,
+
+        gst,
+        shippingCharges,
+        totalCost
       )
     );
-    console.log(userId);
+    // console.log(userId);
   };
 
-  const handleConfiramOrder = (storedUserId) => {
+  const handleConfiramOrder = (storedUserId, orderId) => {
     if (!selectedOption) {
       alert.error("Please select a payment method");
       return;
@@ -165,9 +182,16 @@ console.log(storedUserId);
           totalAmount,
           selectedOption,
           address._id,
-          "pending"
+
+          shippingCharges,
+          gst
         )
       );
+      dispatch(orderPaymentCallback(
+        {orderId,
+          transactionTime: new Date(),
+          paymentStatus: "pending"}
+      ))
       navigate("/order/confiramation");
     }
   };
@@ -178,7 +202,7 @@ console.log(storedUserId);
     } else if (selectedOption === "Cash On Delivery") {
       handleConfiramOrder();
     }
-    // checkoutOrderHandler(selectedOption);
+    checkoutOrderHandler(selectedOption);
   }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
 
   return (
@@ -251,7 +275,9 @@ console.log(storedUserId);
                     <dt className="flex text-sm text-gray-800">
                       <span>Delivery Charges</span>
                     </dt>
-                    <dd className="text-sm font-medium text-green-700">Free</dd>
+                    <dd className="text-sm font-medium text-green-700">
+                      {shippingCharges}
+                    </dd>
                   </div>
                   <div className="flex items-center justify-between border-y border-dashed py-4 ">
                     <dt className="text-base font-medium text-gray-900">
@@ -270,11 +296,7 @@ console.log(storedUserId);
             </section>
             <div className="flex flex-col  lg:flex-row items-center justify-center  lg:justify-between  lg:w-96">
               <button
-                onClick={() =>
-                  selectedOption === "Cash On Delivery"
-                    ? handleConfiramOrder()
-                    : handlePayment()
-                }
+                onClick={handlePayment}
                 disabled={!selectedOption}
                 type="button"
                 className="btn lg:w-full mt-2 mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500"

@@ -27,7 +27,10 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   ADDRESS_DELETE_SUCCESS,
-  ADDRESS_DELETE_FAIL
+  ADDRESS_DELETE_FAIL,
+  USER_UPDATE_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAIL
 
 } from "../Constants/userConstants";
 
@@ -112,6 +115,7 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
   switch (action.type) {
     case LOAD_USER_ADDRESS_REQUEST:
       case EDIT_USER_ADDRESS_REQUEST:
+        case USER_UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -120,6 +124,7 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
       case EDIT_USER_ADDRESS_SUCCESS:
         case DELETE_REVIEW_SUCCESS:
           case ADDRESS_DELETE_SUCCESS:
+            case UPDATE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -131,6 +136,7 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
       case EDIT_USER_ADDRESS_FAIL:
         case DELETE_REVIEW_FAIL:
           case ADDRESS_DELETE_FAIL:
+            case UPDATE_USER_FAIL:
       return {
         ...state,
         loading: false,

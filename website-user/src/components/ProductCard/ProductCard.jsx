@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
                         <Star size={18} className='text-warning' />
                         <Star size={18} className='text-warning' />
                         <Star size={18} className='text-warning' />
-                        <StarHalf size={18} className='text-warning' />
+                        {/* <StarHalf size={18} className='text-warning' /> */}
                     </div>
                 </div>
                 <div className="card-actions justify-end">

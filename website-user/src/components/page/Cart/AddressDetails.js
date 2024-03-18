@@ -70,8 +70,8 @@ console.log(address);
 
   let totalPrice = 0;
   let totalDiscount = 0;
-  if (cartItems && cartItems.items) {
-    cartItems.items.forEach((product) => {
+  if (cartItems && cartItems.data && cartItems.data.items) {
+    cartItems.data.items.forEach((product) => {
       totalPrice += product.productPrice;
       totalDiscount += product.productMrp - product.productPrice;
     });
@@ -185,8 +185,11 @@ console.log(address);
             </section>
             <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mt-6 ">
               <Link to="/cart/payment"
+              disabled={!selectedAddressId.length === 0}
                 type="button"
-                className="btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
+                className={`btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 ${
+                  selectedAddressId.length === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"
+                } lg:w-96`}
               >
                 Process To Checkout
               </Link>

@@ -1,20 +1,27 @@
 import React from 'react'
-import Banner from "../../page/Home/Banner/Banner"
 import SideMenu from '../Dashboard/SideMenu'
 import Password from './Password'
+import CommonBanner from "../../CommonBanner/CommonBanner";
+import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 
 const ChangePaassword = () => {
   return (
-    <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold">
-      <Banner />
-      <h6 className="text-xs font-bold tracking-tight text-black sm:text-xs">
-        Home > My Account > Change Password
-      </h6>
-      <div className='flex'>
-        <SideMenu/>
-        <Password />
+    <>
+
+      <CommonBanner pageTitle="My Account" />
+      <Breadcrumbs breadcumr1={"My Account"} breadcumr1_link={"/myaccount"} breadcumr2={"Manage Password"} />
+
+      <div className="container mx-auto">
+        <div className="grid md:grid-cols-4 grid-cols-1 gap-4 md:my-5 my-3">
+          <div className="col-span-1 md:block hidden">
+            <SideMenu />
+          </div>
+          <div className="col-span-3">
+            <Password />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
