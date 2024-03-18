@@ -71,8 +71,23 @@ const Header = () => {
   }
 
   const btnClick = async (pageName) => {
-    navigate(pageName);
-    setIsMenuOpen(false);
+    if (pageName == '/logout') {
+      userLogout();
+    } else {
+      navigate(pageName);
+      setIsMenuOpen(false);
+    }
+  }
+
+  const userLogout = async () => {
+
+    localStorage.removeItem("id");
+    localStorage.removeItem("email");
+    localStorage.removeItem("contact");
+    localStorage.removeItem("name");
+    localStorage.removeItem("JWTToken");
+
+    navigate('/');
   }
 
   return (

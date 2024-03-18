@@ -41,25 +41,34 @@ const SideMenu = () => {
     if (storedEmail) setEmail(storedEmail);
     if (storedUserID) setUserId(storedUserID);
 
-    // dispatch(loadUser(userId))
   }, [isAuthenticated, navigate]);
 
-  const handleLogout = async () => {
-    localStorage.removeItem("name")
-    localStorage.removeItem("email")
-    localStorage.removeItem("contact")
-    localStorage.removeItem("id")
-    localStorage.removeItem("JWTToken")
 
-    alert("Logout successful")
-  };
+  const btnClick = async (pageName) => {
 
+    if (pageName == '/logout') {
+      userLogout();
+    } else {
+      navigate(pageName);
+    }
+  }
+
+  const userLogout = async () => {
+
+    localStorage.removeItem("id");
+    localStorage.removeItem("email");
+    localStorage.removeItem("contact");
+    localStorage.removeItem("name");
+    localStorage.removeItem("JWTToken");
+
+    navigate('/');
+  }
   const UserBar = [
     { name: "My Account", image: <User />, href: "/myaccount" },
     { name: "My Orders", image: <ShoppingBag />, href: "/me/orders" },
     { name: "Manage Address", image: <Blocks />, href: "/me/manageaddress" },
     { name: "Change Password", image: <Lock />, href: "/me/changepassword" },
-    { name: "Logout", image: <LogOut />, href: "/login", onClick: handleLogout },
+    { name: "Logout", image: <LogOut />, href: "/logout" },
   ];
 
 
@@ -75,56 +84,18 @@ const SideMenu = () => {
         </div>
         <div className="sidebar-menu">
           {
-            UserBar.map((user) => (
-              <div className="menu-btn" key={user._id}>
-                <Link to={user.href} className="sidebar-btn-link" >
+            UserBar.map((item) => (
+              <div className="menu-btn cursor-pointer" key={item._id} onClick={(e) => btnClick(item.href)} >
+                <button className="sidebar-btn-link">
                   <div className="flex">
-                    {user.image} <span className="ml-2">{user.name}</span>
+                    {item.image} <span className="ml-2">{item.name}</span>
                   </div>
-                </Link>
+                </button>
               </div>
             ))
           }
         </div>
       </div>
-
-      {/* Toggle button for smaller screens */}
-      <div className="lg:hidden" >
-        <button
-          onClick={toggleSidebar}
-          className="p-2 rounded-md mb-2 w-10 m-2"
-        >
-          <img src={navbar} alt="" />
-        </button>
-      </div>
-
-      {/* Sidebar overlay for smaller screens */}
-      {
-        showSidebar && (
-          <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center ">
-            <div className=" p-4 rounded-md">
-              <button onClick={toggleSidebar} className="text-xl font-bold">
-                Close
-              </button>
-              {/* Your menu items for the sidebar */}
-              {UserBar.map((user) => (
-                <Link
-                  to={user.href}
-                  className="flex flex-col text-xm space-y-6 m-2 bg-gray-300 h-12 w-80"
-                  key={user.id}
-                >
-                  <div className="flex ml-20 py-2">
-                    <div>
-                      <img src={user.image} className="w-8 mr-5" alt="" />{" "}
-                    </div>
-                    <div>{user.name}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )
-      }
     </>
   );
 };
