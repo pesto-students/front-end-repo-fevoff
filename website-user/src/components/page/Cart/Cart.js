@@ -105,8 +105,8 @@ const Cart = () => {
                     cartItems &&
                     cartItems.data && cartItems.data.items &&
                     cartItems.data.items.map((product, productIdx) => (
-                      <div key={product._id} className="grid grid-cols-5">
-                        <div className="col-span-1 img-section">
+                      <div key={product._id} className="grid md:grid-cols-5 grid-cols-4 gap-2">
+                        <div div className="col-span-1 img-section" >
                           <img
                             src={product.productMainImage}
                             alt={product.name}
@@ -168,7 +168,7 @@ const Cart = () => {
                 </button>
               </section>
 
-              <section aria-labelledby="summary-heading" className="rounded-md cart-listing-border lg:col-span-4 lg:mt-0 lg:p-0">
+              <section aria-labelledby="summary-heading" className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0">
                 <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
                   Price Details
                 </h2>
@@ -209,8 +209,8 @@ const Cart = () => {
                   You will save ₹ {discount} on this order
                 </div>
               </section>
-            </form>
-          </div>
+            </form >
+          </div >
         </>
       )
       }

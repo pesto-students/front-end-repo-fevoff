@@ -58,3 +58,16 @@
     border: 1px solid #D9D9D9;
     height: 40px !important;
 }
+
+@media(max-width:567px){
+    
+    .cart-items .img-section{
+        padding: 10px;
+    }
+    .qty-delete-section{
+        width: 100vw;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
