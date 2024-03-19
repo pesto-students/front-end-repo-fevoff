@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { Star } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
@@ -6,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 // import { CLEAR_ERRORS } from "../../../Constants/productConstant";
 import { useAlert } from "react-alert";
 import { useParams } from "react-router-dom";
+import userImage from "./../../../asset/images/for-men.jpg"
+import moment from "moment";
 
 const ProductReview = () => {
   const dispatch = useDispatch()
@@ -20,7 +23,7 @@ const ProductReview = () => {
     reviewText: "",
   });
 
-  const {  error } = useSelector((state) => state.review);
+  const { error } = useSelector((state) => state.review);
 
 
   const handleChange = (e) => {
@@ -53,16 +56,16 @@ const ProductReview = () => {
 
     if (storeUserID) setUserId(storeUserID);
 
-    
-      // dispatch(newReview(userId, productId, formData));
-    
+
+    // dispatch(newReview(userId, productId, formData));
+
   }, [dispatch, error, alert]);
 
 
   return (
     <>
-      <div className="flex flex-col h-3/5 py-16 lg:flex-row">
-        <div className="grid flex-grow w-2/5 card  rounded-box place-items-center">
+      <div className="grid md:grid-cols-3 grid-cols-1 my-9 gap-10">
+        <div className="md:col-span-1 card rounded-box m-3">
           <div className="review-heading text-center">
             <h4 className="text-4xl italic">Write A Review</h4>
           </div>
@@ -107,26 +110,30 @@ const ProductReview = () => {
             </div>
           </form>
         </div>
-        <div className="divider lg:divider-horizontal"></div>
-        
-        <div className="grid flex-grow h-96 card  rounded-box place-items-center">
-        <div className="review-heading text-center">
+
+        {/* <div className="divider w-full lg:divider-horizontal text-center"></div> */}
+
+        <div class="card md:col-span-2 mx-3">
+          <div className="review-heading text-center">
             <h4 className="text-4xl italic">Check user's write</h4>
           </div>
-          <div
-            tabIndex={0}
-            className="collapse collapse-plus border border-base-300 bg-base-200"
-          >
+          <div tabIndex={0} className="collapse collapse-plus border border-base-300" >
             <div className="collapse-title text-xl font-medium">
-             Name:
+              <div className="flex flex-row items-center">
+                <img src={userImage} alt="Image" className="user-review-image" />
+                <div className="ml-5 italic">
+                  <h5 className="mb-0">User Name</h5>
+                  <small className="text-sm text-gray-500">{moment().format("DD MMMM, YYYY")}</small>
+                </div>
+              </div>
             </div>
             <div className="collapse-content">
               <p>
-                Very good product
+                In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.
               </p>
             </div>
           </div>
-         
+
         </div>
       </div>
       {/* <div className="review-section py-8">

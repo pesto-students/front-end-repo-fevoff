@@ -131,7 +131,7 @@ export const getUserDetails = (userId) => async (dispatch) => {
     const { data } = await axios.get(`${baseURL}/users/${userId}`);
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message});
+    dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message });
   }
 };
 
