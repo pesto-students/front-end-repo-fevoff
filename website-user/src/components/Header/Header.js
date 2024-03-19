@@ -5,6 +5,7 @@ import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListColl
 import { Link } from 'react-router-dom'
 import "./header.css";
 import { useNavigate } from 'react-router-dom';
+import Logo from './../../asset/images/logo.png'
 
 const menuItems = [
   {
@@ -113,7 +114,8 @@ const Header = () => {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-12">
         <div className="inline-flex items-center space-x-2">
           <Link to={"/"}>
-            <span className="font-semibold text-3xl italic">Fevoff</span>
+            {/* <span className="font-semibold text-3xl italic">Fevoff</span> */}
+            <img src={Logo} alt='Logo' width={"100px"} />
           </Link>
         </div>
         <div className="hidden lg:block">

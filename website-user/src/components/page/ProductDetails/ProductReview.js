@@ -114,8 +114,8 @@ const ProductReview = () => {
         {/* <div className="divider w-full lg:divider-horizontal text-center"></div> */}
 
         <div class="card md:col-span-2 mx-3">
-          <div className="review-heading text-center">
-            <h4 className="text-4xl italic">Check user's write</h4>
+          <div className="review-heading text-center mb-4">
+            <h4 className="text-4xl italic">Check user's Review</h4>
           </div>
           <div tabIndex={0} className="collapse collapse-plus border border-base-300" >
             <div className="collapse-title text-xl font-medium">
