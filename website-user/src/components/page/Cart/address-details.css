@@ -41,3 +41,12 @@
     background:  #BF3900;
     color: white;
 }
+
+
+@media(max-width:567px){
+    
+    .our-address-listing{
+        padding: 10px;
+    }
+
+}

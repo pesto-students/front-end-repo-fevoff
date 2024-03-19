@@ -92,7 +92,7 @@ const AddressDetails = () => {
             <div role="list" className="address-section">
               {Array.isArray(address.data) &&
                 address.data.map((address) => (
-                  <div key={address._id} className="grid grid-cols-5 our-address-listing">
+                  <div key={address._id} className="grid md:grid-cols-5 grid-cols-4 our-address-listing">
                     <div className="col-span-1 flex items-center justify-center">
                       <input
                         type="radio"
@@ -100,7 +100,7 @@ const AddressDetails = () => {
                         value={address._id}
                         checked={(address.defaultAddress == 1) ? "checked" : selectedAddressId.includes(address._id)}
                         onChange={() => handleCheckBoxChange(address._id)}
-                        className="checkbox p-6 rounded-md"
+                        className="checkbox md:p-6 p-3 rounded-md"
                         id={`address_id${address._id}`}
                       />
                     </div>
@@ -117,7 +117,7 @@ const AddressDetails = () => {
                         {address.pincode}
                       </p>
                     </div>
-                    <div className="col-span-1 flex items-center justify-center">
+                    <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center justify-center">
                       <button type="button" className="btn-delete"
                         onClick={() => deleteAddressHandler(address._id)}>
                         <Trash size={20} />
@@ -134,7 +134,7 @@ const AddressDetails = () => {
             </Link>
           </section>
 
-          <section aria-labelledby="summary-heading" className="rounded-md cart-listing-border lg:col-span-4 lg:mt-0 lg:p-0">
+          <section aria-labelledby="summary-heading" className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0">
             <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
               Price Details
             </h2>

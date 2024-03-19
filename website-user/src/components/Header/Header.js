@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 'use client'
-import React, { useState } from 'react'
-import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks, LogIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import "./Header.css";
+import "./header.css";
 import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
@@ -32,19 +32,80 @@ const menuItems = [
     icon: <ListCollapse />,
     href: '/about-us',
   },
+];
+
+const myAccountMenu = [
+  {
+    name: 'My Account',
+    icon: <User />,
+    href: '/myaccount',
+  },
+  {
+    name: 'Manage Orders',
+    icon: <List />,
+    href: '/me/orders',
+  },
+
+  {
+    name: 'Manage Address',
+    icon: <Blocks />,
+    href: '/me/manageaddress',
+  },
+  {
+    name: 'Manage Password',
+    icon: <Lock />,
+    href: '/me/changepassword',
+  }, {
+    name: 'Logout',
+    icon: <LogOut />,
+    href: '/logout',
+  },
 ]
 
 const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const [userName, setUserName] = useState(null)
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = () => {
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+    const storedUserID = localStorage.getItem("id");
+
+    if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
+      setUserName(storedName);
+      setShowMenu(true);
+    }
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
   const btnClick = async (pageName) => {
-    navigate(pageName);
+    if (pageName == '/logout') {
+      userLogout();
+    } else {
+      navigate(pageName);
+      setIsMenuOpen(false);
+    }
+  }
+
+  const userLogout = async () => {
+
+    localStorage.removeItem("id");
+    localStorage.removeItem("email");
+    localStorage.removeItem("contact");
+    localStorage.removeItem("name");
+    localStorage.removeItem("JWTToken");
+
     setIsMenuOpen(false);
+    navigate('/');
   }
 
   return (
@@ -79,9 +140,18 @@ const Header = () => {
           </Link>
         </div>
         <div className="hidden lg:block">
-          <Link to={"/login"} className="btn web-btn-2">
-            Login
-          </Link>
+          {
+            showMenu && showMenu == true ?
+              <>
+                <Link to={"/myaccount"} className="btn web-btn-2">
+                  Hi, {userName}
+                </Link>
+              </>
+              : <><Link to={"/login"} className="btn web-btn-2">
+                Login
+              </Link></>
+          }
+
         </div>
         <div className="lg:hidden">
           <div className="drawer-content">
@@ -110,6 +180,22 @@ const Header = () => {
                         </label>
                       );
                     })
+                  }
+                  {showMenu && showMenu == true ?
+                    myAccountMenu.map((data, index) => {
+                      return (
+                        <label key={index} class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => {
+                          (data.href == '/search') ? document.getElementById('search-bar').showModal() : btnClick(data.href)
+                        }} >
+                          {data.icon}
+                          <span class="mx-2 text-sm font-medium">{data.name}</span>
+                        </label>
+                      );
+                    }) :
+                    <label class="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 menu-btn-link" onClick={(e) => btnClick("/login")} >
+                      <LogIn />
+                      <span class="mx-2 text-sm font-medium">Manage Account</span>
+                    </label>
                   }
                 </nav>
               </div>
