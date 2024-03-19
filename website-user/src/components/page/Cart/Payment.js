@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/no-redundant-roles */
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
@@ -43,6 +44,9 @@ const Payment = () => {
   const { cartItems, error, loading } = useSelector((state) => state.cart);
   const { order: orderData } = useSelector((state) => state.order);
   const { address } = useSelector((state) => state.UserProfileData);
+  const [shippingChar, setshippingChar] = useState(0);
+  const [gstCharge, setGstCharge] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
 
   console.log(cartItems, orderData, address);
 
@@ -113,65 +117,46 @@ const Payment = () => {
     dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
 
-    // if (cartItems && cartItems.items) {
-    //   // Prepare items for order
-    //   const orderItems = cartItems.data.items.map((item) => ({
-    //     productId: item.productId,
-    //     quantity: item.quantity,
-    //     price: item.productPrice,
-    //   }));
-
-    //   // dispatch(orderCheckout());
-    //   dispatch(
-    //     orderCheckout(
-    //       storedUserId,
-    //       [{ items: orderItems }],
-    //       selectedOption,
-    //       totalAmount,
-    //       shippingCharges,
-    //       address._id,
-    //       gst,
-    //       "pending"
-    //     )
-    //   );
-    // }
-
     if (selectedOption === "Cash On Delivery") {
       checkoutOrderHandler();
     }
+
+    getUserDetails()
+
   }, [userId, dispatch, error, alert, selectedOption]);
+
+  const getUserDetails = async () => {
+    const price = totalPrice + totalDiscount;
+    const discount = totalDiscount;
+    const shippingCharges = Math.round((price / 100) * 5);
+    setshippingChar(shippingCharges);
+    const gst = 0;
+    const totalAmount = price - discount + shippingCharges + gst;
+    setFinalAmount(totalAmount);
+  }
 
   const handleOptionChange = (option) => {
     setselectedOption(option);
   };
 
-  const status = "pemding";
-  const checkoutOrderHandler = (
-    paymentMethod,
-    shippingCharges,
-    gst,
-    totalCost
-  ) => {
+  const status = "pending";
+  const checkoutOrderHandler = () => {
     dispatch(
       orderCheckout(
         userId,
         cartItems &&
-          cartItems.data.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.productPrice,
-          })),
+        cartItems.data.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.productPrice,
+        })),
+        finalAmount,
         selectedOption,
-        status,
-        totalAmount,
         address._id,
-
-        gst,
-        shippingCharges,
-        totalCost
+        status,
+        shippingChar,
       )
     );
-    // console.log(userId);
   };
 
   const handleConfiramOrder = (storedUserId, orderId) => {
@@ -182,7 +167,7 @@ const Payment = () => {
     }
 
     if (selectedOption === "Cash On Delivery") {
-      
+
       dispatch(
         orderPaymentCallback({
           orderId,
