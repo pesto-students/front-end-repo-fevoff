@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Minus, Plus, Trash } from "lucide-react";
+import { Minus, Plus, Trash } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CommonBanner from "../../CommonBanner/CommonBanner";
@@ -12,6 +12,7 @@ import {
 import { clearErrors } from "../../../Action/cartAction";
 import { useAlert } from "react-alert";
 import "./cart.css";
+import Loader from "../../Layout/Loader"
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const Cart = () => {
   const checkoutHandlear = () => {
     navigate("/cart/address");
   };
-  useEffect(() => {
+  useEffect((productId, newQty) => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -70,9 +71,11 @@ const Cart = () => {
 
     if (storedUserId) setUserId(storedUserId);
     dispatch(getCartItems(storedUserId));
+    // dispatch(updateCart(userId, productId, newQty));
+    // dispatch(removeItemsToCart(userId, productId))
 
-    dispatch(getCartItems(storedUserId));
-  }, [userId, dispatch, error, alert]);
+    // dispatch(getCartItems(storedUserId));
+  }, [ dispatch, error, alert]);
 
   let totalPrice = 0;
   let totalDiscount = 0;
@@ -84,7 +87,9 @@ const Cart = () => {
   }
   const price = totalPrice + totalDiscount;
   const discount = totalDiscount;
-  const totalAmount = price - discount;
+  const shippingCharges = Math.round((price / 100) * 5);
+  const gst = 0;
+  const totalAmount = price - discount + shippingCharges + gst;
 
   return (
     <>
@@ -125,7 +130,7 @@ const Cart = () => {
                               ) : " Free Size"}
                             </p>
                             <p className="text-xl font-medium ">
-                              Price: <del><sub>&#8377;{product.productMrp}</sub></del> &#8377;{product.productPrice}
+                              Price: <del><sub className="text-red-800">&#8377;{product.productMrp}</sub></del> &#8377;{product.productPrice}
                             </p>
                             <p className="mt-2">Vendor: Fevoff PVT. LTD</p>
                           </div>
@@ -163,7 +168,7 @@ const Cart = () => {
                     ))
                   }
                 </div>
-                <button onClick={checkoutHandlear} type="button" className="btn-checkout">
+                <button onClick={checkoutHandlear} type="button" className="btn-checkout" disabled={!cartItems?.data?.items?.length}>
                   Process To Checkout
                 </button>
               </section>
@@ -190,10 +195,10 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center justify-between py-4">
                     <dt className="flex text-lg font-semibold text-dark">
-                      <span>Delivery Charges</span>
+                      <span>Delivery Charges:</span>
                     </dt>
                     <dd className="text-sm font-bold text-green-700">
-                      Free
+                      {shippingCharges}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-y border-dashed py-4 ">

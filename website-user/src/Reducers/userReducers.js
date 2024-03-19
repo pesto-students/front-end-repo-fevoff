@@ -1,4 +1,7 @@
-import { DELETE_REVIEW_FAIL, DELETE_REVIEW_SUCCESS } from "../Constants/productConstant";
+import {
+  DELETE_REVIEW_FAIL,
+  DELETE_REVIEW_SUCCESS,
+} from "../Constants/productConstant";
 import {
   CLEAR_ERRORS,
   EDIT_USER_ADDRESS_FAIL,
@@ -30,8 +33,10 @@ import {
   ADDRESS_DELETE_FAIL,
   USER_UPDATE_REQUEST,
   UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL
-
+  UPDATE_USER_FAIL,
+  UPLOAD_USER_IMAGE_FAIL,
+  UPLOAD_USER_IMAGE_REQUEST,
+  UPLOAD_USER_IMAGE_SUCCESS,
 } from "../Constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -111,20 +116,20 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
   }
 };
 
-export const userProfileDataReducer = (state = {address:{}}, action) => {
+export const userProfileDataReducer = (state = { address: {} }, action) => {
   switch (action.type) {
     case LOAD_USER_ADDRESS_REQUEST:
-      case EDIT_USER_ADDRESS_REQUEST:
-        case USER_UPDATE_REQUEST:
+    case EDIT_USER_ADDRESS_REQUEST:
+    case USER_UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
       };
     case LOAD_USER_ADDRESS_SUCCESS:
-      case EDIT_USER_ADDRESS_SUCCESS:
-        case DELETE_REVIEW_SUCCESS:
-          case ADDRESS_DELETE_SUCCESS:
-            case UPDATE_USER_SUCCESS:
+    case EDIT_USER_ADDRESS_SUCCESS:
+    case DELETE_REVIEW_SUCCESS:
+    case ADDRESS_DELETE_SUCCESS:
+    case UPDATE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -133,20 +138,20 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
         isUpdated: true,
       };
     case LOAD_USER_ADDRESS_FAIL:
-      case EDIT_USER_ADDRESS_FAIL:
-        case DELETE_REVIEW_FAIL:
-          case ADDRESS_DELETE_FAIL:
-            case UPDATE_USER_FAIL:
+    case EDIT_USER_ADDRESS_FAIL:
+    case DELETE_REVIEW_FAIL:
+    case ADDRESS_DELETE_FAIL:
+    case UPDATE_USER_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-      case EDIT_USER_ADDRESS_RESET:
-        return{
-            ...state,
-            isUpdated: false,
-        }
+    case EDIT_USER_ADDRESS_RESET:
+      return {
+        ...state,
+        isUpdated: false,
+      };
     case CLEAR_ERRORS:
       return {
         ...state,
@@ -157,27 +162,56 @@ export const userProfileDataReducer = (state = {address:{}}, action) => {
   }
 };
 
-
-export const otpLoginReducer = (state = {}, action)=>{
-  switch(action.type){
-    case SEND_OTP_REQUEST:
-      case OTP_VERIFICATION_REQUEST:
-      return{
+export const userImageUploadReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPLOAD_USER_IMAGE_REQUEST:
+      return {
+        ...state,
         loading: true,
-      }
-      case SEND_OTP_SUCCESS:
-        case OTP_VERIFICATION_SUCCESS:
-        return{
-          loading: false,
-          success: action.payload,
-        }
-        case SEND_OTP_FAIL:
-          case OTP_VERIFICATION_FAIL:
-          return{
-            loading: false,
-            error: action.payload,
-          }
-          default:
-            return state;
+      };
+    case UPLOAD_USER_IMAGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userImage: action.payload,
+      };
+    case UPLOAD_USER_IMAGE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
   }
-}
+};
+
+export const otpLoginReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SEND_OTP_REQUEST:
+    case OTP_VERIFICATION_REQUEST:
+      return {
+        loading: true,
+      };
+    case SEND_OTP_SUCCESS:
+    case OTP_VERIFICATION_SUCCESS:
+      return {
+        loading: false,
+        success: action.payload,
+      };
+    case SEND_OTP_FAIL:
+    case OTP_VERIFICATION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};

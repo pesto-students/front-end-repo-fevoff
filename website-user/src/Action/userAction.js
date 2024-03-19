@@ -30,16 +30,20 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  UPLOAD_USER_IMAGE_FAIL,
+  UPLOAD_USER_IMAGE_SUCCESS,
+  UPLOAD_USER_IMAGE_REQUEST,
 } from "../Constants/userConstants";
 
 import axios from "axios";
+const baseURL = "https://fevoff-backend.onrender.com/api";
 
 export const login = (userData, password) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post(
-      "http://localhost:3001/api/login",
+      `${baseURL}/login`,
       { userData, password },
       config
     );
@@ -62,11 +66,7 @@ export const register = (userData) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_USER_REQUEST });
     const config = { headers: { "Content-type": "application/json" } };
-    const { data } = await axios.post(
-      "http://localhost:3001/api/users",
-      userData,
-      config
-    );
+    const { data } = await axios.post(`${baseURL}/users`, userData, config);
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({
@@ -76,14 +76,27 @@ export const register = (userData) => async (dispatch) => {
   }
 };
 
+export const uploadeUserImage = (formData, userId) => async (dispatch) => {
+  try {
+    dispatch({ type: UPLOAD_USER_IMAGE_REQUEST });
+    // const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.post(
+      `${baseURL}/users-image/${userId}`,
+      formData
+      // config
+    );
+
+    dispatch({ type: UPLOAD_USER_IMAGE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: UPLOAD_USER_IMAGE_FAIL, payload: error.response.data.message });
+  }
+};
+
 export const loadUser = (userId) => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
     const config = { headers: { "Content-type": "application/json" } };
-    const { data } = await axios.get(
-      `http://localhost:3001/api/users/${userId}`,
-      config
-    );
+    const { data } = await axios.get(`${baseURL}/users/${userId}`, config);
     dispatch({ type: LOAD_USER_SUCCESS, payload: data });
     // console.log(data);
   } catch (error) {
@@ -99,7 +112,7 @@ export const updateUser = (userId) => async (dispatch) => {
     dispatch({ type: USER_UPDATE_REQUEST });
     // const config = { headers: { "Content-type": "application/json" } };
     const { data } = await axios.put(
-      `http://localhost:3001/api/users/${userId}`,
+      `${baseURL}/users/${userId}`
       // config
     );
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
@@ -110,17 +123,15 @@ export const updateUser = (userId) => async (dispatch) => {
       payload: error.response.data.message,
     });
   }
-}
+};
 
 export const getUserDetails = (userId) => async (dispatch) => {
   try {
     dispatch({ type: USER_DETAILS_REQUEST });
-    const { data } = await axios.get(
-      `http://localhost:3001/api/user/${userId}`
-    );
+    const { data } = await axios.get(`${baseURL}/users/${userId}`);
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message });
+    dispatch({ type: USER_DETAILS_FAIL, payload: error.response.data.message});
   }
 };
 
@@ -128,26 +139,22 @@ export const getUserAddress = (userId) => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_ADDRESS_REQUEST });
     // const config = { headers: { "Content-type": "application/json" } };
-    const { data } = await axios.get(
-      `http://localhost:3001/api/users-address/${userId}`
-    );
+    const { data } = await axios.get(`${baseURL}/users-address/${userId}`);
     dispatch({ type: LOAD_USER_ADDRESS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: LOAD_USER_ADDRESS_FAIL,
-      payload: error.message,
+      payload: error.response.data.message,
     });
   }
 };
 
 export const deleteAddress = (addressId) => async (dispatch) => {
   try {
-    const data = await axios.delete(
-      `http://localhost:3001/api/users-address/${addressId}`
-    );
+    const data = await axios.delete(`${baseURL}/users-address/${addressId}`);
     dispatch({ type: ADDRESS_DELETE_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: ADDRESS_DELETE_FAIL, payload: error.message });
+    dispatch({ type: ADDRESS_DELETE_FAIL, payload: error.response.data.message });
   }
 };
 
@@ -157,7 +164,7 @@ export const editUserAddress =
       dispatch({ type: EDIT_USER_ADDRESS_REQUEST });
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.put(
-        `http://localhost:3001/api/users-address/update/${addressId}`,
+        `${baseURL}/users-address/update/${addressId}`,
         updatedAddressData,
         config
       );
@@ -165,7 +172,7 @@ export const editUserAddress =
     } catch (error) {
       dispatch({
         type: EDIT_USER_ADDRESS_FAIL,
-        payload: error.message,
+        payload: error.response.data.message,
       });
     }
   };
@@ -174,11 +181,7 @@ export const sendOtp = (userData) => async (dispatch) => {
   try {
     dispatch({ type: SEND_OTP_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
-    const { data } = await axios.post(
-      `http://localhost:3001/api/send-otp`,
-      userData,
-      config
-    );
+    const { data } = await axios.post(`${baseURL}/send-otp`, userData, config);
     dispatch({ type: SEND_OTP_SUCCESS, payload: data });
     localStorage.setItem("id", data.data.userId);
   } catch (error) {
@@ -191,7 +194,7 @@ export const verifyOtp = (userId, userOtp) => async (dispatch) => {
     dispatch({ type: OTP_VERIFICATION_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post(
-      `http://localhost:3001/api/otp-verification`,
+      `${baseURL}/otp-verification`,
       userId,
       userOtp,
       config

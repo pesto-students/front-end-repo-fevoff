@@ -11,10 +11,12 @@ import {
   categoryReducer,
   productDetailsReducer,
   productReducer,
+  reviewReducer,
 } from "./Reducers/productReducers";
 import {
   otpLoginReducer,
   userDetailsReducer,
+  userImageUploadReducer,
   userProfileDataReducer,
   userReducer,
 } from "./Reducers/userReducers";
@@ -45,6 +47,8 @@ const persistedReducer = persistReducer(
     category: categoryReducer,
     brand: brandReducer,
     orderDetails: orderDetailsReducer,
+    userImage: userImageUploadReducer,
+    review: reviewReducer,
   })
 );
 

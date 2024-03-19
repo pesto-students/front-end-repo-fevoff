@@ -46,6 +46,7 @@ const Login = () => {
           <div className="login-form-content p-2 md:p-l-4">
             <h1 className="form-heading">Login</h1>
             <p className="form-content hidden md:block">Get access to your Orders <br />Wish list and Recommendations</p>
+            <p className="text-red-500">Do not have any account !<br></br><Link to="/register" className="register-link">Click to Create</Link> </p>
           </div>
           <div className="login-form p-2 md:p-r-4">
             <div className="md:mr-16 mx-2">

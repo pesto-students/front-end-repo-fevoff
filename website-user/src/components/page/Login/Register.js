@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import { clearErrors, register } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = ({ location, history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate()
   
 
   const { error, loading, isAuthenticated } = useSelector(
@@ -53,7 +54,7 @@ const Register = ({ location, history }) => {
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      history.push("/account");
+      navigate("/myaccount");
     }
   }, [dispatch, isAuthenticated, alert, error, history]);
   return (

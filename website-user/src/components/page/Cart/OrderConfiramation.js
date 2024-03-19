@@ -8,6 +8,7 @@ import "./confirmation.css"
 const OrderConfiramation = () => {
   return (
     <>
+    
       <CommonBanner pageTitle={"Order Confirmation"} />
       <Breadcrumbs breadcumr1={"Order Confirmation"} />
       <div className="container mx-auto mb-5 flex flex-col items-center pt-5 pb-10 italic font-semibold">

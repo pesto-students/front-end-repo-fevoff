@@ -11,6 +11,8 @@ import {
   GET_ORDER_DETAILS_SUCCESS,
 } from "../Constants/orderConstants";
 
+const baseURL = "https://fevoff-backend.onrender.com/api"
+
 export const orderCheckout =
   (
     userId,
@@ -26,7 +28,7 @@ export const orderCheckout =
       dispatch({ type: CREATE_ORDER_REQUEST });
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
-        `http://localhost:3001/api/checkout`,
+        `${baseURL}/checkout`,
         {
           userId,
           items,
@@ -58,7 +60,7 @@ export const orderPaymentCallback =
       dispatch({ type: CREATE_ORDER_PAYMENT_REQUEST });
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
-        `http://localhost:3001/api/payment/callback`,
+        `${baseURL}/payment/callback`,
 
         orderId,
         transactionId,
@@ -82,9 +84,9 @@ export const orderPaymentCallback =
   export const getOrderDetils = (userId) => async (dispatch) => {
     try {
       dispatch({ type: 'GET_ORDER_DETAILS_REQUEST' });
-      const data  = await axios.get(`http://localhost:3001/api/order/${userId}`);
+      const data  = await axios.get(`${baseURL}/order/${userId}`);
       dispatch({ type: 'GET_ORDER_DETAILS_SUCCESS', payload: data });
     } catch (error) {
-      dispatch({ type: 'GET_ORDER_DETAILS_FAIL', payload: error.message });
+      dispatch({ type: 'GET_ORDER_DETAILS_FAIL', payload: error.message, });
     }
   };

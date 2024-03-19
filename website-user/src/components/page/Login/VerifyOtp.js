@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 
 import { clearErrors, sendOtp, verifyOtp } from "../../../Action/userAction";
+import { useParams } from "react-router-dom";
 
 const VerifyOtp = () => {
   const [contact, setContact] = useState("");
@@ -11,6 +12,7 @@ const VerifyOtp = () => {
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const alert = useAlert();
+  const {userID} = useParams()
   const { otpLogin, error } = useSelector((state) => state.otpLogin);
 
   const handleSendOtp = (e) => {
@@ -26,7 +28,7 @@ const VerifyOtp = () => {
       alert.error("Please enter OTP")
       return;
     }
-    dispatch(verifyOtp({userId: userid, userOtp: otp}))
+    dispatch(verifyOtp({userId: userID, userOtp: otp}))
   }
 
   const handleOtpChange = (event) => {

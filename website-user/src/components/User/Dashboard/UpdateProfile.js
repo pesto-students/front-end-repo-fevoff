@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import UserImage from "./../../../asset/images/for-women.jpg";
-import { updateUser } from "../../../Action/userAction";
+import { updateUser, uploadeUserImage } from "../../../Action/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { CLEAR_ERRORS } from "../../../Constants/userConstants";
@@ -10,7 +10,7 @@ const UpdateProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [userId, setUserId] = useState();
-  
+
   const [userData, setUserData] = useState({
     name: "",
     dateOfBirth: "",
@@ -18,13 +18,14 @@ const UpdateProfile = () => {
     email: "",
     gender: "",
     alternateNumber: "",
-    profileImage: null,
+    profileImage: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
+  const { UserImage } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,12 +37,30 @@ const UpdateProfile = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setImagePreview(file);
+    if (file) {
+      setUserData((prevData) => ({
+        ...prevData,
+        profileImage: file,
+      }));
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
-  const handleSubmit = (e, ) => {
+  const handleSubmit = (e, data) => {
     e.preventDefault();
-    dispatch(updateUser(userId, userData));
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('name', userData.name);
+    formData.append('dateOfBirth', userData.dateOfBirth);
+    formData.append('contact', userData.contact);
+    formData.append('email', userData.email);
+    formData.append('gender', userData.gender);
+    formData.append('alternateNumber', userData.alternateNumber);
+    formData.append('profileImage', userData.profileImage);
+  
+    dispatch(updateUser(userId, formData));
+    dispatch(uploadeUserImage(formData.profileImage, userId));
+  
   };
 
   useEffect(() => {
@@ -124,12 +143,12 @@ const UpdateProfile = () => {
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="file"
               onChange={handleFileChange}
-              value={userData.profileImage}
+              // value={userData.profileImage}
             />
             <div className="user-profile-img">
               {imagePreview && (
                 <img
-                  src={URL.createObjectURL(imagePreview)}
+                  src={imagePreview}
                   alt="Userimage"
                   className="profile-image"
                 />
