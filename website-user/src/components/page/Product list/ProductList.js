@@ -44,7 +44,6 @@ const ProductList = () => {
   }, [dispatch, error, alert]);
 
   useEffect(() => {
-    // Filter products based on category and brand
     let filteredProducts = products.filter((product) => {
       if (category && brand) {
         return product.category === category && product.brand === brand;
@@ -74,46 +73,48 @@ const ProductList = () => {
             <h1 className="text-5xl italic">Our Products</h1>
           </div>
           <div className="product-filter mb-6">
-            <div className="grid grid-cols-4 mx-auto gap-3 my-5">
-              <input
-                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                type="text"
-                placeholder="Search Product"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <select
-                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option>Select Category</option>
-                {categoryData &&
-                  categoryData.data.data &&
-                  categoryData.data.data.map((ct) => (
-                    <option key={ct._id} value={ct._id}>
-                      {ct.name}
-                    </option>
-                  ))}
-              </select>
-              <select
-                className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              >
-                <option>Select Brand</option>
-                {brandData &&
-                  brandData.data.data &&
-                  brandData.data.data.map((brd) => (
-                    <option key={brd._id} value={brd._id}>
-                      {brd.name}
-                    </option>
-                  ))}
-              </select>
-              <button type="submit" className="web-btn-3">
-                Search
-              </button>
-            </div>
+            <form>
+              <div className="grid grid-cols-4 mx-auto gap-3 my-5">
+                {/* <input
+                  className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                  type="text"
+                  placeholder="Search Product"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                /> */}
+                <select
+                  className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option>Select Category</option>
+                  {categoryData &&
+                    categoryData.data.data &&
+                    categoryData.data.data.map((ct) => (
+                      <option key={ct._id} value={ct._id}>
+                        {ct.name}
+                      </option>
+                    ))}
+                </select>
+                <select
+                  className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                >
+                  <option>Select Brand</option>
+                  {brandData &&
+                    brandData.data.data &&
+                    brandData.data.data.map((brd) => (
+                      <option key={brd._id} value={brd._id}>
+                        {brd.name}
+                      </option>
+                    ))}
+                </select>
+                {/* <button type="submit" className="web-btn-3">
+                  Search
+                </button> */}
+              </div>
+            </form>
             <div className="product-list">
               <div className="grid md:grid-cols-5 grid-cols-2 md:gap-5 gap-2 product-listing">
                 {filteredProducts.map((product, index) => (
