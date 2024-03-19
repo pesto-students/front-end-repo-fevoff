@@ -42,7 +42,7 @@ function App() {
           <Route path="/verifyotp" element={<VerifyOtp />} />
           <Route path="/myaccount" element={<User />} />
           <Route path="/me/manageaddress" element={<ManageAddress />} />
-          <Route path="/me/updateaddress" element={<UpdateAddress />} />
+          <Route path="/me/updateaddress/:addressId" element={<UpdateAddress />} />
           <Route path="/me/changepassword" element={<ChangePaassword />} />
           <Route path="/me/orders" element={<ManageOrders />} />
           <Route path="/about-us" element={<AboutUs />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   clearErrors,
   getUserAddress,
@@ -13,7 +13,7 @@ const Address = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [userId, setUserId] = useState();
-
+  
   const [selectedAddressId, setselectedAddressId] = useState([]);
 
   const { loading, error, address } = useSelector(
@@ -73,7 +73,7 @@ const Address = () => {
                     {addressItem.city} {addressItem.state} {addressItem.pincode}{" "}
                   </p>
                   <div className="box-footer mt-3 gap-4">
-                    <Link to="/me/updateaddress">
+                    <Link to={`/me/updateaddress/${addressItem._id}`}>
                       <button type="button" className="btn-edit">
                         Edit
                       </button>

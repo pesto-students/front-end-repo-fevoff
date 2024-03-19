@@ -135,7 +135,7 @@ export const getUserAddress = (userId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOAD_USER_ADDRESS_FAIL,
-      payload: error.response.data.message,
+      payload: error.message,
     });
   }
 };
@@ -156,16 +156,16 @@ export const editUserAddress =
     try {
       dispatch({ type: EDIT_USER_ADDRESS_REQUEST });
       const config = { headers: { "Content-Type": "application/json" } };
-      const { data } = await axios.post(
-        `http://localhost:3001/api/users-address/${addressId}`,
+      const { data } = await axios.put(
+        `http://localhost:3001/api/users-address/update/${addressId}`,
         updatedAddressData,
         config
       );
-      dispatch({ type: EDIT_USER_ADDRESS_SUCCESS, payload: data.success });
+      dispatch({ type: EDIT_USER_ADDRESS_SUCCESS, payload: data });
     } catch (error) {
       dispatch({
         type: EDIT_USER_ADDRESS_FAIL,
-        payload: error.response.data.message,
+        payload: error.message,
       });
     }
   };
