@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import UserImage from "./../../../asset/images/for-women.jpg";
-import { updateUser, uploadeUserImage } from "../../../Action/userAction";
+import { updateUser, uploadeUserImage, getUserDetails } from "../../../Action/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { CLEAR_ERRORS } from "../../../Constants/userConstants";
+import moment from "moment";
 
 const UpdateProfile = () => {
   const dispatch = useDispatch();
@@ -37,16 +38,25 @@ const UpdateProfile = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+      const imageCode = reader.result.split(';base64,')[1];
+
       setUserData((prevData) => ({
         ...prevData,
-        profileImage: file,
+        profileImage: imageCode,
       }));
-      setImagePreview(URL.createObjectURL(file));
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = (e, data) => {
+
     e.preventDefault();
     const formData = new FormData();
     formData.append('userId', userId);
@@ -57,10 +67,10 @@ const UpdateProfile = () => {
     formData.append('gender', userData.gender);
     formData.append('alternateNumber', userData.alternateNumber);
     formData.append('profileImage', userData.profileImage);
-  
-    dispatch(updateUser(userId, formData));
-    dispatch(uploadeUserImage(formData.profileImage, userId));
-  
+
+    dispatch(updateUser(userId, JSON.stringify(formData)));
+    /* dispatch(uploadeUserImage(formData.profileImage, userId)); */
+
   };
 
   useEffect(() => {
@@ -95,23 +105,28 @@ const UpdateProfile = () => {
             />
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-              type="text"
+              type="date"
               name="dateOfBirth"
               placeholder="Date Of Birth"
               onChange={handleChange}
               value={userData.dateOfBirth}
+              max={moment().subtract(10, 'years').format("YYYY-MM-DD")}
             />
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-              type="text"
+              type="number"
               name="contact"
               placeholder="Enter Your Contact"
-              onChange={handleChange}
+              onChange={(e) => {
+                if (e.target.value.length <= 10) {
+                  handleChange(e);
+                }
+              }}
               value={userData.contact}
             />
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-              type="text"
+              type="email"
               name="email"
               placeholder="Enter Your Email"
               onChange={handleChange}
@@ -136,14 +151,18 @@ const UpdateProfile = () => {
               type="text"
               name="alternateNumber"
               placeholder="Enter Alternate Number"
-              onChange={handleChange}
-              value={userData.contact}
+              onChange={(e) => {
+                if (e.target.value.length <= 10) {
+                  handleChange(e);
+                }
+              }}
+              value={userData.alternateNumber}
             />
             <input
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
-              type="file"
+              type="file" accept="image/*"
               onChange={handleFileChange}
-              // value={userData.profileImage}
+            // value={userData.profileImage}
             />
             <div className="user-profile-img">
               {imagePreview && (
