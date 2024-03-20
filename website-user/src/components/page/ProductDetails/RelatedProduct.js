@@ -5,7 +5,7 @@ import ProductCard from "../../ProductCard/ProductCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import ProductSkelton from "../Product list/ProductSkelton";
 
 const RelatedProduct = () => {
 
@@ -56,13 +56,21 @@ const RelatedProduct = () => {
         <h4 className="text-4xl italic">Related Products</h4>
       </div>
       <div className="page-slick-slider">
-        <Slider {...settings} className="custom-slider">
-          {products.map((product, index) => (
-            <>
-              <ProductCard product={product} key={index} />
-            </>
-          ))}
-        </Slider>
+        {loading ? (
+          <>
+            <div className="mt-5">
+              <ProductSkelton />
+            </div>
+          </>
+        ) : (
+          <Slider {...settings} className="custom-slider">
+            {products.map((product, index) => (
+              <>
+                <ProductCard product={product} key={index} />
+              </>
+            ))}
+          </Slider>
+        )}
       </div>
     </div>
   );
