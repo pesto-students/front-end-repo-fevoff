@@ -15,6 +15,7 @@ import {
 } from "./Reducers/productReducers";
 import {
   otpLoginReducer,
+  userAddressDataReducer,
   userDetailsReducer,
   userImageUploadReducer,
   userProfileDataReducer,
@@ -49,6 +50,7 @@ const persistedReducer = persistReducer(
     orderDetails: orderDetailsReducer,
     userImage: userImageUploadReducer,
     review: reviewReducer,
+    userAddress: userAddressDataReducer,
   })
 );
 

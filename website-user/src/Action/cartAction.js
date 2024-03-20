@@ -15,6 +15,7 @@ import {
 import { CLEAR_ERRORS } from "../Constants/productConstant";
 
 const baseURL = "https://fevoff-backend.onrender.com/api"
+// const baseURL = "http://localhost:3001/api"
 
 export const addItemsToCart =
   (userId, productId, quantity, size) => async (dispatch, getState) => {
@@ -66,7 +67,7 @@ export const getCartItems = (userId) => async (dispatch) => {
     // console.log(data);
     dispatch({ type: CART_ITEM_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: CART_ITEM_FAIL, payload: error.message });
+    dispatch({ type: CART_ITEM_FAIL, payload: error.response.data.message });
   }
 };
 

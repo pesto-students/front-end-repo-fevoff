@@ -19,27 +19,30 @@ const SideMenu = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   const { isAuthenticated, userDetails } = useSelector((state) => state.userDetails);
 
-  console.log(userDetails);
+  
 
-  useEffect(() => {
+  useEffect((storedUserID) => {
     if (isAuthenticated === false) {
       navigate("/login");
     }
 
     checkUser();
-    dispatch(getUserDetails(userId));
+    fetch(getUserDetails(storedUserID));
   }, [isAuthenticated, navigate, userId]);
 
   const checkUser = () => {
     const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
     const storedUserID = localStorage.getItem("id");
+    const storedUserImage = localStorage.getItem("imageUrl");
     if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
     if (storedUserID) setUserId(storedUserID);
+    if (storedUserImage) setUserImage(storedUserImage);
 
     if (
       storedName !== "" &&
@@ -84,7 +87,7 @@ const SideMenu = () => {
     <>
       <div className="sidebar">
         <div className="image-section">
-          <img src={UserImage} alt="Userimage" className="profile-image" />
+          <img src={userImage} alt="Userimage" className="profile-image" />
         </div>
         <div className="font-semibold italic">
           <h3 className="font-bold text-2xl">Hello, {name}</h3>

@@ -9,8 +9,7 @@ import { Link } from "react-router-dom";
 import CommonBaner from "./../../CommonBanner/CommonBanner";
 import Breadcrumbs from "./../../Breadcrumbs/Breadcrumbs";
 import "./address-details.css";
-import Loader from "../../Layout/Loader"
-
+import Loader from "../../Layout/Loader";
 
 const AddressDetails = () => {
   const dispatch = useDispatch();
@@ -116,7 +115,7 @@ const AddressDetails = () => {
                             name="address_id"
                             value={address._id}
                             checked={
-                              address.defaultAddress == 1
+                              address.defaultAddress === 1
                                 ? "checked"
                                 : selectedAddressId.includes(address._id)
                             }
@@ -136,10 +135,10 @@ const AddressDetails = () => {
                             {address.state} {address.pincode}
                           </p>
                         </div>
-                        <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center justify-center">
+                        <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center flex-col justify-center">
                           <button
                             type="button"
-                            className="btn-delete"
+                            className="btn-delete lg:mt-2"
                             onClick={() => deleteAddressHandler(address._id)}
                           >
                             <Trash size={20} />
@@ -152,9 +151,16 @@ const AddressDetails = () => {
                   to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
                   // disabled={!selectedAddressId.length === 0}
                   type="button"
-                  className={`btn-payment ${selectedAddressId.length === 0 ? 'disabled' : ''}`}
+                  className={`btn-payment ${
+                    selectedAddressId.length === 0 ? "disabled" : ""
+                  }`}
                 >
                   Process To Payment
+                </Link>
+                <Link to="/cart/addnewaddress">
+                  <button type="button" className=" btn-payment">
+                    Add Address
+                  </button>
                 </Link>
               </section>
 
@@ -185,7 +191,9 @@ const AddressDetails = () => {
                     <dt className="flex text-lg font-semibold text-dark">
                       <span>Delivery Charges:</span>
                     </dt>
-                    <dd className="text-sm font-bold text-green-700">{shippingCharges}</dd>
+                    <dd className="text-sm font-bold text-green-700">
+                      {shippingCharges}
+                    </dd>
                   </div>
                   <div className="flex items-center justify-between border-y border-dashed py-4 ">
                     <dt className="text-base font-bold text-gray-900">

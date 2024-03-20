@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import "./Header.css";
 import { useNavigate } from 'react-router-dom';
 import Logo from './../../asset/images/logo.png'
+// import { useDispatch } from 'react-redux';
+// import { getProduct } from '../../Action/productAction';
 
 const menuItems = [
   {
@@ -23,6 +25,7 @@ const menuItems = [
     name: 'Search',
     icon: <Search />,
     href: '/search',
+    // onClick: handleSearch,
   },
   {
     name: 'Contact Us',
@@ -68,7 +71,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [userName, setUserName] = useState(null)
+  // const dispatch = useDispatch();
+  // const [keyword, setKeyword] = useState('');
 
+  // const handleSearch = () => {
+    
+  //   dispatch(getProduct(keyword));
+  // };
   useEffect(() => {
     checkUser();
   }, []);

@@ -72,7 +72,7 @@ const UpdateProfile = () => {
     formData.append("profileImage", userData.profileImage);
 
     dispatch(updateUser(userId, JSON.stringify(formData)));
-    /* dispatch(uploadeUserImage(formData.profileImage, userId)); */
+    //  dispatch(uploadeUserImage(formData.profileImage, userId));
   };
 
   useEffect(() => {

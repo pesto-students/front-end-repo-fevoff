@@ -26,14 +26,15 @@ import {
 } from "../Constants/productConstant";
 
 const baseURL = "https://fevoff-backend.onrender.com/api"
+// const baseURL = "http://localhost:3001/api"
 
-export const getProduct = () => async (dispatch) => {
+export const getProduct = (keyword="") => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
     const config = { headers: { "Content-type": "application/json" } };
 
     const responce = await axios.get(
-      `${baseURL}/products`,
+      `${baseURL}/products?keyword=${keyword}`,
       config
     );
 

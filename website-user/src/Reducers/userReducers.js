@@ -37,6 +37,9 @@ import {
   UPLOAD_USER_IMAGE_FAIL,
   UPLOAD_USER_IMAGE_REQUEST,
   UPLOAD_USER_IMAGE_SUCCESS,
+  ADD_USER_ADDRESS_SUCCESS,
+  ADD_USER_ADDRESS_FAIL,
+  ADD_USER_ADDRESS_REQUEST,
 } from "../Constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -127,9 +130,9 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
       };
     case LOAD_USER_ADDRESS_SUCCESS:
     case EDIT_USER_ADDRESS_SUCCESS:
-    case DELETE_REVIEW_SUCCESS:
     case ADDRESS_DELETE_SUCCESS:
     case UPDATE_USER_SUCCESS:
+    case ADD_USER_ADDRESS_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -139,9 +142,9 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
       };
     case LOAD_USER_ADDRESS_FAIL:
     case EDIT_USER_ADDRESS_FAIL:
-    case DELETE_REVIEW_FAIL:
     case ADDRESS_DELETE_FAIL:
     case UPDATE_USER_FAIL:
+    case ADD_USER_ADDRESS_FAIL:
       return {
         ...state,
         loading: false,
@@ -152,6 +155,38 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
         ...state,
         isUpdated: false,
       };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userAddressDataReducer = (state = { address: {} }, action) => {
+  switch (action.type) {
+    case ADD_USER_ADDRESS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ADD_USER_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        address: action.payload,
+      };
+
+    case ADD_USER_ADDRESS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
     case CLEAR_ERRORS:
       return {
         ...state,

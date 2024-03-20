@@ -44,13 +44,14 @@ const Cart = () => {
     dispatch(updateCart(userId, productId, newQty));
   };
 
-  const deleteCartItems = (productId) => {
+  const deleteCartItems = async (productId) => {
     dispatch(removeItemsToCart(userId, productId))
       .then(() => {
         alert.success("Item deleted to cart successfully!");
+        dispatch(getCartItems(userId))
       })
       .catch((error) => {
-        alert.error(`Failed to delete item to cart: ${error.message}`);
+        alert.error("Failed to delete item to cart");
       });
   };
 
@@ -70,12 +71,12 @@ const Cart = () => {
     const storedUserId = localStorage.getItem("id");
 
     if (storedUserId) setUserId(storedUserId);
-    dispatch(getCartItems(storedUserId));
+    // dispatch(getCartItems(storedUserId));
     // dispatch(updateCart(userId, productId, newQty));
     // dispatch(removeItemsToCart(userId, productId))
 
     // dispatch(getCartItems(storedUserId));
-  }, [ dispatch, error, alert]);
+  }, [ dispatch, error, alert, userId]);
 
   let totalPrice = 0;
   let totalDiscount = 0;

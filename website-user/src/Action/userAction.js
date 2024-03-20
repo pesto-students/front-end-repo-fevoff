@@ -33,10 +33,14 @@ import {
   UPLOAD_USER_IMAGE_FAIL,
   UPLOAD_USER_IMAGE_SUCCESS,
   UPLOAD_USER_IMAGE_REQUEST,
+  ADD_USER_ADDRESS_SUCCESS,
+  ADD_USER_ADDRESS_FAIL,
+  ADD_USER_ADDRESS_REQUEST,
 } from "../Constants/userConstants";
 
 import axios from "axios";
 const baseURL = "https://fevoff-backend.onrender.com/api";
+// const baseURL = "http://localhost:3001/api"
 
 export const login = (userData, password) => async (dispatch) => {
   try {
@@ -50,7 +54,7 @@ export const login = (userData, password) => async (dispatch) => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
     if (data.status === true) {
-      console.log(data);
+      // console.log(data);
       localStorage.setItem("JWTToken", data.jwtToken);
       localStorage.setItem("id", data.data._id);
       localStorage.setItem("name", data.data.name);
@@ -107,15 +111,15 @@ export const loadUser = (userId) => async (dispatch) => {
   }
 };
 
-export const updateUser = (userId) => async (dispatch) => {
+export const updateUser = (userId, data) => async (dispatch) => {
   try {
     dispatch({ type: USER_UPDATE_REQUEST });
     // const config = { headers: { "Content-type": "application/json" } };
-    const { data } = await axios.put(
-      `${baseURL}/users/${userId}`
+    const { res } = await axios.put(
+      `${baseURL}/users/${userId}`, data
       // config
     );
-    dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+    dispatch({ type: USER_UPDATE_SUCCESS, payload: res });
     // console.log(data);
   } catch (error) {
     dispatch({
@@ -145,6 +149,20 @@ export const getUserAddress = (userId) => async (dispatch) => {
     dispatch({
       type: LOAD_USER_ADDRESS_FAIL,
       payload: error.response.data.message,
+    });
+  }
+};
+
+export const addUserAddress = (updatedAddressData, JWT) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_USER_ADDRESS_REQUEST });
+    const config = { headers: {Authorization: `Bearer ${JWT}`, "Content-type": "application/json" } };
+    const { data } = await axios.post(`${baseURL}/users-address`,updatedAddressData, config);
+    dispatch({ type: ADD_USER_ADDRESS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ADD_USER_ADDRESS_FAIL,
+      payload: error.message,
     });
   }
 };

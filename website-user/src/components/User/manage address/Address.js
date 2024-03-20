@@ -13,7 +13,7 @@ const Address = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [userId, setUserId] = useState();
-  
+
   const [selectedAddressId, setselectedAddressId] = useState([]);
 
   const { loading, error, address } = useSelector(
@@ -38,14 +38,14 @@ const Address = () => {
       dispatch(clearErrors());
     }
     const storedUserId = localStorage.getItem("id");
-    if (storedUserId) setUserId(storedUserId)
-      dispatch(getUserAddress(storedUserId));
-    
+    if (storedUserId) setUserId(storedUserId);
+    dispatch(getUserAddress(storedUserId));
+
     if (selectedAddressId.length > 0) {
       const selectedAddress = address.data.filter((addr) =>
         selectedAddressId.includes(addr._id)
       );
-      dispatch(deleteAddress(selectedAddress))
+      dispatch(deleteAddress(selectedAddress));
     }
   }, [dispatch, error, alert]);
 
