@@ -62,8 +62,8 @@ const AddAddress = () => {
 
   return (
     <>
-      <CommonBanner pageTitle={"Cart Details"} />
-      <Breadcrumbs breadcumr1="Cart Details" />
+      <CommonBanner pageTitle={"Manage Account"} />
+      <Breadcrumbs breadcumr1="Add Address" />
       <div className="container mx-auto italic font-semibold ">
         <div className="grid items-center justify-items-center gap-x-4 gap-y-10 lg:grid-cols-2">
           {/* contact from */}
