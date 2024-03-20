@@ -24,11 +24,10 @@ import {
   GET_BRAND_DETAILS_SUCCESS,
   GET_BRAND_DETAILS_FAIL,
 } from "../Constants/productConstant";
+import { baseURL } from "./baseUrl";
 
-const baseURL = "https://fevoff-backend.onrender.com/api"
-// const baseURL = "http://localhost:3001/api"
 
-export const getProduct = (keyword="") => async (dispatch) => {
+export const getProduct = (keyword = "") => async (dispatch) => {
   try {
     dispatch({ type: ALL_PRODUCT_REQUEST });
     const config = { headers: { "Content-type": "application/json" } };
@@ -74,7 +73,7 @@ export const newReview = (productId, userId, rating, reviewText) => async (dispa
     dispatch({ type: NEW_REVIEW_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(`${baseURL}/reviews`, {productId, userId, rating, reviewText}, config);
+    const { data } = await axios.post(`${baseURL}/reviews`, { productId, userId, rating, reviewText }, config);
 
     dispatch({
       type: NEW_REVIEW_SUCCESS,
@@ -103,7 +102,7 @@ export const getCategory = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: GET_CATEGORY_FAIL, payload: error.data.message,});
+    dispatch({ type: GET_CATEGORY_FAIL, payload: error.data.message, });
   }
 };
 
@@ -111,7 +110,7 @@ export const getCategoryDetails = (categoryId) => async (dispatch) => {
   try {
     dispatch({ type: GET_CATEGORY_DETAILS_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
-    const {data} = await axios.get(
+    const { data } = await axios.get(
       `${baseURL}/categorys/${categoryId}`,
 
       config

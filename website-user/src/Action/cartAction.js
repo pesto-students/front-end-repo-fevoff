@@ -13,9 +13,7 @@ import {
   ADD_TO_CART_FAIL,
 } from "../Constants/cartConstants";
 import { CLEAR_ERRORS } from "../Constants/productConstant";
-
-const baseURL = "https://fevoff-backend.onrender.com/api"
-// const baseURL = "http://localhost:3001/api"
+import { baseURL } from "./baseUrl";
 
 export const addItemsToCart =
   (userId, productId, quantity, size) => async (dispatch, getState) => {
@@ -23,9 +21,9 @@ export const addItemsToCart =
       dispatch({ type: ADD_TO_CART });
       // const requestData = { userId, productId, quantity, size };
       const config = { headers: { "Content-Type": "application/json" } };
-      const data  = await axios.post(
+      const data = await axios.post(
         `${baseURL}/cart`,
-        userId, productId, quantity, size , config,
+        userId, productId, quantity, size, config,
       );
 
       dispatch({
