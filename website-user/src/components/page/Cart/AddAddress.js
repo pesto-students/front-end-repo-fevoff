@@ -13,7 +13,7 @@ const AddAddress = () => {
   const [userJWT, setUserJWT] = useState();
 // console.log(userId, userJWT);
   const [userData, setUserData] = useState({
-    userId: userId,
+    userId,
     name: "",
     email: "",
     contact: "",
@@ -36,11 +36,7 @@ const AddAddress = () => {
     }));
   };
 
-  const handleSubmit = (e, selectedAddress) => {
-    e.preventDefault();
-
-    dispatch(addUserAddress(userData, userJWT));
-  };
+  
 
   useEffect(() => {
     if (error) {
@@ -61,6 +57,13 @@ const AddAddress = () => {
     //   }
     // dispatch(addUserAddress(userData, userJWT));
   }, [error, dispatch, alert]);
+
+  const handleSubmit = (e, storeUserID, storeUserJWT) => {
+    e.preventDefault();
+
+    dispatch(addUserAddress(userData, userJWT, userId));
+  };
+
   return (
     <div>
       <div className="mx-auto  py-12 md:py-24 bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold ">
