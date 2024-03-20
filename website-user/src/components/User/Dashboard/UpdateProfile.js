@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
-import UserImage from "./../../../asset/images/for-women.jpg";
 import {
   updateUser,
-  uploadeUserImage,
   getUserDetails,
 } from "../../../Action/userAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +23,12 @@ const UpdateProfile = () => {
     alternateNumber: "",
     profileImage: "",
   });
+
   const [imagePreview, setImagePreview] = useState(null);
 
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user
+  const { error, loading, isAuthenticated, user } = useSelector(
+    (state) => state.userDetails
   );
- 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +37,7 @@ const UpdateProfile = () => {
       [name]: value,
     }));
   };
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -61,7 +59,20 @@ const UpdateProfile = () => {
 
   const handleSubmit = (e, data) => {
     e.preventDefault();
-    const formData = new FormData();
+
+    const updatData = {
+      "userId": userId,
+      "name": userData.name,
+      "dateOfBirth": userData.dateOfBirth,
+      "contact": userData.contact,
+      "email": userData.email,
+      "gender": userData.gender,
+      "alternateNumber": userData.alternateNumber,
+      "profileImage": userData.profileImage,
+    }
+
+    /* const formData = new FormData();
+    
     formData.append("userId", userId);
     formData.append("name", userData.name);
     formData.append("dateOfBirth", userData.dateOfBirth);
@@ -69,9 +80,9 @@ const UpdateProfile = () => {
     formData.append("email", userData.email);
     formData.append("gender", userData.gender);
     formData.append("alternateNumber", userData.alternateNumber);
-    formData.append("profileImage", userData.profileImage);
+    formData.append("profileImage", userData.profileImage);*/
 
-    dispatch(updateUser(userId, JSON.stringify(formData)));
+    dispatch(updateUser(userId, updatData));
     //  dispatch(uploadeUserImage(formData.profileImage, userId));
   };
 
@@ -89,7 +100,18 @@ const UpdateProfile = () => {
     }
     dispatch(getUserDetails(storeUserID));
 
+    getUserDetailsHere();
+
   }, [dispatch, isAuthenticated, error, alert, userId]);
+
+  const getUserDetailsHere = async () => {
+    setUserData((prevData) => ({
+      ...prevData,
+      name: localStorage.getItem("name"),
+      email: localStorage.getItem("email"),
+      contact: localStorage.getItem("contact"),
+    }));
+  }
 
   return (
     <>
@@ -104,7 +126,10 @@ const UpdateProfile = () => {
               type="text"
               placeholder="Enter Name"
               name="name"
-              onChange={handleChange}
+              onChange={(e) => {
+                localStorage.setItem("name", e.target.value);
+                handleChange(e);
+              }}
               value={userData.name}
             />
             <input
@@ -132,6 +157,7 @@ const UpdateProfile = () => {
               className="h-12 w-full rounded-sm p-3 placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
               type="email"
               name="email"
+              disabled={true}
               placeholder="Enter Your Email"
               onChange={handleChange}
               value={userData.email}
@@ -167,7 +193,7 @@ const UpdateProfile = () => {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              // value={userData.profileImage}
+            // value={userData.profileImage}
             />
             <div className="user-profile-img">
               {imagePreview && (
