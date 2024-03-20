@@ -39,7 +39,7 @@ export const orderCheckout =
           },
           config
         );
-        console.log(data);
+        localStorage.setItem("lastOrderId", data.orderId);
         dispatch({
           type: CREATE_ORDER_SUCCESS,
           payload: data,
@@ -53,20 +53,29 @@ export const orderCheckout =
     };
 
 export const orderPaymentCallback =
-  (orderId, transactionId, transactionTime, paymentStatus) =>
+  (userId, orderId, transactionId, transactionTime, paymentStatus) =>
     async (dispatch) => {
       try {
         dispatch({ type: CREATE_ORDER_PAYMENT_REQUEST });
-        const config = { headers: { "Content-Type": "application/json" } };
-        const { data } = await axios.post(
-          `${baseURL}/payment/callback`,
 
+        const submitData = {
+          userId,
           orderId,
           transactionId,
           transactionTime,
-          paymentStatus,
-          config
-        );
+          paymentStatus
+        };
+
+        const config = {
+          headers: { "Content-Type": "application/json" },
+          url: `${baseURL}/payment/callback`,
+          method: 'POST',
+          data: submitData,
+        }
+
+        console.log(config);
+
+        const { data } = await axios.request(config);
         console.log(data);
         dispatch({
           type: CREATE_ORDER_PAYMENT_SUCCESS,
