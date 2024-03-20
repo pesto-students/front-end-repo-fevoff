@@ -90,6 +90,9 @@ const Header = () => {
     if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
       setUserName(storedName);
       setShowMenu(true);
+    } else {
+      setUserName(null);
+      setShowMenu(false);
     }
   }
 
@@ -107,13 +110,13 @@ const Header = () => {
   }
 
   const userLogout = async () => {
-
     localStorage.removeItem("id");
     localStorage.removeItem("email");
     localStorage.removeItem("contact");
     localStorage.removeItem("name");
     localStorage.removeItem("JWTToken");
-
+    setUserName((e) => null);
+    setShowMenu((e) => false);
     setIsMenuOpen(false);
     navigate('/');
   }
