@@ -13,7 +13,7 @@ import {
   orderPaymentCallback,
 } from "../../../Action/orderAction";
 import logo from "../../../asset/images/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 import Loader from "../../Layout/Loader";
@@ -31,6 +31,7 @@ const Payment = () => {
     },
   ];
   const dispatch = useDispatch();
+  // const {orderId} = useParams()
   const alert = useAlert();
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
@@ -38,17 +39,19 @@ const Payment = () => {
   const [userEmail, setUserEmail] = useState();
   const [userContactNumber, setUserContactNumber] = useState();
   const [Razorpay, isLoaded] = useRazorpay();
-  console.log(userId);
+  // console.log(userId);
   const [selectedOption, setselectedOption] = useState(null);
-  console.log(selectedOption);
+  // console.log(selectedOption);
   const { cartItems, error, loading } = useSelector((state) => state.cart);
   const { order: orderData } = useSelector((state) => state.order);
   const { address } = useSelector((state) => state.UserProfileData);
   const [shippingChar, setshippingChar] = useState(0);
   const [gstCharge, setGstCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
+  // const [orderId, setOrderId] = useState(null);
 
-  console.log(cartItems, orderData, address);
+   const orderId = ["65fa7a622995f8250b492d77"]
+  console.log(orderId);
 
   let totalPrice = 0;
   let totalDiscount = 0;
@@ -72,7 +75,7 @@ const Payment = () => {
       name: "Fevoff India Pvt. Ltd.",
       description: cartItems.name,
       image: logo,
-      // order_id: order_id,
+      order_id: orderId,
       handler: (res) => {
         console.log(res);
         const transactionTime = new Date(res.created_at * 1000);
@@ -112,7 +115,7 @@ const Payment = () => {
     if (storedUserName) setUserName(storedUserName);
     if (storedUserContactNumber) setUserContactNumber(storedUserContactNumber);
     if (storedUserContactEmail) setUserEmail(storedUserContactEmail);
-    console.log(storedUserId);
+    // console.log(storedUserId);
 
     dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
@@ -123,7 +126,11 @@ const Payment = () => {
 
     getUserDetails()
 
+  
+
   }, [userId, dispatch, error, alert, selectedOption]);
+
+ 
 
   const getUserDetails = async () => {
     const price = totalPrice + totalDiscount;
@@ -159,7 +166,7 @@ const Payment = () => {
     );
   };
 
-  const handleConfiramOrder = (storedUserId, orderId) => {
+  const handleConfiramOrder = (storedUserId) => {
     if (!selectedOption) {
       alert.error("Please select a payment method");
       return;
@@ -181,7 +188,7 @@ const Payment = () => {
 
   const handlePayment = useCallback(() => {
     if (selectedOption === "RazorPay") {
-      handleRazorpayment();
+      handleRazorpayment(orderId);
       checkoutOrderHandler(selectedOption);
     } else if (selectedOption === "Cash On Delivery") {
       handleConfiramOrder();

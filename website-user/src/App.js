@@ -23,6 +23,7 @@ import Terms from "./components/page/Terms&Condition/terms";
 import ContactUs from "./components/page/ContactUs/ContactUs";
 import UpdateAddress from "./components/User/manage address/UpdateAddress";
 import Wishlist from "./components/page/Wishlist/Wishlist";
+import AddAddress from "./components/page/Cart/AddAddress";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart/address" element={<AddressDetails />} />
+          <Route path="/cart/addnewaddress" element={<AddAddress />} />
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/order/confiramation" element={<OrderConfiramation />} />
           <Route path="/login" element={<Login />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import navbar from "../../../asset/images/Navbar.png";
+// import navbar from "../../../asset/images/Navbar.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import UserImage from "./../../../asset/images/for-women.jpg";
@@ -20,9 +20,9 @@ const SideMenu = () => {
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
 
-  const { isAuthenticated, user } = useSelector((state) => state.userDetails);
+  const { isAuthenticated, userDetails } = useSelector((state) => state.userDetails);
 
-  console.log(user);
+  console.log(userDetails);
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -52,6 +52,7 @@ const SideMenu = () => {
     } else {
       navigate("/login");
     }
+
   };
 
   const btnClick = async (pageName) => {
