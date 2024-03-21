@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import orderPlaced from "../../../asset/images/order-placed.png";
 import { Link } from "react-router-dom";
 import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 import "./confirmation.css"
 
+
+
 const OrderConfiramation = () => {
+  const [orserId , setOrderId] = useState()
+  const [userName , setUserName] = useState()
+
+  useEffect(()=>{
+    setOrderId(localStorage.getItem("lastOrderId"))
+    setUserName(localStorage.getItem("name"))
+  },[])
   return (
     <>
     
@@ -19,7 +28,7 @@ const OrderConfiramation = () => {
           <span className="text-3xl italic">Order placed successfully,</span>
           <span className="text-xl mt-2 italic">Thank you!</span>
 
-          <span className="text-sm mt-3 confirmation-text">Dear User your order has been place successfully. <br />  Our order id: #FEVOFF987457352, <br /> <Link to={"/"} className="text-green-600">Click Here </Link> to Check your Details.</span>
+          <span className="text-sm mt-3 confirmation-text">Dear <span className="text-green-600 underline">{userName}</span> your order has been place successfully. <br />  Your order id: <span className="text-green-600 underline">{orserId}</span>, <br /> <Link to={"/me/orders"} className="text-green-600">Click Here </Link> to Check your Details</span>
         </div>
         <div className="btn-section gap-3">
           <Link to={"/products"} className="btn-shopping" >

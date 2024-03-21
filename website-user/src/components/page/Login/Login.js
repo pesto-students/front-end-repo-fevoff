@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { CLEAR_ERRORS } from "../../../Constants/userConstants";
+// import { CLEAR_ERRORS } from "../../../Constants/userConstants";
 import { useAlert } from "react-alert";
-import { login } from "../../../Action/userAction";
+import { login, register } from "../../../Action/userAction";
 import "./login.css";
 
 import { GoogleLogin } from "react-google-login";
@@ -15,11 +15,11 @@ const Login = () => {
   const alert = useAlert();
   const location = useLocation();
   const navigate = useNavigate();
+
   const clientId =
     "9517090395-vg50a07mvl62d43n4ri75l6st146flda.apps.googleusercontent.com";
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user
-  );
+
+  const { error, isAuthenticated } = useSelector((state) => state.user);
 
   const [loginPassword, setLoginPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -27,14 +27,25 @@ const Login = () => {
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
+    navigate("/myaccount");
+    if (isAuthenticated === true) {
+      alert.success("Login Successful");
+    }
   };
-
-  const redirect = location.search
-    ? location.search.split("=")[1]
-    : "/myaccount";
 
   const onSuccess = (res) => {
     alert.success("Login Success");
+
+    const userData = {
+      // JWTToken: res.profileObj.accessToken,
+      // id: res.googleId,
+      name: res.profileObj.givenName,
+      email: res.profileObj.email,
+      contact: res.profileObj.name,
+      imageUrl: res.profileObj.imageUrl,
+      // id_token: res.tokenId,
+    };
+    dispatch(register(userData))
 
     // console.log(res);
     localStorage.setItem("JWTToken", res.profileObj.access_token);
@@ -72,20 +83,9 @@ const Login = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(CLEAR_ERRORS);
+      // dispatch(error.message);
     }
-    if (isAuthenticated) {
-      navigate(redirect);
-    }
-
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    }
-    gapi.load("client:auth2", start);
-  }, [dispatch, navigate, isAuthenticated, error, alert, redirect]);
+  }, [dispatch, navigate, isAuthenticated, error, alert]);
 
   return (
     <div className="container mx-auto">

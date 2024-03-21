@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { thunk } from "redux-thunk";
+import {thunk}  from "redux-thunk";
 
 import { persistStore, persistReducer } from "redux-persist";
 
@@ -12,6 +12,7 @@ import {
   productDetailsReducer,
   productReducer,
   reviewReducer,
+  searchProductReducer,
 } from "./Reducers/productReducers";
 import {
   otpLoginReducer,
@@ -51,6 +52,7 @@ const persistedReducer = persistReducer(
     userImage: userImageUploadReducer,
     review: reviewReducer,
     userAddress: userAddressDataReducer,
+    searchProduct: searchProductReducer,
   })
 );
 
@@ -79,7 +81,7 @@ const store = createStore(
   // initialState,
   persistedReducer,
 
-  composeWithDevTools(applyMiddleware(thunk, sentryMiddleware))
+  composeWithDevTools(applyMiddleware(sentryMiddleware, thunk))
 );
 
 const persistor = persistStore(store);

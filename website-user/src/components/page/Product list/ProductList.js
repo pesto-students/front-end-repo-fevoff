@@ -15,18 +15,24 @@ import { useAlert } from "react-alert";
 import { useParams } from "react-router-dom";
 import ProductSkelton from "./ProductSkelton";
 
+
+
 const ProductList = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   // const { _id, brandId } = useParams();
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  
+  // const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(25);
   // const [productListToShow, setProductListToShow] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const { loading, error, products } = useSelector((state) => state.products);
   const { category: categoryData } = useSelector((state) => state.category);
   const { brand: brandData } = useSelector((state) => state.brand);
+  
 
   // console.log(categoryData, brandData);
 
@@ -59,9 +65,7 @@ const ProductList = () => {
     setFilteredProducts(filteredProducts);
   }, [category, brand, products]);
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  
 
   return (
     <>

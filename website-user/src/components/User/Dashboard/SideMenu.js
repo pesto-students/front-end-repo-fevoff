@@ -21,18 +21,19 @@ const SideMenu = () => {
   const [userId, setUserId] = useState("");
   const [userImage, setUserImage] = useState("");
 
-  const { isAuthenticated, userDetails } = useSelector((state) => state.userDetails);
+  const { isAuthenticated, userDetails, error } = useSelector(
+    (state) => state.userDetails
+  );
 
+  useEffect(
+    (storedUserID) => {
+     
 
-
-  useEffect((storedUserID) => {
-    if (isAuthenticated === false) {
-      navigate("/login");
-    }
-
-    checkUser();
-    fetch(getUserDetails(storedUserID));
-  }, [isAuthenticated, navigate, userId]);
+      checkUser();
+      // fetch(getUserDetails(storedUserID));
+    },
+    [isAuthenticated, navigate]
+  );
 
   const checkUser = () => {
     const storedName = localStorage.getItem("name");
@@ -55,7 +56,6 @@ const SideMenu = () => {
     } else {
       navigate("/login");
     }
-
   };
 
   const btnClick = async (pageName) => {
@@ -74,6 +74,8 @@ const SideMenu = () => {
     localStorage.removeItem("JWTToken");
 
     navigate("/");
+
+    alert.success("Logout Successful");
   };
   const UserBar = [
     { name: "My Account", image: <User />, href: "/myaccount" },
@@ -87,7 +89,11 @@ const SideMenu = () => {
     <>
       <div className="sidebar">
         <div className="image-section">
-          <img src={(userImage != "" && userImage != null) ? userImage : UserImage} alt="Userimage" className="profile-image" />
+          <img
+            src={userImage != "" && userImage != null ? userImage : UserImage}
+            alt="Userimage"
+            className="profile-image"
+          />
         </div>
         <div className="font-semibold italic">
           <h3 className="font-bold text-2xl">Hello, {name}</h3>

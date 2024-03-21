@@ -89,7 +89,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(CLEAR_ERRORS);
+      // dispatch(CLEAR_ERRORS);
     }
     const storeUserID = localStorage.getItem("id");
 
@@ -98,7 +98,7 @@ const UpdateProfile = () => {
     if (isAuthenticated) {
       dispatch(updateUser(storeUserID));
     }
-    dispatch(getUserDetails(storeUserID));
+    // dispatch(getUserDetails(storeUserID));
 
     getUserDetailsHere();
 

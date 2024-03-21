@@ -24,6 +24,9 @@ import {
   GET_REVIEW_DETAILS_SUCCESS,
   GET_REVIEW_DETAILS_REQUEST,
   GET_REVIEW_DETAILS_FAIL,
+  SEARCH_PRODUCTS_REQUEST,
+  SEARCH_PRODUCTS_SUCCESS,
+  SEARCH_PRODUCTS_FAILURE,
 } from "../Constants/productConstant";
 
 export const productReducer = (state = { products: [] }, action) => {
@@ -166,6 +169,35 @@ export const reviewReducer = (state = {}, action) => {
       };
     case NEW_REVIEW_FAIL:
     case GET_REVIEW_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const searchProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SEARCH_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SEARCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        searchProduct: action.payload,
+      };
+    case SEARCH_PRODUCTS_FAILURE:
       return {
         ...state,
         loading: false,

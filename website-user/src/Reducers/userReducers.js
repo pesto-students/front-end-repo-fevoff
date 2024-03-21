@@ -90,24 +90,27 @@ export const userReducer = (state = { user: {} }, action) => {
   }
 };
 
-export const userDetailsReducer = (state = { user: {} }, action) => {
+export const userDetailsReducer = (state = { userDetails: {} }, action) => {
   switch (action.type) {
     case USER_DETAILS_REQUEST:
       return {
         ...state,
         loading: true,
+        isAuthenticated: false,
       };
     case USER_DETAILS_SUCCESS:
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        userDetails: action.payload,
+        isAuthenticated: true,
       };
     case USER_DETAILS_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
+        isAuthenticated: false,
       };
     case CLEAR_ERRORS:
       return {

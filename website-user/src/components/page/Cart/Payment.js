@@ -52,7 +52,7 @@ const Payment = () => {
   const [orderId, setOrderId] = useState(null);
 
   // const orderId = ["65fa7a622995f8250b492d77"];
-  console.log(orderId);
+  // console.log(orderId);
 
   let totalPrice = 0;
   let totalDiscount = 0;
@@ -116,7 +116,7 @@ const Payment = () => {
       alert.error(error);
     }
 
-    console.log(selectedOption);
+    // console.log(selectedOption);
     const storedUserId = localStorage.getItem("id");
     const storedUserName = localStorage.getItem("name");
     const storedUserContactNumber = localStorage.getItem("contact");
@@ -198,7 +198,7 @@ const Payment = () => {
 
     if (selectedOption === "RazorPay") {
       checkoutOrderHandler(selectedOption);
-      handleRazorpayment(localStorage.getItem("lastOrderId"));
+     await handleRazorpayment(localStorage.getItem("lastOrderId"));
       setOrderId(localStorage.getItem("lastOrderId"));
     } else {
       checkoutOrderHandler();

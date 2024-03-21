@@ -36,10 +36,17 @@ import {
   ADD_USER_ADDRESS_SUCCESS,
   ADD_USER_ADDRESS_FAIL,
   ADD_USER_ADDRESS_REQUEST,
+  USER_CREATE_REQUEST,
+  USER_CREATE_SUCCESS,
+  USER_CREATE_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
-import { baseURL } from "./baseUrl";
+// import { baseURL } from "./baseUrl";
+// export const baseURL = "https://fevoff-backend.onrender.com/api";
+export const baseURL = "http://localhost:3001/api";
+
+
 
 export const login = (userData, password) => async (dispatch) => {
   try {
@@ -78,6 +85,10 @@ export const register = (userData) => async (dispatch) => {
     });
   }
 };
+
+
+
+
 
 export const uploadeUserImage = (formData, userId) => async (dispatch) => {
   try {

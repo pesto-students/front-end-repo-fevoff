@@ -38,9 +38,6 @@ const AddAddress = () => {
     }));
   };
 
-<<<<<<< HEAD
-  
-=======
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -50,7 +47,6 @@ const AddAddress = () => {
 
     dispatch(addUserAddress(updatedAddressData, userJWT));
   };
->>>>>>> 5155e20cb015117b6150961d16d199c332f8cf33
 
   useEffect(() => {
     if (error) {
@@ -64,15 +60,6 @@ const AddAddress = () => {
 
   }, [error, dispatch, alert]);
 
-<<<<<<< HEAD
-  const handleSubmit = (e, storeUserID, storeUserJWT) => {
-    e.preventDefault();
-
-    dispatch(addUserAddress(userData, userJWT, userId));
-  };
-
-=======
->>>>>>> 5155e20cb015117b6150961d16d199c332f8cf33
   return (
     <>
       <CommonBanner pageTitle={"Manage Account"} />

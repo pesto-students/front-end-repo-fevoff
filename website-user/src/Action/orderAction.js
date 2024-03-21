@@ -75,7 +75,7 @@ export const orderPaymentCallback =
           data: submitData,
         }
 
-        console.log(config);
+        // console.log(config);
 
         const { data } = await axios.request(config);
         console.log(data);
@@ -94,7 +94,8 @@ export const orderPaymentCallback =
 export const getOrderDetils = (userId) => async (dispatch) => {
   try {
     dispatch({ type: 'GET_ORDER_DETAILS_REQUEST' });
-    const data = await axios.get(`${baseURL}/order/${userId}`);
+    const config = { headers: { "Content-Type": "application/json" } };
+    const data = await axios.get(`${baseURL}/order/${userId}`, config);
     dispatch({ type: 'GET_ORDER_DETAILS_SUCCESS', payload: data });
   } catch (error) {
     dispatch({ type: 'GET_ORDER_DETAILS_FAIL', payload: error.message, });

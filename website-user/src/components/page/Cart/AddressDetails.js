@@ -11,7 +11,7 @@ import Breadcrumbs from "./../../Breadcrumbs/Breadcrumbs";
 import "./address-details.css";
 import Loader from "../../Layout/Loader";
 
-const AddressDetails = () => {
+const AddressDetails = React.memo(() => {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState();
   const alert = useAlert();
@@ -22,7 +22,7 @@ const AddressDetails = () => {
     (state) => state.UserProfileData
   );
   const { cartItems } = useSelector((state) => state.cart);
-  console.log(address);
+  // console.log(address);
 
   const handleCheckBoxChange = async (addressId) => {
     setActiveAddress(addressId);
@@ -52,8 +52,7 @@ const AddressDetails = () => {
       if (selectedAddressId.length > 0) {
         const selectedAddress = address.data.filter((addr) => {
           selectedAddressId.includes(addr._id);
-        }
-        );
+        });
         dispatch(getUserAddress(selectedAddress));
       } else {
         dispatch(getUserAddress(storedUserId));
@@ -65,13 +64,15 @@ const AddressDetails = () => {
   const deleteAddressHandler = async (addressId) => {
     try {
       await dispatch(deleteAddress(addressId, userId));
-
+      alert.success("Address Deleted Succesfully")
       setselectedAddressId((prevSelectedAddressId) =>
         prevSelectedAddressId.filter((id) => id !== addressId)
       );
+      await dispatch(getUserAddress(userId));
     } catch (error) {
       console.error("Error Deleting Address", error);
     }
+    
   };
 
   let totalPrice = 0;
@@ -97,138 +98,159 @@ const AddressDetails = () => {
         breadcumr1_link={"/cart"}
         breadcumr2={"Address Details"}
       />
-      {loading ? (
-        <Loader />
+      {address?.data?.length > 0 ? (
+        <>
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="container mx-auto my-5">
+              <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+                <section
+                  aria-labelledby="cart-heading"
+                  className="rounded-l address-section border-black lg:col-span-8"
+                >
+                  <div role="list" className="address-section">
+                    {Array.isArray(address.data) &&
+                      address.data.map((address) => (
+                        <div
+                          key={address._id}
+                          className="grid md:grid-cols-5 grid-cols-4 our-address-listing"
+                        >
+                          <div className="col-span-1 flex items-center justify-center">
+                            <input
+                              type="radio"
+                              name="address_id"
+                              value={address._id}
+                              checked={
+                                activeAddress == null
+                                  ? address.defaultAddress === 1
+                                    ? "checked"
+                                    : activeAddress
+                                  : address._id === activeAddress
+                                  ? "checked"
+                                  : ""
+                              }
+                              onChange={(e) =>
+                                handleCheckBoxChange(address._id)
+                              }
+                              className="checkbox md:p-6 p-3 rounded-md"
+                              id={`address_id${address._id}`}
+                            />
+                          </div>
+                          <div className="col-span-3">
+                            <p className="text-lg font-bold">
+                              {address.name}, {address.contact}
+                            </p>
+                            <p className="text-lg font-bold">{address.email}</p>
+                            <p className="text-sm">
+                              {address.houseNo} {address.streetArea}{" "}
+                              {address.landmark} <br /> {address.city}{" "}
+                              {address.state} {address.pincode}
+                            </p>
+                          </div>
+                          <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center flex-col justify-center">
+                            <button
+                              type="button"
+                              className="btn-delete lg:mt-2"
+                              onClick={() => deleteAddressHandler(address._id)}
+                            >
+                              <Trash size={20} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <Link
+                      to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
+                      type="button"
+                      className={`btn-payment ${
+                        selectedAddressId.length === 0 ? "disabled" : ""
+                      }`}
+                    >
+                      Process To Payment
+                    </Link>
+                    <Link to="/cart/addnewaddress">
+                      <button type="button" className="btn-payment">
+                        Add Address
+                      </button>
+                    </Link>
+                  </div>
+                </section>
+
+                <section
+                  aria-labelledby="summary-heading"
+                  className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0"
+                >
+                  <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
+                    Price Details
+                  </h2>
+
+                  <div className=" space-y-1 px-4 py-4">
+                    <div className="flex items-center justify-between">
+                      <dt className="text-lg font-semibold text-dark">
+                        Price:
+                      </dt>
+                      <dd className="text-sm font-bold text-gray-900">
+                        ₹ {price}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between pt-4">
+                      <dt className="flex items-center text-lg font-semibold text-dark">
+                        <span>Discount:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        ₹ {discount}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        Total Amount:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {price - discount}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between py-4">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        <span>Delivery Charges:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        {shippingCharges}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="text-base font-bold text-gray-900">
+                        Sub Total:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {totalAmount}
+                      </dd>
+                    </div>
+                  </div>
+                  <div className="pt-2 pb-4 font-bold text-green-700 text-center">
+                    You will save ₹ {discount} on this order
+                  </div>
+                </section>
+              </form>
+            </div>
+          )}
+        </>
       ) : (
         <>
-          <div className="container mx-auto my-5">
-            <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-              <section
-                aria-labelledby="cart-heading"
-                className="rounded-l address-section border-black lg:col-span-8"
-              >
-                <div role="list" className="address-section">
-                  {Array.isArray(address.data) &&
-                    address.data.map((address) => (
-
-                      <div
-                        key={address._id}
-                        className="grid md:grid-cols-5 grid-cols-4 our-address-listing"
-                      >
-                        <div className="col-span-1 flex items-center justify-center">
-                          <input
-                            type="radio"
-                            name="address_id"
-                            value={address._id}
-                            checked={
-                              (activeAddress == null) ?
-                                address.defaultAddress === 1
-                                  ? "checked"
-                                  : activeAddress
-                                : (address._id === activeAddress) ? "checked" : ""
-                            }
-                            onChange={(e) => handleCheckBoxChange(address._id)}
-                            className="checkbox md:p-6 p-3 rounded-md"
-                            id={`address_id${address._id}`}
-                          />
-                        </div>
-                        <div className="col-span-3">
-                          <p className="text-lg font-bold">
-                            {address.name}, {address.contact}
-                          </p>
-                          <p className="text-lg font-bold">{address.email}</p>
-                          <p className="text-sm">
-                            {address.houseNo} {address.streetArea}{" "}
-                            {address.landmark} <br /> {address.city}{" "}
-                            {address.state} {address.pincode}
-                          </p>
-                        </div>
-                        <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center flex-col justify-center">
-                          <button
-                            type="button"
-                            className="btn-delete lg:mt-2"
-                            onClick={() => deleteAddressHandler(address._id)}
-                          >
-                            <Trash size={20} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-                <div className="grid grid-cols-2">
-                  <Link to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
-                    type="button"
-                    className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
-                      }`}
-                  >
-                    Process To Payment
-                  </Link>
-                  <Link to="/cart/addnewaddress">
-                    <button type="button" className="btn-payment">
-                      Add Address
-                    </button>
-                  </Link>
-                </div>
-              </section>
-
-              <section
-                aria-labelledby="summary-heading"
-                className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0"
-              >
-                <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
-                  Price Details
-                </h2>
-
-                <div className=" space-y-1 px-4 py-4">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-lg font-semibold text-dark">Price:</dt>
-                    <dd className="text-sm font-bold text-gray-900">
-                      ₹ {price}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between pt-4">
-                    <dt className="flex items-center text-lg font-semibold text-dark">
-                      <span>Discount:</span>
-                    </dt>
-                    <dd className="text-sm font-bold text-green-700">
-                      ₹ {discount}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                    <dt className="flex text-lg font-semibold text-dark">
-                      Total Amount:
-                    </dt>
-                    <dd className="text-base font-bold text-gray-900">
-                      ₹ {price - discount}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between py-4">
-                    <dt className="flex text-lg font-semibold text-dark">
-                      <span>Delivery Charges:</span>
-                    </dt>
-                    <dd className="text-sm font-bold text-green-700">
-                      {shippingCharges}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                    <dt className="text-base font-bold text-gray-900">
-                      Sub Total:
-                    </dt>
-                    <dd className="text-base font-bold text-gray-900">
-                      ₹ {totalAmount}
-                    </dd>
-                  </div>
-                </div>
-                <div className="pt-2 pb-4 font-bold text-green-700 text-center">
-                  You will save ₹ {discount} on this order
-                </div>
-              </section>
-            </form>
+          <div className="container mx-auto">
+            <h2 className="text-5xl text-center py-32">Addres Is Empty...!</h2>
           </div>
+          <Link to="/cart/addnewaddress">
+            <button type="button" className="btn-payment">
+              Add Address
+            </button>
+          </Link>
         </>
       )}
+      )
     </>
   );
-};
+});
 
 export default AddressDetails;
