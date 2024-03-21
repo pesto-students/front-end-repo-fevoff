@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import navbar from "../../../asset/images/Navbar.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
-import UserImage from "./../../../asset/images/for-women.jpg";
+import UserImage from "./../../../asset/images/default.jpg";
 import "./sidebar.css";
 import { Blocks, Lock, LogOut, ShoppingBag, User } from "lucide-react";
 
@@ -23,7 +23,7 @@ const SideMenu = () => {
 
   const { isAuthenticated, userDetails } = useSelector((state) => state.userDetails);
 
-  
+
 
   useEffect((storedUserID) => {
     if (isAuthenticated === false) {
@@ -87,7 +87,7 @@ const SideMenu = () => {
     <>
       <div className="sidebar">
         <div className="image-section">
-          <img src={userImage} alt="Userimage" className="profile-image" />
+          <img src={(userImage != "" && userImage != null) ? userImage : UserImage} alt="Userimage" className="profile-image" />
         </div>
         <div className="font-semibold italic">
           <h3 className="font-bold text-2xl">Hello, {name}</h3>

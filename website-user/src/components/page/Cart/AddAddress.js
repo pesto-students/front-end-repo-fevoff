@@ -4,14 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { addUserAddress } from "../../../Action/userAction";
 import { CLEAR_ERRORS } from "../../../Constants/userConstants";
+import CommonBanner from "../../CommonBanner/CommonBanner";
+import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 
 const AddAddress = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
-//   const { addressId } = useParams();
+  //   const { addressId } = useParams();
   const [userId, setUserId] = useState();
   const [userJWT, setUserJWT] = useState();
-// console.log(userId, userJWT);
+
   const [userData, setUserData] = useState({
     userId,
     name: "",
@@ -36,37 +38,46 @@ const AddAddress = () => {
     }));
   };
 
+<<<<<<< HEAD
   
+=======
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let updatedAddressData = {
+      ...userData, userId: userId,
+    };
+
+    dispatch(addUserAddress(updatedAddressData, userJWT));
+  };
+>>>>>>> 5155e20cb015117b6150961d16d199c332f8cf33
 
   useEffect(() => {
     if (error) {
       alert.error(error);
-    //   dispatch(CLEAR_ERRORS);
     }
     const storeUserID = localStorage.getItem("id");
     const storeUserJWT = localStorage.getItem("JWTToken");
+
     if (storeUserID) setUserId(storeUserID);
     if (storeUserJWT) setUserJWT(storeUserJWT);
 
-    //   if (selectedAddressId.length > 0) {
-    //     const selectedAddress = address.data.filter((addr) =>
-    //       selectedAddressId.includes(addr._id)
-    //     );
-    //     dispatch(editUserAddress(addressId, userData, userId));
-    //     dispatch(getUserAddress(addressId))
-    //   }
-    // dispatch(addUserAddress(userData, userJWT));
   }, [error, dispatch, alert]);
 
+<<<<<<< HEAD
   const handleSubmit = (e, storeUserID, storeUserJWT) => {
     e.preventDefault();
 
     dispatch(addUserAddress(userData, userJWT, userId));
   };
 
+=======
+>>>>>>> 5155e20cb015117b6150961d16d199c332f8cf33
   return (
-    <div>
-      <div className="mx-auto  py-12 md:py-24 bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold ">
+    <>
+      <CommonBanner pageTitle={"Manage Account"} />
+      <Breadcrumbs breadcumr1="Add Address" />
+      <div className="container mx-auto italic font-semibold ">
         <div className="grid items-center justify-items-center gap-x-4 gap-y-10 lg:grid-cols-2">
           {/* contact from */}
           <div className="flex items-center justify-center">
@@ -244,7 +255,7 @@ const AddAddress = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,1 +1,0 @@
-export const baseURL = "https://fevoff-backend.onrender.com/api"

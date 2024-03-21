@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 import Loader from "../../Layout/Loader";
+import moment from "moment";
 
 const Payment = () => {
   const paymentOptions = [
@@ -48,9 +49,9 @@ const Payment = () => {
   const [shippingChar, setshippingChar] = useState(0);
   const [gstCharge, setGstCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
-  // const [orderId, setOrderId] = useState(null);
+  const [orderId, setOrderId] = useState(null);
 
-  const orderId = ["65fa7a622995f8250b492d77"]
+  // const orderId = ["65fa7a622995f8250b492d77"];
   console.log(orderId);
 
   let totalPrice = 0;
@@ -67,7 +68,8 @@ const Payment = () => {
   const gst = 0;
   const totalAmount = price - discount + shippingCharges + gst;
 
-  const handleRazorpayment = (paymentStatus, transactionTime) => {
+  const handleRazorpayment = (orderNewId) => {
+
     const options = {
       key: process.env.REACT_APP_RAZORPAY_KEY || "rzp_test_naqbPaCVZeqJjM",
       amount: totalAmount * 100,
@@ -75,13 +77,22 @@ const Payment = () => {
       name: "Fevoff India Pvt. Ltd.",
       description: cartItems.name,
       image: logo,
-      order_id: orderId,
-      handler: (res) => {
-        console.log(res);
-        const transactionTime = new Date(res.created_at * 1000);
-        const paymentStatus = res.status;
+      handler: async (res) => {
+
+        const transactionTime = moment().format("YYYY-MM-DD HH:mm:ss");
+
+        const key = res.razorpay_payment_id;
+
         alert.success("Payment Successful:" + res.razorpay_payment_id);
-        dispatch(orderPaymentCallback(res, transactionTime, paymentStatus));
+
+        let paymentStatus = (key !== "") ? "success" : "";
+
+        const transactionId = res.razorpay_payment_id;
+
+        const orderId = orderNewId;
+
+        await dispatch(orderPaymentCallback(userId, orderId, transactionId, transactionTime, paymentStatus));
+
         navigate("/order/confiramation");
       },
       prefill: {
@@ -124,8 +135,6 @@ const Payment = () => {
     } */
 
     getUserDetails()
-
-
 
   }, [userId, dispatch, error, alert, selectedOption]);
 
@@ -188,14 +197,16 @@ const Payment = () => {
   const handlePayment = useCallback(async () => {
 
     if (selectedOption === "RazorPay") {
-      handleRazorpayment(orderId);
       checkoutOrderHandler(selectedOption);
+      handleRazorpayment(localStorage.getItem("lastOrderId"));
+      setOrderId(localStorage.getItem("lastOrderId"));
     } else {
-      let response = await checkoutOrderHandler();
-      console.log(response);
+      checkoutOrderHandler();
+      setOrderId(localStorage.getItem("lastOrderId"));
     }
 
   }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
+
 
   return (
     <>
