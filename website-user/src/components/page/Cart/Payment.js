@@ -232,7 +232,7 @@ const Payment = () => {
                     className="rounded-l border border-black lg:col-span-8 lg:pr-4 lg:h-48"
                   >
                     <ul role="list" className="divide-y divide-gray-200 ">
-                      {paymentOptions.map((paymentOption, idx) => (
+                      {paymentOptions.map((paymentOption, index) => (
                         <li
                           key={paymentOption.id}
                           className="flex justify-between py-6 sm:py-6"
@@ -243,13 +243,10 @@ const Payment = () => {
                                 <div className="flex ">
                                   <input
                                     type="radio"
-
                                     checked={selectedOption === paymentOption.name}
-
                                     onChange={() =>
                                       handleOptionChange(paymentOption.name)
                                     }
-
                                     name="paymentOption"
                                     className="checkbox m-3 border-orange-600 checked:border-gray-800 [--chkbg:theme(colors.gray.600)] [--chkfg:orange]"
                                   />
