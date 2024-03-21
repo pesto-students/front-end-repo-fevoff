@@ -40,6 +40,9 @@ import {
   ADD_USER_ADDRESS_SUCCESS,
   ADD_USER_ADDRESS_FAIL,
   ADD_USER_ADDRESS_REQUEST,
+  CONTECT_REQUEST_REQUEST,
+  CONTECT_REQUEST_SUCCESS,
+  CONTECT_REQUEST_FAIL,
 } from "../Constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -248,6 +251,38 @@ export const otpLoginReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const contactRequestReduces = (state = {}, action) => {
+  switch (action.type) {
+    case CONTECT_REQUEST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case CONTECT_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        contact: action.payload,
+      };
+
+    case CONTECT_REQUEST_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;

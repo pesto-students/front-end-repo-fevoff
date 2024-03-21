@@ -39,6 +39,9 @@ import {
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
   USER_CREATE_FAIL,
+  CONTECT_REQUEST_REQUEST,
+  CONTECT_REQUEST_SUCCESS,
+  CONTECT_REQUEST_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
@@ -229,11 +232,26 @@ export const verifyOtp = (userId, userOtp) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: OTP_VERIFICATION_FAIL,
-      payload: error.response.data.message,
+      payload: error.data.message,
     });
   }
 };
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
+};
+
+
+export const contentRequest = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: CONTECT_REQUEST_REQUEST });
+    const config = { headers: { "Content-type": "application/json" } };
+    const { data } = await axios.post(`${baseURL}/contact-request`, userData, config);
+    dispatch({ type: CONTECT_REQUEST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CONTECT_REQUEST_FAIL,
+      payload: error.response.data.message,
+    });
+  }
 };

@@ -15,6 +15,7 @@ import {
   searchProductReducer,
 } from "./Reducers/productReducers";
 import {
+  contactRequestReduces,
   otpLoginReducer,
   userAddressDataReducer,
   userDetailsReducer,
@@ -53,6 +54,7 @@ const persistedReducer = persistReducer(
     review: reviewReducer,
     userAddress: userAddressDataReducer,
     searchProduct: searchProductReducer,
+    contactRequest: contactRequestReduces
   })
 );
 
