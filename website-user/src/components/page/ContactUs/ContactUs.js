@@ -1,6 +1,7 @@
 import React from "react";
 import CommonBanner from "./../../CommonBanner/CommonBanner";
 import Breadcrumbs from "./../../Breadcrumbs/Breadcrumbs";
+import "./contactUs.css";
 
 const ContactUs = () => {
   return (
@@ -9,13 +10,13 @@ const ContactUs = () => {
       <Breadcrumbs breadcumr1="Contact Us" />
       <div className="container mx-auto italic font-semibold">
         {/* Hero Map */}
-        <div className="flex flex-col space-y-8 pb-10 md:pt-12">
-          <div className="mx-auto max-w-max rounded-full border bg-gray-50 p-1 px-3">
+        <div className="md:pt-6">
+          {/* <div className="mx-auto max-w-max rounded-full border bg-gray-50 p-1 px-3">
             <p className="text-center text-xs font-semibold leading-normal md:text-sm">
               Share your thoughts
             </p>
-          </div>
-          <p className="text-center text-3xl font-bold text-gray-900 md:text-5xl md:leading-10">
+          </div> */}
+          <p className="text-center text-5xl mb-4">
             Love to hear from you
           </p>
           <p className="mx-auto max-w-4xl text-center text-base text-gray-600 md:text-xl">
@@ -24,18 +25,12 @@ const ContactUs = () => {
             assumenda quam ratione placeat?
           </p>
         </div>
-        <div className="mx-auto max-w-7xl py-6 md:py-12">
-          <div className="grid items-center justify-items-center gap-x-4 gap-y-10 lg:grid-cols-2">
+        <div className="mx-auto  md:py-12">
+          <div className="grid items-center justify-items-center gap-x-4 lg:grid-cols-2">
             {/* contact from */}
             <div className="flex items-center justify-center">
               <div className="px-2 md:px-12">
-                <p className="text-2xl font-bold text-gray-900 md:text-4xl">
-                  Get in touch
-                </p>
-                <p className="mt-4 text-lg text-gray-600">
-                  Our friendly team would love to hear from you.
-                </p>
-                <form action="" className="mt-8 space-y-4">
+                <form action="" className="space-y-4">
                   <div className="grid w-full gap-y-4 md:gap-x-4 lg:grid-cols-2">
                     <div className="grid w-full  items-center gap-1.5">
                       <label
@@ -45,7 +40,7 @@ const ContactUs = () => {
                         First Name
                       </label>
                       <input
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
+                        className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                         type="text"
                         id="first_name"
                         placeholder="First Name"
@@ -59,7 +54,7 @@ const ContactUs = () => {
                         Last Name
                       </label>
                       <input
-                        className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
+                        className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                         type="text"
                         id="last_name"
                         placeholder="Last Name"
@@ -74,7 +69,7 @@ const ContactUs = () => {
                       Email
                     </label>
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="text"
                       id="email"
                       placeholder="Email"
@@ -88,7 +83,7 @@ const ContactUs = () => {
                       Phone number
                     </label>
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="tel"
                       id="phone_number"
                       placeholder="Phone number"
@@ -102,7 +97,7 @@ const ContactUs = () => {
                       Message
                     </label>
                     <textarea
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       id="message"
                       placeholder="Leave us a message"
                       cols={3}
@@ -117,11 +112,9 @@ const ContactUs = () => {
                 </form>
               </div>
             </div>
-            <img
-              alt="Contact us"
-              className="hidden max-h-full w-full rounded-lg object-cover lg:block"
-              src="https://images.unsplash.com/photo-1615840287214-7ff58936c4cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&h=800&q=80"
-            />
+            <div className="contact-us-image">
+              <img alt="Contact us" className="hidden max-h-full w-full rounded-lg object-cover lg:block" src="https://images.unsplash.com/photo-1615840287214-7ff58936c4cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&h=800&q=80" />
+            </div>
           </div>
         </div>
       </div>
