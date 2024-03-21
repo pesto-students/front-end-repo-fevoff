@@ -75,7 +75,7 @@ const Cart = () => {
     // dispatch(updateCart(userId, productId, newQty));
     // dispatch(removeItemsToCart(userId, productId))
 
-    // dispatch(getCartItems(storedUserId));
+    dispatch(getCartItems(storedUserId));
   }, [dispatch, error, alert, userId]);
 
   let totalPrice = 0;
