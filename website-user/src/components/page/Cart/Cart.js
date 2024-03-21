@@ -84,11 +84,11 @@ const Cart = () => {
   let totalDiscount = 0;
   if (cartItems && cartItems.data && cartItems.data.items) {
     cartItems.data.items.forEach((product) => {
-      totalPrice += product.productPrice;
-      totalDiscount += product.productMrp - product.productPrice;
+      totalPrice += product.productPrice * product.quantity;
+      totalDiscount += (product.productMrp - product.productPrice) * product.quantity;
     });
   }
-  const price = totalPrice + totalDiscount;
+  const price = totalPrice + totalDiscount ;
   const discount = totalDiscount;
   const shippingCharges = Math.round((price / 100) * 5);
   const gst = 0;
@@ -147,10 +147,10 @@ const Cart = () => {
                                 Price:{" "}
                                 <del>
                                   <sub className="text-red-800">
-                                    &#8377;{product.productMrp}
+                                    &#8377;{product.productMrp }
                                   </sub>
                                 </del>{" "}
-                                &#8377;{product.productPrice}
+                                &#8377;{product.productPrice * product.quantity}
                               </p>
                               <p className="mt-2">Vendor: Fevoff PVT. LTD</p>
                             </div>
