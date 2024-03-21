@@ -72,7 +72,7 @@ const AddressDetails = React.memo(() => {
     } catch (error) {
       console.error("Error Deleting Address", error);
     }
-    
+
   };
 
   let totalPrice = 0;
@@ -98,11 +98,13 @@ const AddressDetails = React.memo(() => {
         breadcumr1_link={"/cart"}
         breadcumr2={"Address Details"}
       />
-      {address?.data?.length > 0 ? (
-        <>
-          {loading ? (
-            <Loader />
-          ) : (
+
+      {loading ? (
+        <Loader />
+      ) : (
+
+        address?.data?.length > 0 ? (
+          <>
             <div className="container mx-auto my-5">
               <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
                 <section
@@ -127,8 +129,8 @@ const AddressDetails = React.memo(() => {
                                     ? "checked"
                                     : activeAddress
                                   : address._id === activeAddress
-                                  ? "checked"
-                                  : ""
+                                    ? "checked"
+                                    : ""
                               }
                               onChange={(e) =>
                                 handleCheckBoxChange(address._id)
@@ -164,9 +166,8 @@ const AddressDetails = React.memo(() => {
                     <Link
                       to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
                       type="button"
-                      className={`btn-payment ${
-                        selectedAddressId.length === 0 ? "disabled" : ""
-                      }`}
+                      className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
+                        }`}
                     >
                       Process To Payment
                     </Link>
@@ -234,21 +235,21 @@ const AddressDetails = React.memo(() => {
                 </section>
               </form>
             </div>
-          )}
-        </>
-      ) : (
-        <>
-          <div className="container mx-auto">
-            <h2 className="text-5xl text-center py-32">Addres Is Empty...!</h2>
-          </div>
-          <Link to="/cart/addnewaddress">
-            <button type="button" className="btn-payment">
-              Add Address
-            </button>
-          </Link>
-        </>
+            )
+          </>
+        ) : (
+          <>
+            <div className="container mx-auto">
+              <h2 className="text-5xl text-center py-32">Addres Is Empty...!</h2>
+            </div>
+            <Link to="/cart/addnewaddress">
+              <button type="button" className="btn-payment">
+                Add Address
+              </button>
+            </Link>
+          </>
+        )
       )}
-      )
     </>
   );
 });

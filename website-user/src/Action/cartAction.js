@@ -13,10 +13,8 @@ import {
   ADD_TO_CART_FAIL,
 } from "../Constants/cartConstants";
 import { CLEAR_ERRORS } from "../Constants/productConstant";
-// import { baseURL } from "./baseUrl";
+import { baseURL } from "./baseUrl";
 
-// export const baseURL = "https://fevoff-backend.onrender.com/api"
-export const baseURL = "http://localhost:3001/api";
 
 export const addItemsToCart =
   (userId, productId, quantity, size) => async (dispatch, getState) => {

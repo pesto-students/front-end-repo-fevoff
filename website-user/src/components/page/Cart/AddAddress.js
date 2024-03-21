@@ -62,15 +62,12 @@ const AddAddress = () => {
 
   }, [error, dispatch, alert]);
 
-<<<<<<< HEAD
-=======
   /* const handleSubmit = (e, storeUserID, storeUserJWT) => {
     e.preventDefault();
 
     dispatch(addUserAddress(userData, userJWT, userId));
   }; */
 
->>>>>>> a3e5659aec9249866c6f2f9193a2a40e25430ad0
   return (
     <>
       <CommonBanner pageTitle="My Account" />

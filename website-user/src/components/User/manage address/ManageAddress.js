@@ -7,7 +7,6 @@ import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 const ManageAddress = () => {
   return (
     <>
-
       <CommonBanner pageTitle="My Account" />
       <Breadcrumbs breadcumr1={"My Account"} breadcumr1_link={"/myaccount"} breadcumr2={"Manage Address"} />
 

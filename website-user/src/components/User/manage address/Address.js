@@ -8,6 +8,7 @@ import {
 } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
 import "./address.css";
+import Loader from "../../Layout/Loader";
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const Address = () => {
 
   return (
     <>
+
       <div className="mx-4">
         <div className="profile-heading">
           <h2 className="text-4xl italic">Manage Address</h2>

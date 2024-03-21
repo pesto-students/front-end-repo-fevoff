@@ -10,9 +10,8 @@ import {
   GET_ORDER_DETAILS_REQUEST,
   GET_ORDER_DETAILS_SUCCESS,
 } from "../Constants/orderConstants";
+import { baseURL } from "./baseUrl";
 
-const baseURL = "https://fevoff-backend.onrender.com/api"
-// const baseURL = "http://localhost:3001/api"
 
 export const orderCheckout =
   (
