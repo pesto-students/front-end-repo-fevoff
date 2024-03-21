@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "./../../asset/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductAction } from "../../Action/productAction";
+import GetMthod from "./../apiCalls/GetMethod";
 
 // import { useDispatch } from 'react-redux';
 // import { getProduct } from '../../Action/productAction';
@@ -94,6 +95,8 @@ const Header = () => {
   const [userName, setUserName] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [modelOption, setModelOption] = useState("");
+  const [showhere, setShowHere] = useState(false);
   // const dispatch = useDispatch();
   // const [keyword, setKeyword] = useState('');
 
@@ -124,15 +127,22 @@ const Header = () => {
 
   const debouncedFetchedSearchResult = debounce(fetchSearchResult, 300);
 
-  const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    debouncedFetchedSearchResult(query);
+  const handleSearchChange = async (e) => {
+
+    setSearchQuery(prev => e.target.value);
+
+    if (searchQuery.length > 2) {
+
+      const url = "search?q=" + searchQuery;
+
+      const reponse = await GetMthod(url);
+      setShowHere(true);
+      setSearchResults(reponse.data.data);
+    }
   };
 
   useEffect(() => {
     checkUser();
-    // setUserName(userName);
   }, []);
 
   const checkUser = () => {
@@ -175,12 +185,17 @@ const Header = () => {
     localStorage.removeItem("contact");
     localStorage.removeItem("name");
     localStorage.removeItem("JWTToken");
-    // setUserName((e) => null);
-    // setShowMenu((e) => false);
+
     setUserName(null);
     setShowMenu(false);
     setIsMenuOpen(false);
     navigate("/");
+  };
+
+  const closeModal = () => {
+    setShowHere(false);
+    setSearchQuery(""); setSearchResults([]);
+    document.getElementById("search-bar").close();
   };
 
   return (
@@ -318,7 +333,8 @@ const Header = () => {
         </>
       )}
 
-      <dialog id="search-bar" className="modal">
+
+      <dialog id="search-bar" className={`modal ${modelOption}`}>
         <div className="modal-box">
           <h3 className="font-bold text-xl italic mb-3">Search Here!</h3>
           <input
@@ -328,21 +344,33 @@ const Header = () => {
             autoComplete="off"
             placeholder="Enter Product Name For Search"
             value={searchQuery}
-            onChange={handleSearchChange}
+            onChange={(e) => {
+              handleSearchChange(e);
+            }}
           />
-          <ul>
-            {searchResults.length > 0 ? (
-              searchResults.map((product) => (
-                <div key={product._id} className="product">
-                  <h3>{product.name}</h3>
-                  <p>{product.productDescription}</p>
-                  {/* Add more product details here as needed */}
-                </div>
-              ))
-            ) : (
-              <p>No products found</p>
-            )}
-          </ul>
+          {
+            (showhere === true) ?
+              <>
+                <ul>
+                  {searchResults.length > 0 ? (
+                    searchResults.map((product) => (
+                      <Link to={"/product/" + product._id} key={product._id}
+                        onClick={() => closeModal()}>
+                        <div className="bg-white border rounded-md mt-4 py-4 text-center">
+                          <div className="ml-4 flex items-center">
+                            <img src={product.productMainImage} className="w-16 h-16 rounded-md" alt="Product Image" />
+                            <h3 className="ml-4">{product.name}</h3>
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="bg-white border rounded-md mt-4 py-4 text-center">
+                      <p className="text-2xl">Products No Found</p>
+                    </div>
+                  )}
+                </ul>
+              </> : ""}
           <div className="modal-action">
             <form method="dialog">
               <button className="btn">Close</button>
