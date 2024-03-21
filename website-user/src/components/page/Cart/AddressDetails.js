@@ -16,20 +16,24 @@ const AddressDetails = () => {
   const [userId, setUserId] = useState();
   const alert = useAlert();
   const [selectedAddressId, setselectedAddressId] = useState([]);
+  const [activeAddress, setActiveAddress] = useState(null);
 
   const { loading, error, address } = useSelector(
     (state) => state.UserProfileData
   );
   const { cartItems } = useSelector((state) => state.cart);
   console.log(address);
-  const handleCheckBoxChange = (addressId) => {
-    setselectedAddressId((prevSelectedAddressId) => {
-      if (prevSelectedAddressId.includes(addressId)) {
-        return prevSelectedAddressId.filter((id) => id !== addressId);
-      } else {
-        return [...prevSelectedAddressId, addressId];
-      }
-    });
+
+  const handleCheckBoxChange = async (addressId) => {
+    setActiveAddress(addressId);
+    setselectedAddressId(addressId);
+    // setselectedAddressId((prevSelectedAddressId) => {
+    //   if (prevSelectedAddressId.includes(addressId)) {
+    //     return prevSelectedAddressId.filter((id) => id !== addressId);
+    //   } else {
+    //     return [...prevSelectedAddressId, addressId];
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -46,8 +50,9 @@ const AddressDetails = () => {
       dispatch(getUserAddress(storedUserId));
 
       if (selectedAddressId.length > 0) {
-        const selectedAddress = address.data.filter((addr) =>
-          selectedAddressId.includes(addr._id)
+        const selectedAddress = address.data.filter((addr) => {
+          selectedAddressId.includes(addr._id);
+        }
         );
         dispatch(getUserAddress(selectedAddress));
       } else {
@@ -55,7 +60,7 @@ const AddressDetails = () => {
       }
       dispatch(getCartItems(storedUserId));
     }
-  }, [dispatch, error, alert, selectedAddressId, setUserId]);
+  }, [dispatch, error, alert, setUserId]);
 
   const deleteAddressHandler = async (addressId) => {
     try {
@@ -86,16 +91,16 @@ const AddressDetails = () => {
 
   return (
     <>
+      <CommonBaner pageTitle={"Address Details"} />
+      <Breadcrumbs
+        breadcumr1="Cart"
+        breadcumr1_link={"/cart"}
+        breadcumr2={"Address Details"}
+      />
       {loading ? (
         <Loader />
       ) : (
         <>
-          <CommonBaner pageTitle={"Address Details"} />
-          <Breadcrumbs
-            breadcumr1="Cart"
-            breadcumr1_link={"/cart"}
-            breadcumr2={"Address Details"}
-          />
           <div className="container mx-auto my-5">
             <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
               <section
@@ -105,6 +110,7 @@ const AddressDetails = () => {
                 <div role="list" className="address-section">
                   {Array.isArray(address.data) &&
                     address.data.map((address) => (
+
                       <div
                         key={address._id}
                         className="grid md:grid-cols-5 grid-cols-4 our-address-listing"
@@ -115,11 +121,13 @@ const AddressDetails = () => {
                             name="address_id"
                             value={address._id}
                             checked={
-                              address.defaultAddress === 1
-                                ? "checked"
-                                : selectedAddressId.includes(address._id)
+                              (activeAddress == null) ?
+                                address.defaultAddress === 1
+                                  ? "checked"
+                                  : activeAddress
+                                : (address._id === activeAddress) ? "checked" : ""
                             }
-                            onChange={() => handleCheckBoxChange(address._id)}
+                            onChange={(e) => handleCheckBoxChange(address._id)}
                             className="checkbox md:p-6 p-3 rounded-md"
                             id={`address_id${address._id}`}
                           />
@@ -147,21 +155,20 @@ const AddressDetails = () => {
                       </div>
                     ))}
                 </div>
-                <Link
-                  to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
-                  // disabled={!selectedAddressId.length === 0}
-                  type="button"
-                  className={`btn-payment ${
-                    selectedAddressId.length === 0 ? "disabled" : ""
-                  }`}
-                >
-                  Process To Payment
-                </Link>
-                <Link to="/cart/addnewaddress">
-                  <button type="button" className=" btn-payment">
-                    Add Address
-                  </button>
-                </Link>
+                <div className="grid grid-cols-2">
+                  <Link to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
+                    type="button"
+                    className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
+                      }`}
+                  >
+                    Process To Payment
+                  </Link>
+                  <Link to="/cart/addnewaddress">
+                    <button type="button" className="btn-payment">
+                      Add Address
+                    </button>
+                  </Link>
+                </div>
               </section>
 
               <section
@@ -187,6 +194,14 @@ const AddressDetails = () => {
                       ₹ {discount}
                     </dd>
                   </div>
+                  <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                    <dt className="flex text-lg font-semibold text-dark">
+                      Total Amount:
+                    </dt>
+                    <dd className="text-base font-bold text-gray-900">
+                      ₹ {price - discount}
+                    </dd>
+                  </div>
                   <div className="flex items-center justify-between py-4">
                     <dt className="flex text-lg font-semibold text-dark">
                       <span>Delivery Charges:</span>
@@ -197,7 +212,7 @@ const AddressDetails = () => {
                   </div>
                   <div className="flex items-center justify-between border-y border-dashed py-4 ">
                     <dt className="text-base font-bold text-gray-900">
-                      Total Amount:
+                      Sub Total:
                     </dt>
                     <dd className="text-base font-bold text-gray-900">
                       ₹ {totalAmount}

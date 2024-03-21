@@ -25,7 +25,7 @@ const Payment = () => {
       name: "Cash On Delivery",
     },
     {
-      id: 1,
+      id: 2,
       name: "RazorPay",
       image: RazorpayLogo,
     },
@@ -50,7 +50,7 @@ const Payment = () => {
   const [finalAmount, setFinalAmount] = useState(0);
   // const [orderId, setOrderId] = useState(null);
 
-   const orderId = ["65fa7a622995f8250b492d77"]
+  const orderId = ["65fa7a622995f8250b492d77"]
   console.log(orderId);
 
   let totalPrice = 0;
@@ -115,22 +115,21 @@ const Payment = () => {
     if (storedUserName) setUserName(storedUserName);
     if (storedUserContactNumber) setUserContactNumber(storedUserContactNumber);
     if (storedUserContactEmail) setUserEmail(storedUserContactEmail);
-    // console.log(storedUserId);
 
     dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
 
-    if (selectedOption === "Cash On Delivery") {
+    /* f (selectedOption === "Cash On Delivery") {
       checkoutOrderHandler();
-    }
+    } */
 
     getUserDetails()
 
-  
+
 
   }, [userId, dispatch, error, alert, selectedOption]);
 
- 
+
 
   const getUserDetails = async () => {
     const price = totalPrice + totalDiscount;
@@ -186,27 +185,30 @@ const Payment = () => {
     }
   };
 
-  const handlePayment = useCallback(() => {
+  const handlePayment = useCallback(async () => {
+
     if (selectedOption === "RazorPay") {
       handleRazorpayment(orderId);
       checkoutOrderHandler(selectedOption);
-    } else if (selectedOption === "Cash On Delivery") {
-      handleConfiramOrder();
+    } else {
+      let response = await checkoutOrderHandler();
+      console.log(response);
     }
+
   }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
 
   return (
     <>
+      <CommonBanner pageTitle={"Order Payment"} />
+      <Breadcrumbs
+        breadcumr1={"Cart"}
+        breadcumr1_link={"/cart"}
+        breadcumr2={"Order Payment"}
+      />
       {loading ? (
         <Loader />
       ) : (
         <>
-          <CommonBanner pageTitle={"Order Payment"} />
-          <Breadcrumbs
-            breadcumr1={"Cart"}
-            breadcumr1_link={"/cart"}
-            breadcumr2={"Order Payment"}
-          />
           <div className="container mx-auto italic font-semibold">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl mx-auto py-8 lg:max-w-7xl">
@@ -229,13 +231,15 @@ const Payment = () => {
                               <div>
                                 <div className="flex ">
                                   <input
-                                    type="checkbox"
-                                    checked={
-                                      selectedOption === paymentOption.name
-                                    }
+                                    type="radio"
+
+                                    checked={selectedOption === paymentOption.name}
+
                                     onChange={() =>
                                       handleOptionChange(paymentOption.name)
                                     }
+
+                                    name="paymentOption"
                                     className="checkbox m-3 border-orange-600 checked:border-gray-800 [--chkbg:theme(colors.gray.600)] [--chkfg:orange]"
                                   />
                                   <h3 className="text-sm m-3 font-semibold text-black">
@@ -298,12 +302,8 @@ const Payment = () => {
                     </div>
                   </section>
                   <div className="flex flex-col  lg:flex-row items-center justify-center  lg:justify-between  lg:w-96">
-                    <button
-                      onClick={handlePayment}
-                      disabled={!selectedOption}
-                      type="button"
-                      className="btn lg:w-full mt-2 mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 hover:bg-yellow-500"
-                    >
+                    <button onClick={handlePayment} disabled={!selectedOption} type="button"
+                      className="web-btn-2 px-32 cursor-pointer">
                       Confirm Order
                     </button>
                   </div>

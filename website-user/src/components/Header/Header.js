@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks, LogIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import "./header.css";
+import "./Header.css";
 import { useNavigate } from 'react-router-dom';
 import Logo from './../../asset/images/logo.png'
 // import { useDispatch } from 'react-redux';
@@ -90,6 +90,9 @@ const Header = () => {
     if (storedName !== "" && storedName != null && storedEmail !== "" && storedEmail != null && storedUserID !== "" && storedUserID != null) {
       setUserName(storedName);
       setShowMenu(true);
+    } else {
+      setUserName(null);
+      setShowMenu(false);
     }
   }
 
@@ -107,13 +110,13 @@ const Header = () => {
   }
 
   const userLogout = async () => {
-
     localStorage.removeItem("id");
     localStorage.removeItem("email");
     localStorage.removeItem("contact");
     localStorage.removeItem("name");
     localStorage.removeItem("JWTToken");
-
+    setUserName((e) => null);
+    setShowMenu((e) => false);
     setIsMenuOpen(false);
     navigate('/');
   }

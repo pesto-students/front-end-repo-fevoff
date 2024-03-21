@@ -39,8 +39,7 @@ import {
 } from "../Constants/userConstants";
 
 import axios from "axios";
-// const baseURL = "https://fevoff-backend.onrender.com/api";
-const baseURL = "http://localhost:3001/api"
+import { baseURL } from "./baseUrl";
 
 export const login = (userData, password) => async (dispatch) => {
   try {
@@ -156,8 +155,8 @@ export const getUserAddress = (userId) => async (dispatch) => {
 export const addUserAddress = (jwtToken, updatedAddressData,userId) => async (dispatch) => {
   try {
     dispatch({ type: ADD_USER_ADDRESS_REQUEST });
-    const config = { headers: {Authorization: `Bearer ${jwtToken}` } };
-    const { data } = await axios.post(`${baseURL}/users-address`,updatedAddressData, userId, config);
+    const config = { headers: { Authorization: `Bearer ${jwtToken}`, "Content-type": "application/json" } };
+    const { data } = await axios.post(`${baseURL}/users-address`, updatedAddressData, config);
     dispatch({ type: ADD_USER_ADDRESS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
