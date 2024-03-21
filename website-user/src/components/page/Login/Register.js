@@ -9,7 +9,7 @@ const Register = ({ location, history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate()
-  
+
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -58,30 +58,29 @@ const Register = ({ location, history }) => {
     }
   }, [dispatch, isAuthenticated, alert, error, history]);
   return (
-    <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-150 italic">
-      <section className="rounded-md  p-2">
-        <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-            <h2 className="text-2xl font-bold leading-tight text-black">
-              Sign Up your self
-            </h2>
-            <p className="mt-2text-sm text-blue-600 font-bold">
-              You are new here, don't worry{" "}
-              <p className="font-semibold text-black transition-all duration-200 underline">
-                just create an account with below details
-              </p>
+    <div className="container mx-auto">
+      <div className="login-form-section">
+        <div className="grid md:grid-cols-2 grid-cols-1">
+          <div className="login-form-content p-2 md:p-l-4">
+            <h1 className="form-heading">Register</h1>
+            <p className="form-content hidden md:block">
+              Get access to your Orders <br />
+              Wish list and Recommendations
             </p>
-            <form
-              action="#"
-              method="POST"
-              className="mt-8"
-              onSubmit={registerSubmit}
-            >
-              <div className="">
-                <div>
-                  <div className="mt-2">
+            <p className="text-red-500">
+              Account already Exist...!<br></br>
+              <Link to="/login" className="register-link">
+                Click to Login
+              </Link>
+            </p>
+          </div>
+          <div className="login-form p-2 md:p-r-4">
+            <div className="md:mr-16 mx-2">
+              <form method="POST" className="w-full" onSubmit={registerSubmit}>
+                <div className="">
+                  <div className="my-2">
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="name"
                       placeholder="Enter Name"
                       value={name}
@@ -91,9 +90,9 @@ const Register = ({ location, history }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="mt-2">
+                  <div className="my-2">
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="email"
                       placeholder="Enter Email"
                       value={email}
@@ -101,9 +100,9 @@ const Register = ({ location, history }) => {
                       onChange={handleInputChange}
                     ></input>
                   </div>{" "}
-                  <div className="mt-2">
+                  <div className="my-2">
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="mobileNumber"
                       placeholder="Enter Mobile Number"
                       value={contact}
@@ -111,9 +110,9 @@ const Register = ({ location, history }) => {
                       onChange={handleInputChange}
                     ></input>
                   </div>
-                  <div className="mt-2">
+                  <div className="my-2">
                     <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="h-12 w-full rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-black focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 input-box"
                       type="password"
                       placeholder="Enter Password"
                       value={password}
@@ -121,37 +120,23 @@ const Register = ({ location, history }) => {
                       onChange={handleInputChange}
                     ></input>
                   </div>
-                  {/* <div className="mt-2">
-                    <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="confiramPassword"
-                      placeholder="Confiram Password"
-                      value={confiramPassword}
-                      name="confiramPassword"
-                      onChange={handleInputChange}
-                    ></input>
-                  </div> */}
+                  <button type="submit" value="login" className="btn btn-outline rounded-sm  w-full hover:bg-slate-500 hover:text-white text-xs md:text-sm">
+                    Register
+                  </button>
                 </div>
-              </div>
-              <div className="mt-3 space-y-3">
-                <button
-                  type="submit"
-                  value="Register"
-                  className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
-                >
-                  Create Account
-                </button>
-                <Link to="/verifyotp"
-                type="button"
-                className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5 font-semibold text-blue-700 transition-all duration-200 hover:bg-yellow-500 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
-              >
-                Sign in with OTP
-              </Link>
-              </div>
-            </form>
+                <div className="grid grid-cols-1 w-full md:mt-3 mt-4">
+                  <Link to="/verifyotp"
+                    type="button"
+                    className="btn btn-outline btn-login-with text-xs md:text-sm rounded-sm"
+                  >
+                    Sign in with OTP
+                  </Link>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
