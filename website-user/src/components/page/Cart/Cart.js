@@ -64,14 +64,14 @@ const Cart = () => {
   };
   useEffect(
     (productId, newQty) => {
-      // if (error) {
-      //   alert.error(error);
-      //   dispatch(clearErrors());
-      // }
+      if (error) {
+        alert.error(error);
+        // dispatch(clearErrors());
+      }
       const storedUserId = localStorage.getItem("id");
 
       if (storedUserId) setUserId(storedUserId);
-      // dispatch(getCartItems(storedUserId));
+
       // dispatch(updateCart(userId, productId, newQty));
       // dispatch(removeItemsToCart(userId, productId))
 
@@ -99,192 +99,190 @@ const Cart = () => {
       <>
         <CommonBanner pageTitle={"Cart Details"} />
         <Breadcrumbs breadcumr1="Cart Details" />
-        {cartItems?.data?.items?.length > 0 ? (
-          <>
-            {loading ? (
-              <Loader />
-            ) : (
-              <div className="container mx-auto my-5">
-                <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-                  <section
-                    aria-labelledby="cart-heading"
-                    className="cart-listing-border lg:col-span-8 rounded-md "
-                  >
-                    <h2 id="cart-heading" className="sr-only">
-                      Items in your shopping cart
-                    </h2>
-                    <div
-                      role="list"
-                      className="divide-y divide-gray-200 cart-items"
-                    >
-                      {cartItems &&
-                        cartItems.data &&
-                        cartItems.data.items &&
-                        cartItems.data.items.map((product, productIdx) => (
-                          <div
-                            key={product._id}
-                            className="grid md:grid-cols-5 grid-cols-4 gap-2"
-                          >
-                            <div div className="col-span-1 img-section">
-                              <img
-                                src={product.productMainImage}
-                                alt={product.name}
-                                className="product-cart-image"
-                              />
-                            </div>
 
-                            <div className="col-span-3">
-                              <div className="cart-product-details py-4">
-                                <label className="text-xl font-bold">
-                                  {product.name}
-                                </label>
-                                <p className="text-xl">
-                                  {product.size
-                                    ? "Size: " + product.size
-                                    : " Free Size"}
-                                </p>
-                                <p className="text-xl font-medium ">
-                                  Price:{" "}
-                                  <del>
-                                    <sub className="text-red-800">
-                                      &#8377;{product.productMrp}
-                                    </sub>
-                                  </del>{" "}
-                                  &#8377;{product.productPrice}
-                                </p>
-                                <p className="mt-2">Vendor: Fevoff PVT. LTD</p>
-                              </div>
-                            </div>
-                            <div className="col-span-1 qty-delete-section p-2">
-                              <button
-                                type="button"
-                                className="btn-delete"
-                                onClick={() =>
-                                  deleteCartItems(product.productId)
-                                }
-                              >
-                                <Trash size={20} />
-                              </button>
-                              <div className="flex justify-between">
-                                <button
-                                  type="button"
-                                  className="qty btn-minus"
-                                  onClick={() =>
-                                    decreseQuantity(
-                                      product.productId,
-                                      product.quantity
-                                    )
-                                  }
-                                >
-                                  <Minus />
-                                </button>
-                                <input
-                                  type="text"
-                                  className="text-center w-full bg-transparent border border-black font-bold text-lg qty"
-                                  readOnly
-                                  value={product.quantity}
-                                  onChange={(e) =>
-                                    handleQtyChange(
-                                      e,
-                                      product.productId,
-                                      product.quantity
-                                    )
-                                  }
-                                />
-                                <button
-                                  type="button"
-                                  className="qty btn-add"
-                                  onClick={() =>
-                                    incressQuantity(
-                                      product.productId,
-                                      product.quantity,
-                                      product.availableQty
-                                    )
-                                  }
-                                >
-                                  <Plus />
-                                </button>
-                              </div>
+        <>
+          {loading ? (
+            <Loader />
+          ) : cartItems?.data?.items?.length > 0 ? (
+            <div className="container mx-auto my-5">
+              <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+                <section
+                  aria-labelledby="cart-heading"
+                  className="cart-listing-border lg:col-span-8 rounded-md "
+                >
+                  <h2 id="cart-heading" className="sr-only">
+                    Items in your shopping cart
+                  </h2>
+                  <div
+                    role="list"
+                    className="divide-y divide-gray-200 cart-items"
+                  >
+                    {cartItems &&
+                      cartItems.data &&
+                      cartItems.data.items &&
+                      cartItems.data.items.map((product, productIdx) => (
+                        <div
+                          key={product._id}
+                          className="grid md:grid-cols-5 grid-cols-4 gap-2"
+                        >
+                          <div div className="col-span-1 img-section">
+                            <img
+                              src={product.productMainImage}
+                              alt={product.name}
+                              className="product-cart-image"
+                            />
+                          </div>
+
+                          <div className="col-span-3">
+                            <div className="cart-product-details py-4">
+                              <label className="text-xl font-bold">
+                                {product.name}
+                              </label>
+                              <p className="text-xl">
+                                {product.size
+                                  ? "Size: " + product.size
+                                  : " Free Size"}
+                              </p>
+                              <p className="text-xl font-medium ">
+                                Price:{" "}
+                                <del>
+                                  <sub className="text-red-800">
+                                    &#8377;{product.productMrp}
+                                  </sub>
+                                </del>{" "}
+                                &#8377;{product.productPrice}
+                              </p>
+                              <p className="mt-2">Vendor: Fevoff PVT. LTD</p>
                             </div>
                           </div>
-                        ))}
-                    </div>
-                    <button
-                      onClick={checkoutHandlear}
-                      type="button"
-                      className="btn-checkout"
-                      disabled={!cartItems?.data?.items?.length}
-                    >
-                      Process To Checkout
-                    </button>
-                  </section>
-
-                  <section
-                    aria-labelledby="summary-heading"
-                    className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0"
+                          <div className="col-span-1 qty-delete-section p-2">
+                            <button
+                              type="button"
+                              className="btn-delete"
+                              onClick={() => deleteCartItems(product.productId)}
+                            >
+                              <Trash size={20} />
+                            </button>
+                            <div className="flex justify-between">
+                              <button
+                                type="button"
+                                className="qty btn-minus"
+                                onClick={() =>
+                                  decreseQuantity(
+                                    product.productId,
+                                    product.quantity
+                                  )
+                                }
+                              >
+                                <Minus />
+                              </button>
+                              <input
+                                type="text"
+                                className="text-center w-full bg-transparent border border-black font-bold text-lg qty"
+                                readOnly
+                                value={product.quantity}
+                                onChange={(e) =>
+                                  handleQtyChange(
+                                    e,
+                                    product.productId,
+                                    product.quantity
+                                  )
+                                }
+                              />
+                              <button
+                                type="button"
+                                className="qty btn-add"
+                                onClick={() =>
+                                  incressQuantity(
+                                    product.productId,
+                                    product.quantity,
+                                    product.availableQty
+                                  )
+                                }
+                              >
+                                <Plus />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                  <button
+                    onClick={checkoutHandlear}
+                    type="button"
+                    className="btn-checkout"
+                    disabled={!cartItems?.data?.items?.length}
                   >
-                    <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
-                      Price Details
-                    </h2>
+                    Process To Checkout
+                  </button>
+                </section>
 
-                    <div className=" space-y-1 px-4 py-4">
-                      <div className="flex items-center justify-between">
-                        <dt className="text-lg font-semibold text-dark">
-                          Price:
-                        </dt>
-                        <dd className="text-sm font-bold text-gray-900">
-                          ₹ {price}
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between pt-4">
-                        <dt className="flex items-center text-lg font-semibold text-dark">
-                          <span>Discount:</span>
-                        </dt>
-                        <dd className="text-sm font-bold text-green-700">
-                          ₹ {discount}
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                        <dt className="flex text-lg font-semibold text-dark">
-                          Total Amount:
-                        </dt>
-                        <dd className="text-base font-bold text-gray-900">
-                          ₹ {price - discount}
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between py-4">
-                        <dt className="flex text-lg font-semibold text-dark">
-                          <span>Delivery Charges:</span>
-                        </dt>
-                        <dd className="text-sm font-bold text-green-700">
-                          {shippingCharges}
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                        <dt className="text-base font-bold text-gray-900">
-                          Sub Total:
-                        </dt>
-                        <dd className="text-base font-bold text-gray-900">
-                          ₹ {totalAmount}
-                        </dd>
-                      </div>
+                <section
+                  aria-labelledby="summary-heading"
+                  className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0"
+                >
+                  <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
+                    Price Details
+                  </h2>
+
+                  <div className=" space-y-1 px-4 py-4">
+                    <div className="flex items-center justify-between">
+                      <dt className="text-lg font-semibold text-dark">
+                        Price:
+                      </dt>
+                      <dd className="text-sm font-bold text-gray-900">
+                        ₹ {price}
+                      </dd>
                     </div>
-                    <div className="pt-2 pb-4 font-bold text-green-700 text-center">
-                      You will save ₹ {discount} on this order
+                    <div className="flex items-center justify-between pt-4">
+                      <dt className="flex items-center text-lg font-semibold text-dark">
+                        <span>Discount:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        ₹ {discount}
+                      </dd>
                     </div>
-                  </section>
-                </form>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="container mx-auto">
-              <h2 className="text-5xl text-center py-32">Cart Is Empty...!</h2>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        Total Amount:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {price - discount}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between py-4">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        <span>Delivery Charges:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        {shippingCharges}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="text-base font-bold text-gray-900">
+                        Sub Total:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {totalAmount}
+                      </dd>
+                    </div>
+                  </div>
+                  <div className="pt-2 pb-4 font-bold text-green-700 text-center">
+                    You will save ₹ {discount} on this order
+                  </div>
+                </section>
+              </form>
             </div>
-          </>
-          
-        )}
+          ) : (
+            <>
+              <div className="container mx-auto">
+                <h2 className="text-5xl text-center py-32">
+                  Cart Is Empty...!
+                </h2>
+              </div>
+            </>
+          )}
+        </>
       </>
     </>
   );
