@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+<<<<<<< HEAD
 "use client";
 import React, { useEffect, useState } from "react";
 import {
@@ -24,6 +25,15 @@ import Logo from "./../../asset/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductAction } from "../../Action/productAction";
 
+=======
+'use client'
+import React, { useEffect, useState } from 'react'
+import { Home, Menu, ShoppingBagIcon, X, ListMinus, Search, SquareUser, ListCollapse, LogOut, Lock, List, User, Blocks, LogIn } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import "./header.css";
+import { useNavigate } from 'react-router-dom';
+import Logo from './../../asset/images/logo.png'
+>>>>>>> a3e5659aec9249866c6f2f9193a2a40e25430ad0
 // import { useDispatch } from 'react-redux';
 // import { getProduct } from '../../Action/productAction';
 
