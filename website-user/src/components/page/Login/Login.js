@@ -15,18 +15,20 @@ const Login = () => {
   const alert = useAlert();
   const location = useLocation();
   const navigate = useNavigate();
+  const [clicked, setClicked] = useState(false);
 
   const clientId =
     "9517090395-vg50a07mvl62d43n4ri75l6st146flda.apps.googleusercontent.com";
 
   const { error, isAuthenticated } = useSelector((state) => state.user);
 
-  const [loginPassword, setLoginPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("12345");
+  const [loginEmail, setLoginEmail] = useState("rjshah1902@gmail.com");
 
-  const loginSubmit = (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(loginEmail, loginPassword));
+    setClicked(true);
+    await dispatch(login(loginEmail, loginPassword));
     navigate("/myaccount");
     if (isAuthenticated === true) {
       alert.success("Login Successful");
@@ -85,7 +87,25 @@ const Login = () => {
       alert.error(error);
       // dispatch(error.message);
     }
+    checkUser();
   }, [dispatch, navigate, isAuthenticated, error, alert]);
+
+
+  const checkUser = () => {
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+    const storedUserID = localStorage.getItem("id");
+    if (
+      storedName !== "" &&
+      storedName != null &&
+      storedEmail !== "" &&
+      storedEmail != null &&
+      storedUserID !== "" &&
+      storedUserID != null
+    ) {
+      navigate("/myaccount");
+    }
+  };
 
   return (
     <div className="container mx-auto">
@@ -129,6 +149,7 @@ const Login = () => {
                   <button
                     type="submit"
                     value="login"
+                    disabled={clicked}
                     className="btn btn-outline rounded-sm  w-full hover:bg-slate-500 hover:text-white text-xs md:text-sm"
                   >
                     Login
@@ -179,8 +200,8 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
