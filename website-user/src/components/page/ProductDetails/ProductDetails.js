@@ -15,8 +15,10 @@ import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 import "./product-details.css";
 import ProductDetailsSkeleton from "./ProductDetailsSkelton";
+import { useNavigate } from 'react-router-dom';
 
 function ProductDetails({ match }) {
+  const navigate = useNavigate();
   const [quantity, setQuentity] = useState(1);
   const [size, setSize] = useState();
   const [price, setPrice] = useState();
@@ -24,6 +26,7 @@ function ProductDetails({ match }) {
   const [productImageView, setProductImageView] = useState(null);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [showSkelton, setShowSkelton] = useState(true);
+  const [clicked, setClicked] = useState(false);
 
   const dispatch = useDispatch();
   const { productId } = useParams();
@@ -63,8 +66,9 @@ function ProductDetails({ match }) {
     setSize(selectSize === size ? null : selectSize);
   };
 
-  const addToCartHandlar = () => {
-    dispatch(
+  const addToCartHandlar = async () => {
+    setClicked(true);
+    await dispatch(
       addItemsToCart({
         userId,
         productId,
@@ -79,7 +83,9 @@ function ProductDetails({ match }) {
       .catch((error) => {
         alert.error(`Failed to add item to cart: ${error.message}`);
       });
-    setIsAddedToCart(true);
+
+    navigate("/cart");
+    setClicked(false);
   };
 
   return (
@@ -307,16 +313,14 @@ function ProductDetails({ match }) {
                     </div>
                     <div className="space-y-2.5 pt-1.5 md:space-y-3.5 lg:pt-3 xl:pt-4">
                       <div className="grid grid-cols-2 gap-4 md:mt-0 mt-2 md:mr-20">
-                        <Link to="/cart">
-                          <button
-                            type="button"
-                            className="btn-add-cart"
-                            onClick={addToCartHandlar}
-                            disabled={product.stock < 1 ? true : false}
-                          >
-                            <span className="block">Add To Cart</span>
-                          </button>
-                        </Link>
+                        <button
+                          type="button"
+                          className="btn-add-cart"
+                          onClick={addToCartHandlar}
+                          disabled={(clicked === true) ? true : false}
+                        >
+                          <span className="block">Add To Cart</span>
+                        </button>
                         <button type="button" className="btn-add-wishlist">
                           <span className="block">Add To Wishlist</span>
                         </button>

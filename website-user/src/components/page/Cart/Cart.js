@@ -66,12 +66,12 @@ const Cart = () => {
   };
   // useEffect(
   //   (productId, newQty) => {
-      
+
   //     const storedUserId = localStorage.getItem("id");
 
   //     if (storedUserId) setUserId(storedUserId);
 
-      
+
   //     if (storedUserId) {
   //       setUserId(storedUserId);
   //       dispatch(getCartItems(storedUserId));
@@ -85,7 +85,7 @@ const Cart = () => {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
-  
+
     if (storedUserId) {
       setUserId(storedUserId);
       dispatch(getCartItems(storedUserId));
@@ -115,11 +115,14 @@ const Cart = () => {
     <>
       <CommonBanner pageTitle={"Cart Details"} />
       <Breadcrumbs breadcumr1="Cart Details" />
-      {userId === null ? (
-        <div className="container mx-auto">
-          <h2 className="text-5xl text-center py-32">
+      {userId == null ? (
+        <div className="container mx-auto py-32">
+          <h2 className="text-5xl text-center mb-8">
             Please Login to view your cart
           </h2>
+          <Link to={"/login"} className="btn-checkout">
+            Login Now
+          </Link>
         </div>
       ) : (
         <>
