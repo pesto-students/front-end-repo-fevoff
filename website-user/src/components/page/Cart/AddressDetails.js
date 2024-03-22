@@ -250,7 +250,6 @@ const AddressDetails = React.memo(() => {
                 </section>
               </form>
             </div>
-            )
           </>
         ) : (
           <>
