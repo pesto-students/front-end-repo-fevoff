@@ -126,7 +126,7 @@ const Cart = () => {
         </div>
       ) : (
         <>
-          {loading ? (
+          {loading && cartItems ? (
             <Loader />
           ) : (
             <div>

@@ -166,16 +166,16 @@ const Payment = () => {
   };
 
   const status = "pending";
-  const checkoutOrderHandler = () => {
-    dispatch(
+  const checkoutOrderHandler = async () => {
+    await dispatch(
       orderCheckout(
         userId,
         cartItems &&
-          cartItems.data.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.productPrice,
-          })),
+        cartItems.data.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.productPrice,
+        })),
         finalAmount,
         selectedOption,
         address._id,
@@ -207,7 +207,7 @@ const Payment = () => {
 
   const handlePayment = useCallback(async () => {
     if (selectedOption === "RazorPay") {
-      checkoutOrderHandler(selectedOption);
+      await checkoutOrderHandler(selectedOption);
       await handleRazorpayment(localStorage.getItem("lastOrderId"));
       setOrderId(localStorage.getItem("lastOrderId"));
     } else {
