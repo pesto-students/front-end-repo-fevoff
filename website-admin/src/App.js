@@ -19,6 +19,8 @@ import Products from "./admin/pages/Products/Products";
 import ProductsList from "./admin/pages/Products/List/ProductsList";
 import ProductView from "./admin/pages/Products/View/ProductView";
 import EditProducts from "./admin/pages/Products/Edit/EditProducts";
+import OrdersList from "./admin/pages/Orders/OrdersList";
+import OrderDetails from "./admin/pages/Orders/OrderDetails";
 
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -70,6 +72,8 @@ function App() {
                     <Route path="products/:productId" element={<EditProducts />} />
                     <Route path="products/view/:productId" element={<ProductView />} />
                     <Route path="products/list" element={<ProductsList />} />
+                    <Route path="orders/list" element={<OrdersList />} />
+                    <Route path="orders/:orderId" element={<OrderDetails />} />
                   </Routes>
                   <Footer />
                 </div>

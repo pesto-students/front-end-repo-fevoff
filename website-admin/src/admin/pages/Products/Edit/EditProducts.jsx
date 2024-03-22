@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import InputTag from '../../../components/InputTag/InputTag';
 import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
-import PostMethod from '../../../../api_calls/post-method/PostMethod';
 import GetMethod from '../../../../api_calls/get-method/GetMethod';
 import swal from 'sweetalert';
 import imageCompression from 'browser-image-compression';
 import MyImage from "./../../../../asset/images/default.jpg";
 import { useParams } from 'react-router-dom';
+import PutMethod from '../../../../api_calls/put-method/PutMethod';
 
 const EditProducts = () => {
 
@@ -24,14 +24,42 @@ const EditProducts = () => {
     }
 
     const [defaultImage, setDefaultImage] = useState(allImages);
+
+    let productData = {
+        name: "",
+        productSlug: "",
+        brand: "",
+        category: "",
+        seller: "",
+        productSmallDescription: "",
+        productDescription: "",
+        rating: "",
+        sizeVariation: "",
+        productMrp: "",
+        productPrice: "",
+        availableQty: "",
+        productMainImage: defaultImage.productMainImage,
+        productImage1: defaultImage.galleryImage1,
+        productImage2: defaultImage.galleryImage2,
+        productImage3: defaultImage.galleryImage3,
+        productImage4: defaultImage.galleryImage4,
+        productImage5: defaultImage.galleryImage5,
+        productVideo: "",
+        showHide: "",
+    }
+
     const [btnName, setbtnName] = useState("Update Products");
     const [btnDisabld, setBtnDisabld] = useState(false);
     const [brandListing, setBrandListing] = useState([]);
     const [categoryListing, setCategoryListing] = useState([]);
 
+    const [errorMessage, setErrorMessage] = useState("");
+    const [productDetails, setProductDetails] = useState(productData);
+
     useEffect(() => {
         getBrandListing();
         getCategoryListing();
+        getProductDetails();
     }, []);
 
     const getBrandListing = async () => {
@@ -65,31 +93,32 @@ const EditProducts = () => {
         }
     }
 
-    let productData = {
-        name: "",
-        productSlug: "",
-        brand: "",
-        category: "",
-        seller: "",
-        productSmallDescription: "",
-        productDescription: "",
-        rating: "",
-        sizeVariation: "",
-        productMrp: "",
-        productPrice: "",
-        availableQty: "",
-        productMainImage: defaultImage.productMainImage,
-        productImage1: defaultImage.galleryImage1,
-        productImage2: defaultImage.galleryImage2,
-        productImage3: defaultImage.galleryImage3,
-        productImage4: defaultImage.galleryImage4,
-        productImage5: defaultImage.galleryImage5,
-        productVideo: "",
-        showHide: "",
-    }
+    const getProductDetails = async () => {
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [productDetails, setProductDetails] = useState(productData);
+        const url = "products";
+
+        const productId = params.productId;
+
+        try {
+            const response = await GetMethod(url, productId);
+
+            if (response.status === true) {
+                setDefaultImage((pre) => ({
+                    ...pre,
+                    productMainImage: response.data.data.productMainImage,
+                    productImage1: response.data.data.productImage1 != "" ? response.data.data.productImage1 : MyImage,
+                    productImage2: response.data.data.productImage2 != "" ? response.data.data.productImage2 : MyImage,
+                    productImage3: response.data.data.productImage3 != "" ? response.data.data.productImage3 : MyImage,
+                    productImage4: response.data.data.productImage4 != "" ? response.data.data.productImage4 : MyImage,
+                    productImage5: response.data.data.productImage5 != "" ? response.data.data.productImage5 : MyImage,
+                }))
+                setProductDetails(response.data.data);
+            }
+
+        } catch (error) {
+            console.error("Error fetching categorys listing:", error);
+        }
+    }
 
     const handleImageChange = async (e, imageName) => {
         const file = e.target.files[0];
@@ -135,13 +164,13 @@ const EditProducts = () => {
         setBtnDisabld(true);
         setbtnName("Loading...");
 
-        const url = "products" + params.productId;
-        const response = await PostMethod(url, productDetails);
+        const url = "products";
+        const response = await PutMethod(url, params.productId, productDetails);
 
         if (response.status === true) {
 
             setBtnDisabld(false);
-            setbtnName("Add Products");
+            setbtnName("Update Products");
 
             swal("Good job!", "Products Created Successfully", "success")
                 .then(() => {
@@ -150,7 +179,7 @@ const EditProducts = () => {
 
         } else {
             setBtnDisabld(false);
-            setbtnName("Add Products");
+            setbtnName("Update Products");
             setErrorMessage(response.message);
         }
     }
@@ -179,8 +208,8 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Show In Front</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='showHide' onChange={(e) => setProductDetails((prev) => ({ ...prev, showHide: e.target.value, }),)}  >
-                                        <option value="" selected>-- --</option>
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='showHide' defaultValue={productDetails.showHide} value={productDetails.showHide} onChange={(e) => setProductDetails((prev) => ({ ...prev, showHide: e.target.value, }),)}  >
+                                        <option value="" selected disabled>-- --</option>
                                         <option value={1}>Yes</option>
                                         <option value={0}>No</option>
                                     </select>
@@ -190,8 +219,8 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Select Brand</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='brand' onChange={(e) => setProductDetails((prev) => ({ ...prev, brand: e.target.value, }),)}  >
-                                        <option value="" selected>-- --</option>
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='brand' onChange={(e) => setProductDetails((prev) => ({ ...prev, brand: e.target.value, }),)} value={productDetails.brand}  >
+                                        <option value="" selected disabled>-- --</option>
                                         {
                                             brandListing?.map((brand, index) => {
                                                 return (
@@ -206,8 +235,8 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Select Category</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='category' onChange={(e) => setProductDetails((prev) => ({ ...prev, category: e.target.value, }),)}  >
-                                        <option value="" selected>-- --</option>
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='category' onChange={(e) => setProductDetails((prev) => ({ ...prev, category: e.target.value, }),)} value={productDetails.category} >
+                                        <option value="" selected disabled>-- --</option>
                                         {
                                             categoryListing?.map((cate, index) => {
                                                 return (
@@ -222,8 +251,8 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Product Rating</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='rating' onChange={(e) => setProductDetails((prev) => ({ ...prev, rating: e.target.value, }),)}  >
-                                        <option value="" selected>-- --</option>
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='rating' onChange={(e) => setProductDetails((prev) => ({ ...prev, rating: e.target.value, }),)} value={productDetails.rating}  >
+                                        <option value="" selected disabled>-- --</option>
                                         <option value={1}>1</option>
                                         <option value={2}>2</option>
                                         <option value={3}>3</option>
@@ -236,8 +265,8 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Size Variation</span>
                                     </div>
-                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='sizeVariation' onChange={(e) => setProductDetails((prev) => ({ ...prev, sizeVariation: e.target.value, }),)}  >
-                                        <option value="" selected>-- --</option>
+                                    <select className='input input-bordered w-full rounded-md bg-gray-100' name='sizeVariation' onChange={(e) => setProductDetails((prev) => ({ ...prev, sizeVariation: e.target.value, }),)} value={productDetails.sizeVariation}   >
+                                        <option value="" selecte disabled>-- --</option>
                                         <option value={true}>Yes</option>
                                         <option value={false}>No</option>
                                     </select>
@@ -256,14 +285,14 @@ const EditProducts = () => {
                                     <div className="label">
                                         <span className="label-text">Small Description</span>
                                     </div>
-                                    <textarea className='input-bordered w-full rounded-md bg-gray-100 p-2' rows={5} name="productSmallDescription" onChange={(e) => setProductDetails((prev) => ({ ...prev, productSmallDescription: e.target.value, }),)}>{productDetails.productSmallDescription}</textarea>
+                                    <textarea className='input-bordered w-full rounded-md bg-gray-100 p-2' rows={5} name="productSmallDescription" onChange={(e) => setProductDetails((prev) => ({ ...prev, productSmallDescription: e.target.value, }),)} value={productDetails.productSmallDescription} >{productDetails.productSmallDescription}</textarea>
                                 </div>
 
                                 <div className="form-control">
                                     <div className="label">
                                         <span className="label-text">Product Description</span>
                                     </div>
-                                    <textarea className='input-bordered w-full rounded-md bg-gray-100 p-2' rows={5} name="productDescription" onChange={(e) => setProductDetails((prev) => ({ ...prev, productDescription: e.target.value, }),)}>{productDetails.productDescription}</textarea>
+                                    <textarea className='input-bordered w-full rounded-md bg-gray-100 p-2' rows={5} name="productDescription" onChange={(e) => setProductDetails((prev) => ({ ...prev, productDescription: e.target.value, }),)} value={productDetails.productDescription}>{productDetails.productDescription}</textarea>
                                 </div>
 
                             </div>
@@ -283,7 +312,7 @@ const EditProducts = () => {
                                         <input type='file' className='input-bordered w-full rounded-md bg-gray-100' name='productImage1' hidden onChange={async (e) => {
                                             handleImageChange(e, 'productImage1');
                                         }} />
-                                        <img src={defaultImage.productImage1} alt="Brand image" width={"100%"} className='rounded-md' />
+                                        <img src={productData.productImage1 ? productData.productImage1 : defaultImage.productImage1} alt="Brand image" width={"100%"} className='rounded-md' />
                                     </label>
                                 </div>
                                 <div className="form-control">
@@ -292,7 +321,7 @@ const EditProducts = () => {
                                         <input type='file' className='input-bordered w-full rounded-md bg-gray-100' name='productImage2' hidden onChange={async (e) => {
                                             handleImageChange(e, 'productImage2');
                                         }} />
-                                        <img src={defaultImage.productImage2} alt="Brand image" width={"100%"} className='rounded-md' />
+                                        <img src={productData.productImage2 ? productData.productImage2 : defaultImage.productImage2} alt="Brand image" />
                                     </label>
                                 </div>
                                 <div className="form-control">

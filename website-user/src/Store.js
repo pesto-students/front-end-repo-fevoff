@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { thunk } from "redux-thunk";
+import {thunk}  from "redux-thunk";
+
 import { persistStore, persistReducer } from "redux-persist";
 
 import * as Sentry from "@sentry/react";
@@ -10,21 +11,30 @@ import {
   categoryReducer,
   productDetailsReducer,
   productReducer,
+  reviewReducer,
+  searchProductReducer,
 } from "./Reducers/productReducers";
 import {
+  contactRequestReduces,
   otpLoginReducer,
+  userAddressDataReducer,
   userDetailsReducer,
+  userImageUploadReducer,
   userProfileDataReducer,
   userReducer,
 } from "./Reducers/userReducers";
 import { cartReducer } from "./Reducers/cartReducers";
-import { orderCheckReducer } from "./Reducers/orderReducers";
+import {
+  getOneOrderDetailsReducer,
+  orderCheckReducer,
+  orderDetailsReducer,
+} from "./Reducers/orderReducers";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["category", "brand", "cart"], // Reducers you want to persist
+  whitelist: ["category", "brand", "cart", "orderDetails"], 
 };
 
 const persistedReducer = persistReducer(
@@ -40,6 +50,13 @@ const persistedReducer = persistReducer(
     order: orderCheckReducer,
     category: categoryReducer,
     brand: brandReducer,
+    orderDetails: orderDetailsReducer,
+    userImage: userImageUploadReducer,
+    review: reviewReducer,
+    userAddress: userAddressDataReducer,
+    searchProduct: searchProductReducer,
+    contactRequest: contactRequestReduces,
+    oneOrderDetails: getOneOrderDetailsReducer,
   })
 );
 
@@ -67,9 +84,10 @@ const store = createStore(
   // reducer,
   // initialState,
   persistedReducer,
-  composeWithDevTools(applyMiddleware(thunk, sentryMiddleware))
+
+  composeWithDevTools(applyMiddleware(sentryMiddleware, thunk))
 );
 
 const persistor = persistStore(store);
 
-export  {store, persistor};
+export { store, persistor };

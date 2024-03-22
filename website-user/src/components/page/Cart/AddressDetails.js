@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from "react";
-
-import Banner from "../Home/Banner/Banner";
 import { Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, getUserAddress } from "../../../Action/userAction";
+import { clearErrors, getUserAddress, getUserAddressDetails } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
-import { getCartItems } from "../../../Action/cartAction";
+import { getCartItems, updateCart } from "../../../Action/cartAction";
 import { deleteAddress } from "../../../Action/userAction";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import CommonBaner from "./../../CommonBanner/CommonBanner";
+import Breadcrumbs from "./../../Breadcrumbs/Breadcrumbs";
+import "./address-details.css";
+import Loader from "../../Layout/Loader";
 
-const AddressDetails = () => {
+const AddressDetails = React.memo(() => {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState();
+  const { addressId } = useParams();
   const alert = useAlert();
   const [selectedAddressId, setselectedAddressId] = useState([]);
+  const [activeAddress, setActiveAddress] = useState(null);
 
   const { loading, error, address } = useSelector(
     (state) => state.UserProfileData
   );
   const { cartItems } = useSelector((state) => state.cart);
-console.log(address);
-  const handleCheckBoxChange = (addressId) => {
-    setselectedAddressId((prevSelectedAddressId) => {
-      if (prevSelectedAddressId.includes(addressId)) {
-        return prevSelectedAddressId.filter((id) => id !== addressId);
-      } else {
-        return [...prevSelectedAddressId, addressId];
-      }
-    });
+  // console.log(address);
+
+  const handleCheckBoxChange = async (addressId) => {
+    setActiveAddress(addressId);
+    setselectedAddressId(addressId);
+    // setselectedAddressId((prevSelectedAddressId) => {
+    //   if (prevSelectedAddressId.includes(addressId)) {
+    //     return prevSelectedAddressId.filter((id) => id !== addressId);
+    //   } else {
+    //     return [...prevSelectedAddressId, addressId];
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -44,167 +51,221 @@ console.log(address);
       dispatch(getUserAddress(storedUserId));
 
       if (selectedAddressId.length > 0) {
-        const selectedAddress = address.data.filter((addr) =>
-          selectedAddressId.includes(addr._id)
-        );
+        const selectedAddress = address.data.filter((addr) => {
+          selectedAddressId.includes(addr._id);
+          dispatch(getUserAddressDetails(addr._id));
+
+        });
         dispatch(getUserAddress(selectedAddress));
       } else {
-        
         dispatch(getUserAddress(storedUserId));
+
       }
       dispatch(getCartItems(storedUserId));
+
     }
-  }, [dispatch, error, alert, selectedAddressId]);
+  }, [dispatch, error, alert, setUserId]);
 
   const deleteAddressHandler = async (addressId) => {
     try {
       await dispatch(deleteAddress(addressId, userId));
-
+      alert.success("Address Deleted Succesfully")
       setselectedAddressId((prevSelectedAddressId) =>
         prevSelectedAddressId.filter((id) => id !== addressId)
       );
+      await dispatch(getUserAddress(userId));
     } catch (error) {
       console.error("Error Deleting Address", error);
     }
+
   };
+
+  const addAddressToPayment = () => {
+    if (selectedAddressId) {
+      const selectedAddress = address.data.find((addr) => addr._id === selectedAddressId)
+      if (selectedAddress) {
+        dispatch(updateCart(userId, selectedAddress))
+      }
+    }
+  }
 
   let totalPrice = 0;
   let totalDiscount = 0;
   if (cartItems && cartItems.data && cartItems.data.items) {
     cartItems.data.items.forEach((product) => {
-      totalPrice += product.productPrice;
-      totalDiscount += product.productMrp - product.productPrice;
+      totalPrice += product.productPrice * product.quantity;
+      totalDiscount += (product.productMrp - product.productPrice) * product.quantity;
     });
   }
 
   const price = totalPrice + totalDiscount;
   const discount = totalDiscount;
-  const totalAmount = price - discount;
+  const shippingCharges = Math.round((price / 100) * 5);
+  const gst = 0;
+  const totalAmount = price - discount + shippingCharges + gst;
 
   return (
-    <div className="bg-gradient-to-t from-yellow-100 via-pink-100 to-yellow-100 italic font-semibold">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto py-8 lg:max-w-7xl">
-          <h6 className="text-2xl font-bold tracking-tight text-black sm:text-2xl">
-            Home > Cart > Address
-          </h6>
-          <form className="mt-6 lg:grid lg:grid-cols-12 lg:gap-x-12 xl:gap-x-16">
-            <section
-              aria-labelledby="cart-heading"
-              className="rounded-l border border-black lg:col-span-8 lg:pr-4"
-            >
-              <ul role="list" className="divide-y divide-gray-200">
-                {Array.isArray(address.data) &&
-                  address.data.map((address) => (
-                    <div
-                      key={address._id}
-                      className="flex flex-col lg:flex-row justify-between py-6 sm:py-6"
-                    >
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedAddressId.includes(address._id)}
-                          onChange={() => handleCheckBoxChange(address._id)}
-                          className="checkbox m-3 border-orange-600 checked:border-gray-800 [--chkbg:theme(colors.gray.600)] [--chkfg:orange]"
-                        />
-                        <h3 className="text-sm">
-                          <p className="font-semibold text-black">
-                            Name: {address.name}
-                          </p>
-                          <p className="font-semibold text-black">
-                            Email ID: {address.email}
-                          </p>
-                          <p className="font-semibold text-black">
-                            Contect Number: : {address.contact}
-                          </p>
-                          <p className="font-semibold text-black">
-                            Address: {address.houseNo} {address.streetArea}{" "}
-                            {address.landmark} {address.city} {address.state}{" "}
-                            {address.pincode}
-                          </p>
-                        </h3>
-                      </div>
-                      <div className="flex mt-4 lg:mt-0">
-                        <button type="button" className="m-2 ">
-                          <Trash
-                            onClick={() => deleteAddressHandler(address._id)}
-                            size={10}
-                            className=" btn text-red-500 border border-red-500 w-12 bg-red-100 hover:bg-yellow-500"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </ul>
-            </section>
-            <section
-              aria-labelledby="summary-heading"
-              className="mt-6 lg:mt-0 lg:col-span-4 lg:pl-4 border border-black"
-            >
-              {/* Order summary */}
-              <h2 className="border-b border-gray-200 px-4 py-3 text-lg font-medium text-gray-900 sm:p-4">
-                Order Details
-              </h2>
-              <div className="px-4 py-4">
-                <dl className=" space-y-1">
-                  {/* ... (your order details code) ... */}
-                  <div className="flex items-center justify-between">
-                    <dt className="text-sm text-gray-800">Price: </dt>
-                    <dd className="text-sm font-medium text-gray-900">
-                      ₹ {price}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between pt-4">
-                    <dt className="flex items-center text-sm text-gray-800">
-                      <span>Discount</span>
-                    </dt>
-                    <dd className="text-sm font-medium text-green-700">
-                      - ₹ {discount}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between py-4">
-                    <dt className="flex text-sm text-gray-800">
-                      <span>Delivery Charges</span>
-                    </dt>
-                    <dd className="text-sm font-medium text-green-700">Free</dd>
-                  </div>
-                  <div className="flex items-center justify-between border-y border-dashed py-4 ">
-                    <dt className="text-base font-medium text-gray-900">
-                      Total Amount
-                    </dt>
-                    <dd className="text-base font-medium text-gray-900">
-                      ₹ {totalAmount}
-                    </dd>
-                  </div>
-                </dl>
+    <>
+      <CommonBaner pageTitle={"Address Details"} />
+      <Breadcrumbs
+        breadcumr1="Cart"
+        breadcumr1_link={"/cart"}
+        breadcumr2={"Address Details"}
+      />
 
-                <div className="px-2 pb-4 font-medium text-green-700">
-                  You will save ₹ {discount} on this order
-                </div>
-              </div>
-            </section>
-            <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between mt-6 ">
-              <Link to="/cart/payment"
-              disabled={!selectedAddressId.length === 0}
-                type="button"
-                className={`btn  mb-4 lg:mb-0 lg:mr-2 bg-transparent border-red-500 ${
-                  selectedAddressId.length === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-500"
-                } lg:w-96`}
-              >
-                Process To Checkout
-              </Link>
-              {/* <button
-                type="button"
-                className="btn  bg-transparent border-red-500 hover:bg-yellow-500 lg:w-96"
-              >
-                Process To Pay
-              </button> */}
+      {loading ? (
+        <Loader />
+      ) : (
+
+        address?.data?.length > 0 ? (
+          <>
+            <div className="container mx-auto my-5">
+              <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+                <section
+                  aria-labelledby="cart-heading"
+                  className="rounded-l address-section border-black lg:col-span-8"
+                >
+                  <div role="list" className="address-section">
+                    {Array.isArray(address.data) &&
+                      address.data.map((address) => (
+                        <div
+                          key={address._id}
+                          className="grid md:grid-cols-5 grid-cols-4 our-address-listing"
+                        >
+                          <div className="col-span-1 flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name="address_id"
+                              value={address._id}
+                              checked={
+                                activeAddress == null
+                                  ? address.defaultAddress === 1
+                                    ? ""
+                                    : activeAddress
+                                  : address._id === activeAddress
+                                    ? "checked"
+                                    : ""
+                              }
+                              onChange={(e) =>
+                                handleCheckBoxChange(address._id)
+                              }
+                              className="checkbox md:p-6 p-3 rounded-md"
+                              id={`address_id${address._id}`}
+                            />
+                          </div>
+                          <div className="col-span-3">
+                            <p className="text-lg font-bold">
+                              {address.name}, {address.contact}
+                            </p>
+                            <p className="text-lg font-bold">{address.email}</p>
+                            <p className="text-sm">
+                              {address.houseNo} {address.streetArea}{" "}
+                              {address.landmark} <br /> {address.city}{" "}
+                              {address.state} {address.pincode}
+                            </p>
+                          </div>
+                          <div className="md:col-span-1 col-start-2 md:mt-0 mt-2 flex items-center flex-col justify-center">
+                            <button
+                              type="button"
+                              className="btn-delete lg:mt-2"
+                              onClick={() => deleteAddressHandler(address._id)}
+                            >
+                              <Trash size={20} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <Link
+                      to={selectedAddressId.length > 0 ? "/cart/payment" : "#"}
+                      type="button"
+                      className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
+                        }`}
+                      onClick={addAddressToPayment}
+                    >
+                      Process To Payment
+                    </Link>
+                    <Link to="/cart/addnewaddress">
+                      <button type="button" className="btn-payment">
+                        Add Address
+                      </button>
+                    </Link>
+                  </div>
+                </section>
+
+                <section
+                  aria-labelledby="summary-heading"
+                  className="rounded-md cart-listing-border lg:col-span-4 md:mt-0 mt-3 lg:p-0"
+                >
+                  <h2 className="border-b px-4 py-3 text-2xl font-bold sm:p-4">
+                    Price Details
+                  </h2>
+
+                  <div className=" space-y-1 px-4 py-4">
+                    <div className="flex items-center justify-between">
+                      <dt className="text-lg font-semibold text-dark">
+                        Price:
+                      </dt>
+                      <dd className="text-sm font-bold text-gray-900">
+                        ₹ {price}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between pt-4">
+                      <dt className="flex items-center text-lg font-semibold text-dark">
+                        <span>Discount:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        ₹ {discount}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        Total Amount:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {price - discount}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between py-4">
+                      <dt className="flex text-lg font-semibold text-dark">
+                        <span>Delivery Charges:</span>
+                      </dt>
+                      <dd className="text-sm font-bold text-green-700">
+                        {shippingCharges}
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between border-y border-dashed py-4 ">
+                      <dt className="text-base font-bold text-gray-900">
+                        Sub Total:
+                      </dt>
+                      <dd className="text-base font-bold text-gray-900">
+                        ₹ {totalAmount}
+                      </dd>
+                    </div>
+                  </div>
+                  <div className="pt-2 pb-4 font-bold text-green-700 text-center">
+                    You will save ₹ {discount} on this order
+                  </div>
+                </section>
+              </form>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          </>
+        ) : (
+          <>
+            <div className="container mx-auto">
+              <h2 className="text-5xl text-center py-32">Addres Is Empty...!</h2>
+            </div>
+            <Link to="/cart/addnewaddress">
+              <button type="button" className="btn-payment">
+                Add Address
+              </button>
+            </Link>
+          </>
+        )
+      )}
+    </>
   );
-};
+});
 
 export default AddressDetails;

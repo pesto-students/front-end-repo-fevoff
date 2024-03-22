@@ -13,6 +13,8 @@ import {
   ADD_TO_CART_FAIL,
 } from "../Constants/cartConstants";
 import { CLEAR_ERRORS } from "../Constants/productConstant";
+import { baseURL } from "./baseUrl";
+
 
 export const addItemsToCart =
   (userId, productId, quantity, size) => async (dispatch, getState) => {
@@ -20,9 +22,9 @@ export const addItemsToCart =
       dispatch({ type: ADD_TO_CART });
       // const requestData = { userId, productId, quantity, size };
       const config = { headers: { "Content-Type": "application/json" } };
-      const data  = await axios.post(
-        `http://localhost:3001/api/cart`,
-        userId, productId, quantity, size , config,
+      const data = await axios.post(
+        `${baseURL}/cart`,
+        userId, productId, quantity, size, config,
       );
 
       dispatch({
@@ -32,7 +34,7 @@ export const addItemsToCart =
     } catch (error) {
       dispatch({
         type: ADD_TO_CART_FAIL,
-        payload: error.message,
+        payload: error.response.data.message,
       });
     }
   };
@@ -41,7 +43,7 @@ export const removeItemsToCart =
   (userId, productId) => async (dispatch, getState) => {
     try {
       const res = await axios.delete(
-        `http://localhost:3001/api/cart/item/${userId}`,
+        `${baseURL}/cart/item/${userId}`,
         { data: { productId } }
       );
       dispatch({ type: REMOVE_ITEM_FROM_CART_SUCCESS, payload: productId });
@@ -58,7 +60,7 @@ export const getCartItems = (userId) => async (dispatch) => {
     dispatch({ type: CART_ITEM_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const data = await axios.get(
-      `http://localhost:3001/api/cart/${userId}`,
+      `${baseURL}/cart/${userId}`,
       config
     );
     // console.log(data);
@@ -71,7 +73,7 @@ export const getCartItems = (userId) => async (dispatch) => {
 export const updateCart =
   (userId, productId, quantity) => async (dispatch, getState) => {
     try {
-      const data = await axios.put(`http://localhost:3001/api/cart/${userId}`, {
+      const data = await axios.put(`${baseURL}/cart/${userId}`, {
         productId,
         quantity,
       });

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import GetMethod from '../../../../api_calls/get-method/GetMethod';
-import MyImage from "./../../../../asset/images/default.jpg";
 import { useParams } from 'react-router-dom';
 
 const ProductView = () => {
@@ -102,7 +101,7 @@ const ProductView = () => {
                         </table>
                     </div>
                 </div>
-            </section >
+            </section>
         </>
     )
 }

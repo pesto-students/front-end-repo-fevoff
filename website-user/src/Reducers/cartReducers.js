@@ -11,22 +11,26 @@ import {
   UPDATE_CART_SUCCESS,
 } from "../Constants/cartConstants";
 
-export const cartReducer = (state = { cartItems: []}, action) => {
+export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-    case UPDATE_CART_SUCCESS:
       return {
         ...state,
         cartItems: action.payload || [],
       };
 
     case CART_ITEM_REQUEST:
-      
       return {
         ...state,
         loading: true,
         cartItems: action.payload,
-        error:null
+        error: null,
+      };
+
+    case UPDATE_CART_SUCCESS:
+      return {
+        ...state,
+        cartItems: action.payload || [],
       };
 
     case CART_ITEM_SUCCESS: {
@@ -34,7 +38,7 @@ export const cartReducer = (state = { cartItems: []}, action) => {
         ...state,
         loading: false,
         cartItems: action.payload || [],
-        error:null
+        error: null,
       };
     }
 
@@ -48,7 +52,8 @@ export const cartReducer = (state = { cartItems: []}, action) => {
     case REMOVE_ITEM_FROM_CART_SUCCESS:
       return {
         ...state,
-        cartItems: state.cartItems.filter((i) => i.product !== action.payload),
+        cartItems:
+          state.cartItems || [].filter((i) => i.product !== action.payload),
         error: null,
       };
     case SAVE_SHIPPING_INFO:

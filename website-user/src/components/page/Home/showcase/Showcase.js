@@ -12,7 +12,7 @@ const Showcase = () => {
         <div className="grid grid-cols-2 md:py-8 py-4">
           <div className="box-content">
             <h2 className="showcase-heading">Best Kurta <br /> Dresses For Men</h2>
-            <Link className="btn-showcase" to={""}>
+            <Link className="btn-showcase" to="/products">
               View More
             </Link>
           </div>
@@ -27,7 +27,7 @@ const Showcase = () => {
           </div>
           <div className="box-content">
             <h2 className="showcase-heading">Best Lehenga <br /> Dresses For Women</h2>
-            <Link className="btn-showcase" to={""}>
+            <Link className="btn-showcase" to="/products">
               View More
             </Link>
           </div>
