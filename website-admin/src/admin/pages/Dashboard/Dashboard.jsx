@@ -20,7 +20,7 @@ const Dashboard = () => {
                         <div className="card-body">
                             <div className='flex justify-between'>
                                 <label className='font-bold'>Total Products</label>
-                                <label className='text-3xl font-bold'>45</label>
+                                <label className='text-3xl font-bold'>8</label>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@ const Dashboard = () => {
                         <div className="card-body">
                             <div className='flex justify-between'>
                                 <label className='font-bold'>Today Orders</label>
-                                <label className='text-3xl font-bold'>45</label>
+                                <label className='text-3xl font-bold'>29</label>
                             </div>
                         </div>
                     </div>
