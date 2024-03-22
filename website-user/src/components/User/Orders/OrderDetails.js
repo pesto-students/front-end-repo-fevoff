@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOneOrderDetil } from "../../../Action/orderAction";
 import { useParams } from "react-router-dom";
 import { getUserAddress } from "../../../Action/userAction";
+import { ProgressTracker } from '@atlaskit/progress-tracker';
+import "./orders.css";
+import CommonBanner from "../../CommonBanner/CommonBanner";
+import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -14,7 +18,7 @@ const OrderDetails = () => {
     (state) => state.oneOrderDetails
   );
 
-  const {  address } = useSelector(
+  const { address } = useSelector(
     (state) => state.UserProfileData
   );
   const [status, setStatus] = useState("confirmed"); // Initial status: confirmed
@@ -33,125 +37,120 @@ const OrderDetails = () => {
     dispatch(getUserAddress(storedUserId));
     dispatch(getOneOrderDetil(orderId));
   }, []);
+
+  const items = [
+    {
+      id: 'Pending Order',
+      label: 'Pending Order',
+      percentageComplete: 100,
+    },
+    {
+      id: 'Order Shipped',
+      label: 'Order Shipped',
+      percentageComplete: 100,
+      status: 'Order Shipped',
+    },
+    {
+      id: 'On The Way',
+      label: 'On The Way',
+      percentageComplete: 50,
+      status: 'On The Way',
+    },
+    {
+      id: 'Arried Nearest Station',
+      label: 'Arried Nearest Station',
+      percentageComplete: 0,
+      status: 'Arried Nearest Station',
+    },
+    {
+      id: 'Out For Delivery',
+      label: 'Out For Delivery',
+      percentageComplete: 0,
+      status: 'Out For Delivery',
+    },
+    {
+      id: 'Delivered',
+      label: 'Delivered',
+      percentageComplete: 0,
+      status: 'Delivered',
+    },
+  ];
+
   return (
-    <div>
-      <h1 className="text-3xl flex justify-center mt-16">Order Details</h1>
-      <div className="flex flex-col w-full border-opacity-50 px-20 p-20">
-        <div className="grid h-76 w-11/12 card border border-black rounded-box lg:px-0 ">
+    <>
+      <CommonBanner pageTitle={"Order Details"} />
+      <Breadcrumbs breadcumr1={"Manage Orders"} breadcumr1_link={"/me/orders"} breadcumr2={"Order Details"} />
+      <div className="container mx-auto border-opacity-50 p-5 md:pb-20">
+        <div className="grid card border border-black rounded-box">
           <div className="flex flex-wrap">
             {oneOrderDetails &&
               oneOrderDetails.data &&
               oneOrderDetails.data.data.map((order) => (
-                <div key={order._id} className="border p-2 mb-4">
-                  <div className="flex flex-row  gap-4">
-                    <div className="card w-full  flex flex-row">
-                      <figure className="w-48">
-                        <img
-                          src={order.product.productMainImage}
-                          alt={order.product.name}
-                        />
-                      </figure>
-                      <div className="card-body">
-                        <h2 className="text-xl">Name: {order.product.name}</h2>
-                        <h2 className="text-xl">
-                          Quantity: {order.items.quantity}
-                        </h2>
-                        <h2 className="text-xl">Price: {order.items.price}</h2>
-                        <h2 className="text-xl">
-                          Total Price: {order.totalCost}
-                        </h2>
-                        <h2 className="text-xl">
-                          Seller: Fevoof India Pvt. Ltd.
-                        </h2>
+                <div key={order._id} className="grid md:grid-cols-4 grid-cols-1 p-2 mb-4">
+                  <div className="col-span-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3">
+                      <div className="col-span-1 flex justify-center items-center">
+                        <figure className="w-48 rounded-md">
+                          <img
+                            src={order.product.productMainImage}
+                            alt={order.product.name}
+                          />
+                        </figure>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="card-body">
+                          <h2 className="text-xl">Name: {order.product.name}</h2>
+                          <h2 className="text-xl">
+                            Quantity: {order.items.quantity}
+                          </h2>
+                          <h2 className="text-xl">Price: {order.items.price}</h2>
+                          <h2 className="text-xl">
+                            Total Price: {order.totalCost}
+                          </h2>
+                          <h2 className="text-xl">
+                            Seller: Fevoff Pvt. Ltd.
+                          </h2>
+                        </div>
                       </div>
                     </div>
-                    <div className="card-actions lg:ml-96">
-                      <button className="btn w-36 lg:border border-red-600 bg-transparent ">
-                        Invoice
-                      </button>
-                      <button className="btn border w-36 border-red-600 bg-transparent">
-                        Cancel Order
-                      </button>{" "}
-                      <button className="btn w-36 border border-red-600 bg-transparent">
-                        Review Product
-                      </button>
-                    </div>
+                  </div>
+                  <div className="col-span-1 card-actions float-right flex justify-center items-center">
+                    <button className="web-btn-2">
+                      Invoice
+                    </button>
+                    <button className="web-btn-2">
+                      Cancel Order
+                    </button>
+                    <button className="web-btn-2">
+                      Review Product
+                    </button>
                   </div>
                 </div>
               ))}
           </div>
         </div>
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
-        <div className="grid h-56 card border border-black rounded-box place-items-center">
-        {Array.isArray(address.data) &&
-                      address.data.map((address) => (
-                        <div key={address._id}>
-                            <div>
-                                {address.city}
-                            </div>
-                        </div>
-                      ))}
-        </div>
+        {/* <div className="grid h-56 card border border-black rounded-box place-items-center">
+          {Array.isArray(address.data) &&
+            address.data.map((address) => (
+              <div key={address._id}>
+                <div>
+                  {address.city}
+                </div>
+              </div>
+            ))}
+        </div> */}
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
-        <div className="grid h-56 card border border-black rounded-box place-items-center">
-          <div className="flex justify-evenly items-center mt-4 space-x-4">
-            <div
-              className={`rounded-full h-6 w-6 flex items-center justify-center ${
-                status === "confirmed" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            >
-              <p className="text-center mb-20 text-green-500 text-sm md:text-base lg:text-lg xl:text-xl">
-                Order Confirmed
-              </p>
-              <span className="text-white">1</span>
-            </div>
-            <div
-              className={`h-1 w-36 ${
-                status === "confirmed" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            ></div>
-            <p className="text-center text-sm md:text-base ">Order Shiped</p>
-            <div
-              className={`rounded-full h-6 w-6 flex items-center justify-center ${
-                status === "shipped" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            >
-              <span className="text-white">2</span>
-            </div>
-            <div
-              className={`h-1 w-36 ${
-                status === "shipped" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            ></div>
-            <p className="text-center text-sm md:text-base ">Out of delivery</p>
-            <div
-              className={`rounded-full h-6 w-6 flex items-center justify-center ${
-                status === "delivered" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            >
-              <span className="text-white">3</span>
-            </div>
-            <p className="text-center text-sm md:text-base ">Delivered</p>
-            <div
-              className={`h-1 w-36 ${
-                status === "deliverd" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            ></div>
-            <div
-              className={`rounded-full h-6 w-6 flex items-center justify-center ${
-                status === "delivered" ? "bg-green-500" : "bg-gray-300"
-              }`}
-            >
-              <span className="text-white">4</span>
-            </div>
-          </div>
+        <div className="border border-gray-500 rounded-xl pt-8 mt-8 pb-6 hidden md:block">
+          <h4 className="text-center pb-7 text-3xl italic font-bold">Shipping Status</h4>
+          <ProgressTracker items={items} />;
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
