@@ -181,7 +181,7 @@ export const getUserAddressDetails = (addressId) => async (dispatch) => {
   }
 };
 
-export const addUserAddress = (jwtToken, updatedAddressData, userId) => async (dispatch) => {
+export const addUserAddress = (updatedAddressData, jwtToken) => async (dispatch) => {
   try {
     dispatch({ type: ADD_USER_ADDRESS_REQUEST });
     const config = { headers: { Authorization: `Bearer ${jwtToken}`, "Content-type": "application/json" } };

@@ -6,9 +6,11 @@ import { addUserAddress } from "../../../Action/userAction";
 import { CLEAR_ERRORS } from "../../../Constants/userConstants";
 import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
+import { useNavigate } from "react-router-dom";
 
 const AddAddress = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const alert = useAlert();
   //   const { addressId } = useParams();
   const [userId, setUserId] = useState();
@@ -38,7 +40,7 @@ const AddAddress = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let updatedAddressData = {
@@ -47,7 +49,9 @@ const AddAddress = () => {
 
     console.log(updatedAddressData);
 
-    dispatch(addUserAddress(updatedAddressData, userJWT));
+    await dispatch(addUserAddress(updatedAddressData, userJWT));
+
+    navigate("/cart/address");
   };
 
   useEffect(() => {

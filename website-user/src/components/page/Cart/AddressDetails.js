@@ -14,7 +14,7 @@ import Loader from "../../Layout/Loader";
 const AddressDetails = React.memo(() => {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState();
-  const {addressId} = useParams();
+  const { addressId } = useParams();
   const alert = useAlert();
   const [selectedAddressId, setselectedAddressId] = useState([]);
   const [activeAddress, setActiveAddress] = useState(null);
@@ -53,7 +53,7 @@ const AddressDetails = React.memo(() => {
       if (selectedAddressId.length > 0) {
         const selectedAddress = address.data.filter((addr) => {
           selectedAddressId.includes(addr._id);
-    dispatch(getUserAddressDetails(addr._id));
+          dispatch(getUserAddressDetails(addr._id));
 
         });
         dispatch(getUserAddress(selectedAddress));
@@ -80,10 +80,10 @@ const AddressDetails = React.memo(() => {
 
   };
 
-  const addAddressToPayment = () =>{
-    if(selectedAddressId){
-      const selectedAddress = address.data.find((addr)=> addr._id === selectedAddressId)
-      if(selectedAddress){
+  const addAddressToPayment = () => {
+    if (selectedAddressId) {
+      const selectedAddress = address.data.find((addr) => addr._id === selectedAddressId)
+      if (selectedAddress) {
         dispatch(updateCart(userId, selectedAddress))
       }
     }
@@ -182,7 +182,7 @@ const AddressDetails = React.memo(() => {
                       type="button"
                       className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
                         }`}
-                        onClick={addAddressToPayment}
+                      onClick={addAddressToPayment}
                     >
                       Process To Payment
                     </Link>
