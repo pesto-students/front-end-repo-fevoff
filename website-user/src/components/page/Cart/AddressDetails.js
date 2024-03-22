@@ -3,7 +3,7 @@ import { Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, getUserAddress } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
-import { getCartItems } from "../../../Action/cartAction";
+import { getCartItems, updateCart } from "../../../Action/cartAction";
 import { deleteAddress } from "../../../Action/userAction";
 import { Link } from "react-router-dom";
 import CommonBaner from "./../../CommonBanner/CommonBanner";
@@ -75,12 +75,21 @@ const AddressDetails = React.memo(() => {
 
   };
 
+  const addAddressToPayment = () =>{
+    if(selectedAddressId){
+      const selectedAddress = address.data.find((addr)=> addr._id === selectedAddressId)
+      if(selectedAddress){
+        dispatch(updateCart(userId, selectedAddress))
+      }
+    }
+  }
+
   let totalPrice = 0;
   let totalDiscount = 0;
   if (cartItems && cartItems.data && cartItems.data.items) {
     cartItems.data.items.forEach((product) => {
-      totalPrice += product.productPrice;
-      totalDiscount += product.productMrp - product.productPrice;
+      totalPrice += product.productPrice * product.quantity;
+      totalDiscount += (product.productMrp - product.productPrice) * product.quantity;
     });
   }
 
@@ -168,6 +177,7 @@ const AddressDetails = React.memo(() => {
                       type="button"
                       className={`btn-payment ${selectedAddressId.length === 0 ? "disabled" : ""
                         }`}
+                        onClick={addAddressToPayment}
                     >
                       Process To Payment
                     </Link>

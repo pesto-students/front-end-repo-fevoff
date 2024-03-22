@@ -7,7 +7,7 @@ import RazorpayLogo from "../../../asset/images/ROZARPAYLOGO.png";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems } from "../../../Action/cartAction";
-import { getUserAddress } from "../../../Action/userAction";
+import { clearErrors, getUserAddress } from "../../../Action/userAction";
 import {
   orderCheckout,
   orderPaymentCallback,
@@ -58,8 +58,9 @@ const Payment = () => {
   let totalDiscount = 0;
   if (cartItems && cartItems.data && cartItems.data.items) {
     cartItems.data.items.forEach((product) => {
-      totalPrice += product.productPrice;
-      totalDiscount += product.productMrp - product.productPrice;
+      totalPrice += product.productPrice * product.quantity;
+      totalDiscount +=
+        product.productMrp - product.productPrice * product.quantity;
     });
   }
   const price = totalPrice + totalDiscount;
@@ -69,7 +70,6 @@ const Payment = () => {
   const totalAmount = price - discount + shippingCharges + gst;
 
   const handleRazorpayment = (orderNewId) => {
-
     const options = {
       key: process.env.REACT_APP_RAZORPAY_KEY || "rzp_test_naqbPaCVZeqJjM",
       amount: totalAmount * 100,
@@ -78,20 +78,27 @@ const Payment = () => {
       description: cartItems.name,
       image: logo,
       handler: async (res) => {
-
         const transactionTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
         const key = res.razorpay_payment_id;
 
         alert.success("Payment Successful:" + res.razorpay_payment_id);
 
-        let paymentStatus = (key !== "") ? "success" : "";
+        let paymentStatus = key !== "" ? "success" : "";
 
         const transactionId = res.razorpay_payment_id;
 
         const orderId = orderNewId;
 
-        await dispatch(orderPaymentCallback(userId, orderId, transactionId, transactionTime, paymentStatus));
+        await dispatch(
+          orderPaymentCallback(
+            userId,
+            orderId,
+            transactionId,
+            transactionTime,
+            paymentStatus
+          )
+        );
 
         navigate("/order/confiramation");
       },
@@ -112,9 +119,10 @@ const Payment = () => {
   };
 
   useEffect(() => {
-    if (error) {
-      alert.error(error);
-    }
+    // if (error) {
+    //   alert.error(error);
+    //   dispatch(clearErrors)
+    // }
 
     // console.log(selectedOption);
     const storedUserId = localStorage.getItem("id");
@@ -130,15 +138,12 @@ const Payment = () => {
     dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
 
-    /* f (selectedOption === "Cash On Delivery") {
-      checkoutOrderHandler();
-    } */
+    //  if (selectedOption === "Cash On Delivery") {
+    //   checkoutOrderHandler();
+    //  }
 
-    getUserDetails()
-
+    getUserDetails();
   }, [userId, dispatch, error, alert, selectedOption]);
-
-
 
   const getUserDetails = async () => {
     const price = totalPrice + totalDiscount;
@@ -148,7 +153,7 @@ const Payment = () => {
     const gst = 0;
     const totalAmount = price - discount + shippingCharges + gst;
     setFinalAmount(totalAmount);
-  }
+  };
 
   const handleOptionChange = (option) => {
     setselectedOption(option);
@@ -160,16 +165,16 @@ const Payment = () => {
       orderCheckout(
         userId,
         cartItems &&
-        cartItems.data.items.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: item.productPrice,
-        })),
+          cartItems.data.items.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.productPrice,
+          })),
         finalAmount,
         selectedOption,
         address._id,
         status,
-        shippingChar,
+        shippingChar
       )
     );
   };
@@ -182,7 +187,6 @@ const Payment = () => {
     }
 
     if (selectedOption === "Cash On Delivery") {
-
       dispatch(
         orderPaymentCallback({
           orderId,
@@ -190,23 +194,27 @@ const Payment = () => {
           paymentStatus: "pending",
         })
       );
+      alert.success("Order placed successfully");
+    } else {
       navigate("/order/confiramation");
     }
   };
 
   const handlePayment = useCallback(async () => {
-
     if (selectedOption === "RazorPay") {
       checkoutOrderHandler(selectedOption);
-     await handleRazorpayment(localStorage.getItem("lastOrderId"));
+      await handleRazorpayment(localStorage.getItem("lastOrderId"));
       setOrderId(localStorage.getItem("lastOrderId"));
     } else {
       checkoutOrderHandler();
       setOrderId(localStorage.getItem("lastOrderId"));
     }
 
+    if (selectedOption === "Caash On Delivery") {
+      handleConfiramOrder();
+      navigate("/order/confiramation");
+    }
   }, [selectedOption, handleRazorpayment, handleConfiramOrder]);
-
 
   return (
     <>
@@ -243,7 +251,9 @@ const Payment = () => {
                                 <div className="flex ">
                                   <input
                                     type="radio"
-                                    checked={selectedOption === paymentOption.name}
+                                    checked={
+                                      selectedOption === paymentOption.name
+                                    }
                                     onChange={() =>
                                       handleOptionChange(paymentOption.name)
                                     }
@@ -310,8 +320,12 @@ const Payment = () => {
                     </div>
                   </section>
                   <div className="flex flex-col  lg:flex-row items-center justify-center  lg:justify-between  lg:w-96">
-                    <button onClick={handlePayment} disabled={!selectedOption} type="button"
-                      className="web-btn-2 px-32 cursor-pointer">
+                    <button
+                      onClick={handlePayment}
+                      disabled={!selectedOption}
+                      type="button"
+                      className="web-btn-2 px-32 cursor-pointer"
+                    >
                       Confirm Order
                     </button>
                   </div>

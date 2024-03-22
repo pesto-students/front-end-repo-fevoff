@@ -25,6 +25,7 @@ import {
 } from "./Reducers/userReducers";
 import { cartReducer } from "./Reducers/cartReducers";
 import {
+  getOneOrderDetailsReducer,
   orderCheckReducer,
   orderDetailsReducer,
 } from "./Reducers/orderReducers";
@@ -54,7 +55,8 @@ const persistedReducer = persistReducer(
     review: reviewReducer,
     userAddress: userAddressDataReducer,
     searchProduct: searchProductReducer,
-    contactRequest: contactRequestReduces
+    contactRequest: contactRequestReduces,
+    oneOrderDetails: getOneOrderDetailsReducer,
   })
 );
 

@@ -3,6 +3,7 @@ import Orders from "./Orders";
 import SideMenu from "../Dashboard/SideMenu";
 import CommonBanner from "../../CommonBanner/CommonBanner";
 import Breadcrumbs from "../../Breadcrumbs/Breadcrumbs";
+import OrderDetails from "./OrderDetails";
 
 const MyOrders = () => {
   return (
@@ -19,6 +20,7 @@ const MyOrders = () => {
           
           <div className="col-span-3">
             <Orders />
+            {/* <OrderDetails /> */}
           </div>
         </div>
       </div>

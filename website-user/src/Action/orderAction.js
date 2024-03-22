@@ -9,6 +9,8 @@ import {
   GET_ORDER_DETAILS_FAIL,
   GET_ORDER_DETAILS_REQUEST,
   GET_ORDER_DETAILS_SUCCESS,
+  GET_ONE_ORDER_DETAILS_FAIL,
+
 } from "../Constants/orderConstants";
 import { baseURL } from "./baseUrl";
 
@@ -95,8 +97,21 @@ export const getOrderDetils = (userId) => async (dispatch) => {
     dispatch({ type: 'GET_ORDER_DETAILS_REQUEST' });
     const config = { headers: { "Content-Type": "application/json" } };
     const data = await axios.get(`${baseURL}/order/${userId}`, config);
+    console.log(data);
     dispatch({ type: 'GET_ORDER_DETAILS_SUCCESS', payload: data });
   } catch (error) {
     dispatch({ type: 'GET_ORDER_DETAILS_FAIL', payload: error.message, });
+  }
+};
+
+export const getOneOrderDetil = (orderId) => async (dispatch) => {
+  try {
+    dispatch({ type: 'GET_ONE_ORDER_DETAILS_REQUEST' });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const data = await axios.get(`${baseURL}/order-details/${orderId}`, config);
+    // console.log(data);
+    dispatch({ type: 'GET_ONE_ORDER_DETAILS_SUCCESS', payload: data });
+  } catch (error) {
+    dispatch({ type: 'GET_ONE_ORDER_DETAILS_FAIL', payload: error.message, });
   }
 };

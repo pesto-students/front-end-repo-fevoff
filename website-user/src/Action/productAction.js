@@ -81,7 +81,7 @@ export const getProductDetils = (productId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
-      payload: error.data.message,
+      payload: error.data,
     });
   }
 };

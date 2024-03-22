@@ -77,7 +77,10 @@ const Product = () => {
               categoryData.data.data &&
               categoryData.data.data.map((relatedCategory, index) => {
                 return (
-                  <h4 className="px-8 italic">{relatedCategory.name}</h4>
+                  <Link to="/products">
+                    <h4 className="px-8 italic btn hover:text-yellow-600 m-2 border border-black bg-transparent hover:bg-black">{relatedCategory.name}</h4>
+                  </Link>
+                  
                 );
               })}
           </div>

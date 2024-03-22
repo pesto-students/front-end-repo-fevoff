@@ -6,9 +6,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { clearErrors, getCategory } from "../../../../Action/productAction";
+import { clearErrors, getCategory, getCategoryDetails } from "../../../../Action/productAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
+import { Link } from "react-router-dom";
 
 const BrowserCat = () => {
   var settings = {
@@ -46,12 +47,14 @@ const BrowserCat = () => {
   const alert = useAlert();
 
   const {
-    loading,
+    
     error,
     category: categoryData,
   } = useSelector((state) => state.category);
 
-
+const handleClickCategory = (caregoryId) =>{
+  dispatch(getCategoryDetails(caregoryId))
+}
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -73,12 +76,15 @@ const BrowserCat = () => {
             {categoryData &&
               categoryData.data.data &&
               categoryData.data.data.map((cat) => (
-                <div key={cat._id} className="category-box">
+                <div key={cat._id} className="category-box" onClick={()=>handleClickCategory(cat._id)}>
+                  <Link to={`/products`}>
                   <img
                     src={cat.categoryImage}
                     alt="Category Image"
                     className="img rounded-full"
                   />
+                  </Link>
+                 
                   {/* <p>{cat.name}</p> */}
                 </div>
               ))}

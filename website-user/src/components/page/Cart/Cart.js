@@ -64,10 +64,10 @@ const Cart = () => {
   };
   useEffect(
     (productId, newQty) => {
-      if (error) {
-        alert.error(error);
-        // dispatch(clearErrors());
-      }
+      // if (error) {
+      //   alert.error(error);
+      //   dispatch(clearErrors());
+      // }
       const storedUserId = localStorage.getItem("id");
 
       if (storedUserId) setUserId(storedUserId);
@@ -85,25 +85,32 @@ const Cart = () => {
   if (cartItems && cartItems.data && cartItems.data.items) {
     cartItems.data.items.forEach((product) => {
       totalPrice += product.productPrice * product.quantity;
-      totalDiscount += (product.productMrp - product.productPrice) * product.quantity;
+      totalDiscount +=
+        (product.productMrp - product.productPrice) * product.quantity;
     });
   }
-  const price = totalPrice + totalDiscount ;
+  const price = totalPrice + totalDiscount;
   const discount = totalDiscount;
   const shippingCharges = Math.round((price / 100) * 5);
   const gst = 0;
   const totalAmount = price - discount + shippingCharges + gst;
 
+  if (loading) {
+    return <Loader />;
+  } else if (cartItems?.data?.items?.length > 0) {
+  } else {
+  }
+
   return (
     <>
-      <>
-        <CommonBanner pageTitle={"Cart Details"} />
-        <Breadcrumbs breadcumr1="Cart Details" />
+      <CommonBanner pageTitle={"Cart Details"} />
+      <Breadcrumbs breadcumr1="Cart Details" />
 
-        <>
-          {loading ? (
-            <Loader />
-          ) : cartItems?.data?.items?.length > 0 ? (
+      {loading ? (
+        <Loader />
+      ) : (
+        <div>
+          {cartItems?.data?.items?.length > 0 ? (
             <div className="container mx-auto my-5">
               <form className="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
                 <section
@@ -147,7 +154,7 @@ const Cart = () => {
                                 Price:{" "}
                                 <del>
                                   <sub className="text-red-800">
-                                    &#8377;{product.productMrp }
+                                    &#8377;{product.productMrp}
                                   </sub>
                                 </del>{" "}
                                 &#8377;{product.productPrice * product.quantity}
@@ -274,16 +281,12 @@ const Cart = () => {
               </form>
             </div>
           ) : (
-            <>
-              <div className="container mx-auto">
-                <h2 className="text-5xl text-center py-32">
-                  Cart Is Empty...!
-                </h2>
-              </div>
-            </>
+            <div className="container mx-auto">
+              <h2 className="text-5xl text-center py-32">Cart Is Empty...!</h2>
+            </div>
           )}
-        </>
-      </>
+        </div>
+      )}
     </>
   );
 };

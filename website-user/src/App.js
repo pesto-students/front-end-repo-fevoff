@@ -24,6 +24,7 @@ import ContactUs from "./components/page/ContactUs/ContactUs";
 import UpdateAddress from "./components/User/manage address/UpdateAddress";
 import Wishlist from "./components/page/Wishlist/Wishlist";
 import AddAddress from "./components/page/Cart/AddAddress";
+import OrderDetails from "./components/User/Orders/OrderDetails";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/me/updateaddress/:addressId" element={<UpdateAddress />} />
           <Route path="/me/changepassword" element={<ChangePaassword />} />
           <Route path="/me/orders" element={<ManageOrders />} />
+          <Route path="/me/orderdetails/:orderId" element={<OrderDetails />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<Privacy />} />
           <Route path="/terms-conidtions" element={<Terms />} />
