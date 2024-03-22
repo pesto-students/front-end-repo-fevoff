@@ -253,9 +253,9 @@ const Payment = () => {
                           <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
                             <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                               <div>
-                                <div className="flex ">
+                                <div className="flex">
                                   <input
-                                    type="radio"
+                                    type="checkbox"
                                     checked={
                                       selectedOption === paymentOption.name
                                     }
@@ -263,11 +263,12 @@ const Payment = () => {
                                       handleOptionChange(paymentOption.name)
                                     }
                                     name="paymentOption"
-                                    className="checkbox m-3 border-orange-600 checked:border-gray-800 [--chkbg:theme(colors.gray.600)] [--chkfg:orange]"
+                                    id={paymentOption.name}
+                                    className="checkbox md:p-6 p-2 rounded-md"
                                   />
-                                  <h3 className="text-sm m-3 font-semibold text-black">
+                                  <label className="md:text-2xl text-md m-3 font-bold text-black cursor-pointer" for={paymentOption.name}>
                                     {paymentOption.name}
-                                  </h3>
+                                  </label>
                                 </div>
                               </div>
                             </div>

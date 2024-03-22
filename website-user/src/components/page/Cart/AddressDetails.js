@@ -134,13 +134,13 @@ const AddressDetails = React.memo(() => {
                         >
                           <div className="col-span-1 flex items-center justify-center">
                             <input
-                              type="radio"
+                              type="checkbox"
                               name="address_id"
                               value={address._id}
                               checked={
                                 activeAddress == null
                                   ? address.defaultAddress === 1
-                                    ? "checked"
+                                    ? ""
                                     : activeAddress
                                   : address._id === activeAddress
                                     ? "checked"
