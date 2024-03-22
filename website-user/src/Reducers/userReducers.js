@@ -43,6 +43,9 @@ import {
   CONTECT_REQUEST_REQUEST,
   CONTECT_REQUEST_SUCCESS,
   CONTECT_REQUEST_FAIL,
+  GET_USER_ADDRESS_REQUEST,
+  GET_USER_ADDRESS_SUCCESS,
+  GET_USER_ADDRESS_FAIL,
 } from "../Constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -130,6 +133,7 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
     case LOAD_USER_ADDRESS_REQUEST:
     case EDIT_USER_ADDRESS_REQUEST:
     case USER_UPDATE_REQUEST:
+      case GET_USER_ADDRESS_REQUEST:
       return {
         ...state,
         loading: true,
@@ -139,6 +143,7 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
     case ADDRESS_DELETE_SUCCESS:
     case UPDATE_USER_SUCCESS:
     case ADD_USER_ADDRESS_SUCCESS:
+      case GET_USER_ADDRESS_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -151,6 +156,7 @@ export const userProfileDataReducer = (state = { address: {} }, action) => {
     case ADDRESS_DELETE_FAIL:
     case UPDATE_USER_FAIL:
     case ADD_USER_ADDRESS_FAIL:
+      case GET_USER_ADDRESS_FAIL:
       return {
         ...state,
         loading: false,

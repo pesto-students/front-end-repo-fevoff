@@ -7,7 +7,11 @@ import RazorpayLogo from "../../../asset/images/ROZARPAYLOGO.png";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems } from "../../../Action/cartAction";
-import { clearErrors, getUserAddress } from "../../../Action/userAction";
+import {
+  clearErrors,
+  getUserAddress,
+  getUserAddressDetails,
+} from "../../../Action/userAction";
 import {
   orderCheckout,
   orderPaymentCallback,
@@ -34,6 +38,7 @@ const Payment = () => {
   const dispatch = useDispatch();
   // const {orderId} = useParams()
   const alert = useAlert();
+  const { addressId } = useParams();
   const navigate = useNavigate();
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState();
@@ -44,10 +49,10 @@ const Payment = () => {
   const [selectedOption, setselectedOption] = useState(null);
   // console.log(selectedOption);
   const { cartItems, error, loading } = useSelector((state) => state.cart);
-  const { order: orderData } = useSelector((state) => state.order);
+  // const { order: orderData } = useSelector((state) => state.order);
   const { address } = useSelector((state) => state.UserProfileData);
   const [shippingChar, setshippingChar] = useState(0);
-  const [gstCharge, setGstCharge] = useState(0);
+  // const [gstCharge, setGstCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(0);
   const [orderId, setOrderId] = useState(null);
 
@@ -60,7 +65,7 @@ const Payment = () => {
     cartItems.data.items.forEach((product) => {
       totalPrice += product.productPrice * product.quantity;
       totalDiscount +=
-        product.productMrp - product.productPrice * product.quantity;
+        (product.productMrp - product.productPrice) * product.quantity;
     });
   }
   const price = totalPrice + totalDiscount;
@@ -137,6 +142,7 @@ const Payment = () => {
 
     dispatch(getUserAddress(storedUserId));
     dispatch(getCartItems(storedUserId));
+    // dispatch(getUserAddressDetails(addressId));
 
     //  if (selectedOption === "Cash On Delivery") {
     //   checkoutOrderHandler();
@@ -180,11 +186,11 @@ const Payment = () => {
   };
 
   const handleConfiramOrder = (storedUserId) => {
-    if (!selectedOption) {
-      alert.error("Please select a payment method");
-      return;
-      // checkoutOrderHandler(selectedOption);
-    }
+    // if (!selectedOption) {
+    //   alert.error("Please select a payment method");
+    //   return;
+    //   // checkoutOrderHandler(selectedOption);
+    // }
 
     if (selectedOption === "Cash On Delivery") {
       dispatch(
@@ -194,8 +200,7 @@ const Payment = () => {
           paymentStatus: "pending",
         })
       );
-      alert.success("Order placed successfully");
-    } else {
+
       navigate("/order/confiramation");
     }
   };
@@ -210,7 +215,7 @@ const Payment = () => {
       setOrderId(localStorage.getItem("lastOrderId"));
     }
 
-    if (selectedOption === "Caash On Delivery") {
+    if (selectedOption === "Cash On Delivery") {
       handleConfiramOrder();
       navigate("/order/confiramation");
     }
@@ -296,12 +301,20 @@ const Payment = () => {
                             - ₹ {discount}
                           </dd>
                         </div>
+                        <div className="flex items-center justify-between pt-4">
+                          <dt className="flex items-center text-sm text-gray-800">
+                            <span>Total Amount:</span>
+                          </dt>
+                          <dd className="text-sm font-medium text-green-700">
+                            ₹ {totalAmount}
+                          </dd>
+                        </div>
                         <div className="flex items-center justify-between py-4">
                           <dt className="flex text-sm text-gray-800">
                             <span>Delivery Charges</span>
                           </dt>
                           <dd className="text-sm font-medium text-green-700">
-                            {shippingCharges}
+                            ₹ {shippingCharges}
                           </dd>
                         </div>
                         <div className="flex items-center justify-between border-y border-dashed py-4 ">

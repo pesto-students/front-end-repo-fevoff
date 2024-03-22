@@ -13,6 +13,7 @@ import { clearErrors } from "../../../Action/cartAction";
 import { useAlert } from "react-alert";
 import "./cart.css";
 import Loader from "../../Layout/Loader";
+import PriceItem from "./priceItem";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -95,11 +96,7 @@ const Cart = () => {
   const gst = 0;
   const totalAmount = price - discount + shippingCharges + gst;
 
-  if (loading) {
-    return <Loader />;
-  } else if (cartItems?.data?.items?.length > 0) {
-  } else {
-  }
+ 
 
   return (
     <>

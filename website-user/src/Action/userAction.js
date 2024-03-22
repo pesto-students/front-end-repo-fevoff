@@ -42,6 +42,9 @@ import {
   CONTECT_REQUEST_REQUEST,
   CONTECT_REQUEST_SUCCESS,
   CONTECT_REQUEST_FAIL,
+  GET_USER_ADDRESS_REQUEST,
+  GET_USER_ADDRESS_SUCCESS,
+  GET_USER_ADDRESS_FAIL,
 } from "../Constants/userConstants";
 
 import axios from "axios";
@@ -159,6 +162,20 @@ export const getUserAddress = (userId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOAD_USER_ADDRESS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getUserAddressDetails = (addressId) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USER_ADDRESS_REQUEST });
+    // const config = { headers: { "Content-type": "application/json" } };
+    const { data } = await axios.get(`${baseURL}/users-address/${addressId}`);
+    dispatch({ type: GET_USER_ADDRESS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_USER_ADDRESS_FAIL,
       payload: error.response.data.message,
     });
   }

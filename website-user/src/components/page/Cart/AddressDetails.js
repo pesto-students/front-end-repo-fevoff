@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Trash } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, getUserAddress } from "../../../Action/userAction";
+import { clearErrors, getUserAddress, getUserAddressDetails } from "../../../Action/userAction";
 import { useAlert } from "react-alert";
 import { getCartItems, updateCart } from "../../../Action/cartAction";
 import { deleteAddress } from "../../../Action/userAction";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CommonBaner from "./../../CommonBanner/CommonBanner";
 import Breadcrumbs from "./../../Breadcrumbs/Breadcrumbs";
 import "./address-details.css";
@@ -14,6 +14,7 @@ import Loader from "../../Layout/Loader";
 const AddressDetails = React.memo(() => {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState();
+  const {addressId} = useParams();
   const alert = useAlert();
   const [selectedAddressId, setselectedAddressId] = useState([]);
   const [activeAddress, setActiveAddress] = useState(null);
@@ -52,12 +53,16 @@ const AddressDetails = React.memo(() => {
       if (selectedAddressId.length > 0) {
         const selectedAddress = address.data.filter((addr) => {
           selectedAddressId.includes(addr._id);
+    dispatch(getUserAddressDetails(addr._id));
+
         });
         dispatch(getUserAddress(selectedAddress));
       } else {
         dispatch(getUserAddress(storedUserId));
+
       }
       dispatch(getCartItems(storedUserId));
+
     }
   }, [dispatch, error, alert, setUserId]);
 

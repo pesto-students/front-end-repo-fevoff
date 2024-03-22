@@ -8,7 +8,7 @@ import Loader from "../../Layout/Loader";
 
 import { clearErrors, getProductDetils } from "../../../Action/productAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { addItemsToCart } from "../../../Action/cartAction";
 import { useAlert } from "react-alert";
 import CommonBanner from "../../CommonBanner/CommonBanner";
@@ -21,6 +21,7 @@ function ProductDetails({ match }) {
   const [price, setPrice] = useState();
   const [userId, setUserId] = useState();
   const [productImageView, setProductImageView] = useState(null);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   const dispatch = useDispatch();
   const { productId } = useParams();
@@ -75,11 +76,11 @@ function ProductDetails({ match }) {
       .catch((error) => {
         alert.error(`Failed to add item to cart: ${error.message}`);
       });
+    setIsAddedToCart(true);
   };
 
   return (
     <>
-
       <>
         <CommonBanner pageTitle={product.name} />
         <Breadcrumbs
@@ -223,48 +224,54 @@ function ProductDetails({ match }) {
                   <ul className="flex flex-wrap space-x-2 mt-2">
                     <li
                       value={size}
-                      className={`product-size${size === "XS" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "XS" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("XS")}
                     >
                       XS
                     </li>
 
                     <li
-                      className={`product-size${size === "S" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "S" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("S")}
                     >
                       S
                     </li>
 
                     <li
-                      className={`product-size${size === "M" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "M" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("M")}
                     >
                       M
                     </li>
 
                     <li
-                      className={`product-size${size === "L" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "L" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("L")}
                     >
                       L
                     </li>
 
                     <li
-                      className={`product-size${size === "XL" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "XL" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("XL")}
                     >
                       XL
                     </li>
 
                     <li
-                      className={`product-size${size === "XXL" ? " selected" : ""
-                        }`}
+                      className={`product-size${
+                        size === "XXL" ? " selected" : ""
+                      }`}
                       onClick={() => sizeHandler("XXL")}
                     >
                       XXL
@@ -300,14 +307,16 @@ function ProductDetails({ match }) {
                 </div>
                 <div className="space-y-2.5 pt-1.5 md:space-y-3.5 lg:pt-3 xl:pt-4">
                   <div className="grid grid-cols-2 gap-4 md:mt-0 mt-2 md:mr-20">
-                    <button
-                      type="button"
-                      className="btn-add-cart"
-                      onClick={addToCartHandlar}
-                      disabled={product.stock < 1 ? true : false}
-                    >
-                      <span className="block">Add To Cart</span>
-                    </button>
+                    <Link to="/cart">
+                      <button
+                        type="button"
+                        className="btn-add-cart"
+                        onClick={addToCartHandlar}
+                        disabled={product.stock < 1 ? true : false}
+                      >
+                        <span className="block">Add To Cart</span>
+                      </button>
+                    </Link>
                     <button type="button" className="btn-add-wishlist">
                       <span className="block">Add To Wishlist</span>
                     </button>
